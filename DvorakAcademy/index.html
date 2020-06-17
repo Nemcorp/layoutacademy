@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dvorak Academy</title>
+	<link rel="icon" href="keyboardImages/favicon.png">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="logic/main.css">
+</head>
+<body>
+
+	<h1>Dvorak Academy</h1>
+
+	<nav>
+		<button class='currentLevel'>Level 1</button>
+		<button>Level 2</button>
+		<button>Level 3</button>
+		<button>Level 4</button>
+		<button>Level 5</button>
+		<button>Level 6</button>
+		<button>All Words</button>
+
+	</nav>
+
+	<section id="main">
+		<h2 id="prompt" class='noDisplay'>
+			<span id="currentWord"></span>
+			<span id="nextWord"></span>
+			<span id="thirdWord"></span>
+		</h2>
+		<button id="resetButton" class='noDisplay'>Reset</button>
+		<input id = 'userInput' type="paragraph" spellcheck="false">
+		<div id='feedback'>
+			<div id='scoreAndClock'>
+				<span id="scoreText">0/50</span>
+				<span id="timeText">0m :0 s</span>
+			</div>
+			<div id='testResults' class='transparent'>
+				<div id='accuracyText'></div>
+				<div id='wpmText'></div>
+			</div>
+			<div id='cheatsheet'>
+				<img class='levelKeys' id='backgroundKeys' src="keyboardImages/keyboard.svg">
+				<img id='keyImage1' class='levelKeys' src="keyboardImages/aoeuhtns.svg">
+				<img id='keyImage2' class='levelKeys transparent' src="keyboardImages/id.svg">
+				<img id='keyImage3' class='levelKeys transparent' src="keyboardImages/pyfg.svg">
+				<img id='keyImage4' class='levelKeys transparent' src="keyboardImages/kxbm.svg">
+				<img id='keyImage5' class='levelKeys transparent' src="keyboardImages/crlw.svg">
+				<img id='keyImage6' class='levelKeys transparent' src="keyboardImages/qjvz.svg">
+			</div>
+		</div>
+	</section>
+
+<!-- 	<button id='startAgain'>Start Again</button> -->
+
+<script type="text/javascript" src="logic/wordList.js"></script>
+<script type="text/javascript" src="logic/app.js"></script>
+</body>
+</html>
