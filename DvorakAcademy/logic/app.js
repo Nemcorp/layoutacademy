@@ -1,39 +1,61 @@
-var prompt = document.querySelector('#prompt');
-var words; //array that holds all words in the queue
-var wordChain = document.querySelector('#wordChain');
-var promptOffset = 0;
-var answer = document.querySelector('#answer');
-var score;
-var scoreText = document.querySelector('#scoreText');
-var scoreMax = 15; // total number of words the user must type
-var seconds = 0;
-var minutes = 0;
-var timeText = document.querySelector('#timeText');
-var gameOn = false; // set to true when user starts typing in input field
-var resetButton = document.querySelector('#resetButton');
-var accuracyText = document.querySelector('#accuracyText');
-var wpmText = document.querySelector('#wpmText');
-var testResults = document.querySelector('#testResults');
-var input = document.querySelector('#userInput'); // the main typing area
-var inputKeyboard = document.querySelector('#inputKeyboard'); // keyboard layout customization ui
-var inputShiftKeyboard = document.querySelector('#inputShiftKeyboard'); // the dom element representing the shift keys in customization ui
-var customInpur = document.querySelector('#customInput');
-var correct = 0; // number of correct keystrokes during a game
-var errors = 0; // number of typing errors during a game
-var buttons = document.querySelector('nav').children;
-var currentLevel = 1;
-var correctAnswer;
-var letterIndex = 0; // Keeps track of where in a word the user is
-					 // Increment with every keystroke except ' ', return, and backspace
-					 // Decrement for backspace, and reset for the other 2
-var currentWord = document.querySelector('#currentWord');
-var onlyLower = true; // If only lower is true, incude only words
-					  // without capital letters
-var select = document.querySelector('select');
-var mappingStatusButton = document.querySelector('#mappingToggle label input');
-var mappingStatusText = document.querySelector('#mappingToggle h6 span');
-var mapping = true;
-var answerString;
+/*_____________dom elements_________*/
+
+//
+var prompt 		= document.querySelector('#prompt'),
+//
+wordChain 		= document.querySelector('#wordChain'),
+//
+answer 			= document.querySelector('#answer'),
+//
+scoreText 		= document.querySelector('#scoreText'),
+//
+timeText 		= document.querySelector('#timeText'),
+//
+resetButton 	= document.querySelector('#resetButton'),
+//
+accuracyText 	= document.querySelector('#accuracyText'),
+//
+wpmText 		= document.querySelector('#wpmText'),
+//
+testResults 	= document.querySelector('#testResults'),
+//
+input 			= document.querySelector('#userInput'), 
+// the main typing area
+inputKeyboard 	= document.querySelector('#inputKeyboard'), 
+// keyboard layout customization ui
+inputShiftKeyboard = document.querySelector('#inputShiftKeyboard'), 
+// the dom element representing the shift keys in customization ui
+customInpur 	= document.querySelector('#customInput'),
+//
+buttons 		= document.querySelector('nav').children,
+//
+currentWord 	= document.querySelector('#currentWord'),
+//
+select 			= document.querySelector('select'),
+//
+mappingStatusButton = document.querySelector('#mappingToggle label input'),
+//
+mappingStatusText = document.querySelector('#mappingToggle h6 span');
+
+var promptOffset 	= 0;  // is this needed? May delete
+var score;				  // tracks the current number of currect words the user has typed
+var scoreMax 		= 15; // total number of words the user must type
+var seconds 		= 0;  // tracks the number of seconds%minutes*60 the current test has been running for 
+var minutes 		= 0;  // tracks the number of minutes the current test has been running for
+var gameOn 			= false; // set to true when user starts typing in input field
+var correct 		= 0;  // number of correct keystrokes during a game
+var errors 			= 0;  // number of typing errors during a game
+var currentLevel 	= 1;  // int representation of the current level, which determines which letter set to test
+var correctAnswer;        // string representation of the current correct word
+var letterIndex 	= 0;  // Keeps track of where in a word the user is
+					      // Increment with every keystroke except ' ', return, and backspace
+					      // Decrement for backspace, and reset for the other 2
+var onlyLower		= true;  // If only lower is true, incude only words
+					      // without capital letters
+var mapping 		= true;  // if true, user keybard input will be mapped to the chosen layout. No mapping otherwise
+var answerString;		  // A string representation of the words for the current test. After a correct word is typed,
+						  // it is removed from the beginning of answerString. By the end of the test, there should be 
+						  // no words in answerString
 var keyboardMap = layoutMaps['dvorak'];
 var letterDictionary = levelDictionaries['dvorak'];
 var currentLayout = 'dvorak';
@@ -42,6 +64,7 @@ start();
 init();
 
 // this is the true init, which is only called once. Init will have to be renamed
+// Call to initialize
 function start() {
 	document.querySelector('#layoutName').innerHTML = currentLayout;
 	document.querySelector('#cheatsheet').innerHTML = keyboardDivs;
@@ -51,7 +74,9 @@ function start() {
 }
 
 
-// call to initialize
+// some of the stuff in this function should probably be put into reset and we should examine when reset is called
+// the rest should be in start(), which works like an actual init function should
+// RENAME AND REFACTOR THIS PLEASE
 function init() {
 	createTestSets();
 	reset();
@@ -422,7 +447,8 @@ function containsUpperCase(word) {
 }
 
 // updates the correct answer and manipulates the dom
-// RENAME THIS PLEASE
+// called every time a correct word is typed
+// RENAME THIS PLEASE. Function name not representative of what it does
 function generateRandomPrompt() {
 	// make sure no 'incorrect' styling still exists
 	input.style.color = 'black';
