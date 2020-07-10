@@ -1,6 +1,6 @@
 /*_____________dom elements_________*/
 
-//
+// the string of text that shows the words for the user to type
 var prompt 		= document.querySelector('#prompt'),
 //
 wordChain 		= document.querySelector('#wordChain'),
