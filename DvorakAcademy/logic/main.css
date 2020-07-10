@@ -14,11 +14,20 @@ body {
 	font-family: Roboto;
 }
 
+select{
+	position: absolute;
+	top: 2vh;
+	right: 5vh;
+
+	color: white;
+	background-color: black;
+}
+
 h1	{
 	position: absolute;
 	top: 1vh;
-	font-size: 5vw;
-	margin-left: 40vmin;
+	font-size: 3.2vmax;
+	margin-left: 33vmax;
 	color: #ddd;
 
 	text-transform: uppercase;
@@ -38,6 +47,7 @@ nav {
 	margin-left: 4vw;
 }
 
+
 #main {
 	display: flex;
 	flex-direction: column;
@@ -46,14 +56,14 @@ nav {
 
 
 
-	flex: 2 1 800px;
+	flex: 2 1 1000px;
 
-	margin: 0 18vw 0 20vw;
+	margin: 2vmax 18vmax 0 20vmax;
 }
 
 nav button {
 	margin: 0;
-	border-radius: 100%;
+	border-radius: 0%;
 	height: 11vh;
 	width: 11vh;
 	font-size: 2vh;
@@ -61,7 +71,7 @@ nav button {
 
 nav button:hover {
 	font-weight: bold;
-	border-color: purple;
+	border-color: #8727b8;
 }
 
 h2, button {
@@ -85,20 +95,25 @@ button:focus {
 	outline: none;
 }
 
-#prompt {
-	overflow: hidden;
-	white-space: nowrap;
-	font-size: 4vh;
-	padding-right: 20vh;
-	width: 40vh;
-	color: white;
-
+#p {
     -webkit-mask-image: -webkit-gradient(linear, left top, right bottom, 
     from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
 }
 
-#prompt span:nth-of-type(2), #prompt span:nth-of-type(3){
-	font-size: 3vh;
+#prompt {
+	position: relative;
+	white-space: nowrap;
+	font-size: 2.3vmax;
+	padding-right: 20vh;
+	width: 28vmax;
+	color: white;
+	transition: left .1s linear;
+}
+
+
+#wordChain {
+	color: red;
+	transition: left .4s linear;
 }
 
 #resetButton {
@@ -106,14 +121,14 @@ button:focus {
 }
 
 input {
-	height: 10vh;
+	height: 5vmax;
 
-	font-size: 7vh;
+	font-size: 3.5vmax;
 }
 
 
 input, #feedback {
-	width: 60vh;
+	width: 40vmax;
 }
 
 #feedback {
@@ -124,7 +139,7 @@ input, #feedback {
 }
 
 #keyImage1 {
-	filter: hue-rotate(110deg);
+	filter: hue-rotate(110deg) brightness(1.5);
 }
 
 #scoreAndClock {
@@ -145,25 +160,224 @@ input, #feedback {
 	flex: 1 1 8vh;
 }
 
+
+/*____________________Slider________________________*/
+
+#mappingToggle {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	position: absolute;
+	bottom: 3vh;
+	right: 0vh;
+	width: 15vw;
+}
+
+#mappingToggle h6 {
+	font-size: 1vw;
+	margin: 0 0 2vmin 0;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 7.5vmin;
+  height: 4.5vmin;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+ 	position: absolute;
+ 	cursor: pointer;
+ 	top: 0;
+ 	left: 0;
+ 	right: 0;
+ 	bottom: 0;
+ 	background-color: #8727b8;
+ 	-webkit-transition: .4s;
+ 	transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 3vmin;
+  width: 3vmin;
+  left: .75vmin;
+  bottom: .75vmin;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .2s;
+}
+
+input:checked + .slider {
+  background-color: grey;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px purple;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(3vmin);
+  -ms-transform: translateX(3vmin);
+  transform: translateX(3vmin);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+/*___________cheatsheet___________*/
+
 #cheatsheet {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 
-	height: 20vh;
+	position: relative;
+	left: -5vmax;
+	margin: 0;
+	padding: none;
+	white-space: nowrap;
+
+	
+	/*background: pink;*/
 }
 
-#backgroundKeys {
-	opacity: .4;
+.row {
+	display: flex;
+	justify-content: space-between;
+	height: 3.6vmax;
+	width: 50vmax;
 }
 
-.levelKeys {
+.key, .cKey {
+	display: inline-block;
+	background-color: transparent;
+	border: .2vmax solid purple;
+	height: 2.8vmax;
+	width: 2.8vmax;
+
+	opacity: .5;
+
+	border-bottom-right-radius: 7%;
+	border-bottom-left-radius: 7%;
+
+	vertical-align: top;
+}
+
+.letter {
+	display: block;
+	width: 50%;
+	height: 50%;
+	margin: 17% auto;
+	font-size: 2.2vh;
+	font-weight: bold;
+
+	text-transform: uppercase;
+}
+
+.big {
+	width: 4vmax;
+}
+
+.bigger {
+	width: 5vmax;
+}
+
+.biggest {
+	width: 7vmax;
+}
+
+.space {
+	width: 19vmax;
+}
+
+.homeRow {
+	border-color: orange;
+	color: orange;
+	opacity: 1;
+}
+
+.currentLevelKeys {
+	border-color: green;
+	color: green;
+	opacity: 1;
+	filter: brightness(1.5);
+}
+
+.active {
+	border-color: #8727b8;
+	color: #8727b8;
+	opacity: 1;
+	filter: brightness(1.5);
+}
+
+/*__________________input keyboard________________*/
+
+#customInput {
 	position: absolute;
-	height: 76vh;
-	transition: opacity .2s;
+	display: flex;
+	flex-direction: column;
+	left: 27vmax;
+	z-index: 100;
+
+	background-color: #333;
+	height: 40vmax;
+	width: 55vmax;
+
+	/*display: none;*/
 }
 
+#inputKeyboard {
+	display: block;
+	margin: 3vh 2vmax 0 2vmax;
+	width: 100%;
+	white-space: nowrap;
+}
+
+#inputShiftKeyboard {
+	display: block;
+	margin: 3vh 2vmax 0 2vmax;
+	width: 100%;
+	white-space: nowrap;
+	display: none;
+}
+
+.cKey {
+	border-color: black;
+}
+
+.cKey:hover {
+	border-color: blue;
+}
+
+#customInput button {
+	width: 10vmax;
+}
 
 /*____________________Toggle-able classes______________*/
+
+.inactive {
+	opacity: .6;
+	border-color: #8727b8;
+}
 
 .noDisplay {
 	display: none;
@@ -174,28 +388,58 @@ input, #feedback {
 }
 
 .currentLevel {
-	color: purple;
-	border-color: purple;
+	color: #8727b8;
+	border-color: #8727b8;
 	font-weight: bold;
 }
 
+.hide-me {
+	z-index: -100;
+  animation: hideme .5s linear forwards;
+}
+@keyframes hideme {
+  0% {
+  	left: 0;
+  }
+  100% {
+  }
+}
 
 /*___________________________ANIMATIONS________________________*/
 
-.rightShift {
-	margin-left: 200px;
+.slideLeft {
+	position: relative;
+	color: blue;
+	animation: slideLeft .2s 1 linear;
+	animation-fill-mode: forwards;
 }
 
-.slideLeft {
-	animation: slideLeft .1s 1 linear;
+.slideOff {
+	position: relative;
+	color: blue;
+	animation: slideOff .2s 1 linear;
 	animation-fill-mode: forwards;
 }
 
 
 @keyframes slideLeft {
 	0%   { 
+		left: 0;
 	}
-	100% { transform: translateX(0);   }
+	100% { 
+		color: red;
+		left: -50px;
+	}
+}
+
+@keyframes slideOff {
+	0%   { 
+		left: 0;
+	}
+	100% { 
+		color: red;
+		left: -100px;
+	}
 }
 
 

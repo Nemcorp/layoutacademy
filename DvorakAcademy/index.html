@@ -2,31 +2,47 @@
 <html>
 <head>
 	<title>Dvorak Academy</title>
-	<link rel="icon" href="keyboardImages/favicon.png">
+	<link rel="icon" href='https://media.discordapp.net/attachments/727610227301548181/727926203008286751/dvorakAcademy.png?width=567&height=567'>
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="logic/main.css">
 </head>
 <body>
 
-	<h1>Dvorak Academy</h1>
+	<select>
+		<option value='dvorak'>Dvorak</option>
+		<option value='colemak'>Colemak</option>
+		<option value='qwerty'>QWERTY</option>
+		<option value='workman'>Workman</option>
+		<option value='colemakdh'>Colemak-DH</option>
+		<option value='colemakdhm'>Colemak-DHm</option>
+		<option value='custom'>Custom</option>
+	</select>
+
+	<h1><span id="layoutName"></span> Academy</h1>
 
 	<nav>
-		<button class='currentLevel'>Level 1</button>
-		<button>Level 2</button>
-		<button>Level 3</button>
-		<button>Level 4</button>
-		<button>Level 5</button>
-		<button>Level 6</button>
-		<button>All Words</button>
+		<button class='currentLevel' id='lvl1'>Level 1</button>
+		<button id='lvl2'>Level 2</button>
+		<button id='lvl3'>Level 3</button>
+		<button id='lvl4'>Level 4</button>
+		<button id='lvl5'>Level 5</button>
+		<button id='lvl6'>Level 6</button>
+		<button id='lvl7'>All Words</button>
 
 	</nav>
 
+	<div id="customInput">
+		<div id='inputKeyboard'></div>
+		<div id='inputShiftKeyboard'></div>
+
+		<button> Done </button>
+	</div>
+
 	<section id="main">
-		<h2 id="prompt" class='noDisplay'>
-			<span id="currentWord"></span>
-			<span id="nextWord"></span>
-			<span id="thirdWord"></span>
-		</h2>
+		<div id='p'>
+			<h2 id="prompt" class='noDisplay'>
+			</h2>
+		</div>
 		<button id="resetButton" class='noDisplay'>Reset</button>
 		<input id = 'userInput' type="paragraph" spellcheck="false">
 		<div id='feedback'>
@@ -39,20 +55,23 @@
 				<div id='wpmText'></div>
 			</div>
 			<div id='cheatsheet'>
-				<img class='levelKeys' id='backgroundKeys' src="keyboardImages/keyboard.svg">
-				<img id='keyImage1' class='levelKeys' src="keyboardImages/aoeuhtns.svg">
-				<img id='keyImage2' class='levelKeys transparent' src="keyboardImages/id.svg">
-				<img id='keyImage3' class='levelKeys transparent' src="keyboardImages/pyfg.svg">
-				<img id='keyImage4' class='levelKeys transparent' src="keyboardImages/kxbm.svg">
-				<img id='keyImage5' class='levelKeys transparent' src="keyboardImages/crlw.svg">
-				<img id='keyImage6' class='levelKeys transparent' src="keyboardImages/qjvz.svg">
 			</div>
 		</div>
 	</section>
 
+	<div  id='mappingToggle'>
+		<h6>Keyboard Mapping: <span>on</span></h6>
+		<label class="switch">
+  			<input type="checkbox">
+ 			<span  class="slider"></span>
+		</label>	
+	</div>
+
 <!-- 	<button id='startAgain'>Start Again</button> -->
 
+<script type="text/javascript" src="logic/layoutInfo.js"></script>
 <script type="text/javascript" src="logic/wordList.js"></script>
+<script type="text/javascript" src="logic/keyboardDivs.js"></script>
 <script type="text/javascript" src="logic/app.js"></script>
 </body>
 </html>
