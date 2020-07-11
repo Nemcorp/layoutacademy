@@ -110,7 +110,7 @@ button:focus {
 	transition: left .1s linear;
 }
 
-
+/* is this actually styling anything? Maight be able to delete*/
 #wordChain {
 	color: red;
 	transition: left .4s linear;
@@ -329,7 +329,7 @@ input:checked + .slider:before {
 	filter: brightness(1.5);
 }
 
-/*__________________input keyboard________________*/
+/*__________________custom ui keyboard________________*/
 
 #customInput {
 	position: absolute;
@@ -358,6 +358,7 @@ input:checked + .slider:before {
 	width: 100%;
 	white-space: nowrap;
 	display: none;
+	background: white;
 }
 
 .cKey {
@@ -370,6 +371,11 @@ input:checked + .slider:before {
 
 #customInput button {
 	width: 10vmax;
+}
+
+#doneButton {
+	/*margin: 0 0 20vmax 0;*/
+	color: red;
 }
 
 /*____________________Toggle-able classes______________*/

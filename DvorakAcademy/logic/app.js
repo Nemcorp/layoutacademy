@@ -35,7 +35,9 @@ select 			= document.querySelector('select'),
 //
 mappingStatusButton = document.querySelector('#mappingToggle label input'),
 //
-mappingStatusText = document.querySelector('#mappingToggle h6 span');
+mappingStatusText = document.querySelector('#mappingToggle h6 span'),
+// done button on the custom layout ui
+doneButton 		 = document.querySelector('#doneButton');
 
 var promptOffset 	= 0;  // is this needed? May delete
 var score;				  // tracks the current number of currect words the user has typed
@@ -120,6 +122,27 @@ select.addEventListener('change', (e)=> {
 	init();
 });
 
+
+// listener for the custom layout ui 'done' button
+doneButton.addEventListener('click', ()=> {
+	customInput.style.display = 'none';
+});
+
+
+//listen for shift key to display different layer of custom ui input 
+document.addEventListener('keydown', (e)=> { 
+	if(e.keyCode == 16){
+		inputKeyboard.style.display = 'none';
+		inputShiftKeyboard.style.display = 'block';
+	}
+});
+
+document.addEventListener('keyup', (e)=> { 
+	if(e.keyCode == 16){
+		inputKeyboard.style.display = 'block';
+		inputShiftKeyboard.style.display = 'none';
+	}
+});
 
 // listens for the enter  and space key. Checks to see if input contains the
 // correct word. If yes, generate new word. If no, give user
