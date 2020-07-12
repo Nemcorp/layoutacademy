@@ -200,7 +200,7 @@ var customShiftLayout = `
 		<div class="cKey bigger"><span class="letter"></span></div>
 	</div>
 	<div class=row>
-		<div class="cKey biggest"><span class="letter">SHIFT</span></div>
+		<div class="cKey biggest"><span class="letter"></span></div>
 		<div class="cKey" id='KeyZ'><span class="letter"></span></div>
 		<div class="cKey lvl6" id='KeyX'><span class="letter"></span></div>
 		<div class="cKey lvl6" id='KeyC'><span class="letter"></span></div>

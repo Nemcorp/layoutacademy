@@ -172,9 +172,15 @@ document.addEventListener('click', function (e) {
 // input key, and setting the new value on the correct layer
 customUIKeyInput.addEventListener('keyup', (e)=> {
 	let k = document.querySelector('.selectedInputKey');
-	k.children[0].classList.remove('pulse');
-	k.children[0].innerHTML = e.key;
-	// ADD NEW KEY MAPPING DATA HERE
+	// if key entered is not shift, update dom element and key mapping value
+	if(e.keyCode != 16) {
+		k.children[0].classList.remove('pulse');
+
+		k.children[0].innerHTML = e.key;
+		// ADD NEW KEY MAPPING DATA HERE
+		// RIGHT NOW IT ALWAYS MAPS TO A. FIX THIS
+		layoutMaps.custom['KeyA'] = e.key;
+	}
 
 	// clear input field
 	customUIKeyInput.value = '';
@@ -587,7 +593,7 @@ input.addEventListener('keydown', (e)=> {
 	let char = e.code;
 	let finalInput;
 
-	// prevent char from being typed and replace new colemak char
+	// prevent default char from being typed and replace new char from keyboard map
 	if (mapping) {
 		if(char in keyboardMap && gameOn) {
 			e.preventDefault();
@@ -595,8 +601,17 @@ input.addEventListener('keydown', (e)=> {
 				finalInput = keyboardMap[char];
 				input.value += keyboardMap[char];
 			}else {
-				finalInput = keyboardMap[char].toUpperCase();
-				input.value += keyboardMap[char].toUpperCase();
+			// if shift key is pressed, get final input from
+			// keymap shift layer. If shiftlayer doesn't exist
+			// use a simple toUpperCase
+				if(keyboardMap.shiftLayer == 'default'){
+					finalInput = keyboardMap[char].toUpperCase();
+					input.value += keyboardMap[char].toUpperCase();
+				}else {
+					// get char from shiftLayer
+					finalInput = keyboardMap.shiftLayer[char];
+					input.value += keyboardMap.shiftLayer[char];
+				}
 			}
 		}
 	}else {
