@@ -358,7 +358,10 @@ input:checked + .slider:before {
 	width: 100%;
 	white-space: nowrap;
 	display: none;
-	background: white;
+}
+
+#inputShiftKeyboard .cKey{ 
+	border-color: green;
 }
 
 .cKey {
@@ -369,8 +372,25 @@ input:checked + .slider:before {
 	border-color: blue;
 }
 
+.cKey .letter {
+	z-index: -1;
+}
+
+.selectedInputKey, .selectedInputKey:hover {
+	border-color: white;
+}
+
+.pulse {
+	animation: pulse .8s infinite;
+}
+
+
 #customInput button {
 	width: 10vmax;
+}
+
+#selectedInputKey {
+	background: purple;
 }
 
 #doneButton {
@@ -427,6 +447,17 @@ input:checked + .slider:before {
 	animation-fill-mode: forwards;
 }
 
+@keyframes pulse {
+	0%   { 
+		opacity: 1;
+	}
+	60% { 
+		opacity: 1;
+	}
+	100% { 
+		opacity: 0;
+	}
+}
 
 @keyframes slideLeft {
 	0%   { 

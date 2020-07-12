@@ -37,7 +37,9 @@ mappingStatusButton = document.querySelector('#mappingToggle label input'),
 //
 mappingStatusText = document.querySelector('#mappingToggle h6 span'),
 // done button on the custom layout ui
-doneButton 		 = document.querySelector('#doneButton');
+doneButton 		 = document.querySelector('#doneButton'),
+// custom ui input field for custom keys
+customUIKeyInput = document.querySelector('#customUIKeyInput');
 
 var promptOffset 	= 0;  // is this needed? May delete
 var score;				  // tracks the current number of currect words the user has typed
@@ -123,26 +125,75 @@ select.addEventListener('change', (e)=> {
 });
 
 
+
+/*___________________________________________________________*/
+/*______________listeners for custom ui input________________*/
+
 // listener for the custom layout ui 'done' button
 doneButton.addEventListener('click', ()=> {
 	customInput.style.display = 'none';
 });
 
-
-//listen for shift key to display different layer of custom ui input 
+// listen for shift key to display different layer of custom ui input 
 document.addEventListener('keydown', (e)=> { 
 	if(e.keyCode == 16){
 		inputKeyboard.style.display = 'none';
 		inputShiftKeyboard.style.display = 'block';
 	}
 });
-
+// listen for shift key up to display different layer of custom ui input 
 document.addEventListener('keyup', (e)=> { 
 	if(e.keyCode == 16){
 		inputKeyboard.style.display = 'block';
 		inputShiftKeyboard.style.display = 'none';
 	}
 });
+
+// add key listeners for each of the keys the custom input ui
+// When clicked, a key becomes 'selectedInputKey' and all others lose
+// this class. 
+document.addEventListener('click', function (e) {
+
+	let k = e.target.closest('.cKey');
+	if (k) {
+		// change focus to the customUIKeyInput field
+		customUIKeyInput.focus();
+
+		// remove 'selectedInputKey' from any keys previously clicked
+		clearSelectedInput();
+
+		k.classList.add('selectedInputKey');
+		k.children[0].innerHTML = '_';
+		k.children[0].classList.add('pulse');
+	}
+}, false);
+
+// listener for input field. Updates on any input, clearing the current selected
+// input key, and setting the new value on the correct layer
+customUIKeyInput.addEventListener('keyup', (e)=> {
+	let k = document.querySelector('.selectedInputKey');
+	k.children[0].classList.remove('pulse');
+	k.children[0].innerHTML = e.key;
+	// ADD NEW KEY MAPPING DATA HERE
+
+	// clear input field
+	customUIKeyInput.value = '';
+});
+
+// remove 'selectedInputKey' from any keys previously clicked
+function clearSelectedInput() {
+	let k = document.querySelector('.selectedInputKey');
+	if(k){
+		k.classList.remove('selectedInputKey');
+	}
+}
+
+
+/*______________listeners for custom ui input________________*/
+/*___________________________________________________________*/
+
+
+
 
 // listens for the enter  and space key. Checks to see if input contains the
 // correct word. If yes, generate new word. If no, give user
