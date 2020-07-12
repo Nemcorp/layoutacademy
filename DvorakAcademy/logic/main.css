@@ -272,7 +272,7 @@ input:checked + .slider:before {
 	background-color: transparent;
 	border: .2vmax solid purple;
 	height: 2.8vmax;
-	width: 2.8vmax;
+	width: 5.7%;
 
 	opacity: .5;
 
@@ -294,19 +294,19 @@ input:checked + .slider:before {
 }
 
 .big {
-	width: 4vmax;
+	width: 8%;
 }
 
 .bigger {
-	width: 5vmax;
+	width: 10%;
 }
 
 .biggest {
-	width: 7vmax;
+	width: 12%;
 }
 
 .space {
-	width: 19vmax;
+	width: 39%;
 }
 
 .homeRow {
@@ -338,30 +338,36 @@ input:checked + .slider:before {
 	left: 27vmax;
 	z-index: 100;
 
+	border: .2vmax solid #444;
+	border-radius: 1vmax;
 	background-color: #333;
-	height: 40vmax;
-	width: 55vmax;
+	height: 33vmax;
+	width: 60vmax;
 
-	/*display: none;*/
+	display: none;
 }
 
 #inputKeyboard {
 	display: block;
 	margin: 3vh 2vmax 0 2vmax;
-	width: 100%;
+	width: 93%;
 	white-space: nowrap;
 }
 
 #inputShiftKeyboard {
 	display: block;
 	margin: 3vh 2vmax 0 2vmax;
-	width: 100%;
+	width: 93%;
 	white-space: nowrap;
 	display: none;
 }
 
 #inputShiftKeyboard .cKey{ 
 	border-color: green;
+}
+
+#inputKeyboard .row, #inputShiftKeyboard .row {
+	width: 100%;
 }
 
 .cKey {
@@ -385,17 +391,19 @@ input:checked + .slider:before {
 }
 
 
-#customInput button {
-	width: 10vmax;
-}
-
 #selectedInputKey {
 	background: purple;
 }
 
 #doneButton {
-	/*margin: 0 0 20vmax 0;*/
-	color: red;
+	width: 15vmax;
+	margin: auto auto 4vmax auto;
+}
+
+#customUIKeyInput {
+	opacity: 0;
+	width: 0;
+	height: 0;
 }
 
 /*____________________Toggle-able classes______________*/

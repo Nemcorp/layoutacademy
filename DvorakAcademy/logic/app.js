@@ -110,7 +110,7 @@ input.addEventListener('keydown', (e)=> {
 select.addEventListener('change', (e)=> {
 	// if custom input is selected, show the ui for custom keyboards
 	if(select.value == 'custom') {
-		customInput.style.display = 'block';
+		customInput.style.display = 'flex';
 	}else {
 		customInput.style.display = 'none';
 	}
@@ -132,6 +132,7 @@ select.addEventListener('change', (e)=> {
 // listener for the custom layout ui 'done' button
 doneButton.addEventListener('click', ()=> {
 	customInput.style.display = 'none';
+	updateCheatsheetStyling(currentLevel);
 });
 
 // listen for shift key to display different layer of custom ui input 
@@ -163,7 +164,9 @@ document.addEventListener('click', function (e) {
 		clearSelectedInput();
 
 		k.classList.add('selectedInputKey');
-		k.children[0].innerHTML = '_';
+		if(k.children[0].innerHTML == '') {
+			k.children[0].innerHTML = '_';
+		}
 		k.children[0].classList.add('pulse');
 	}
 }, false);
@@ -179,7 +182,8 @@ customUIKeyInput.addEventListener('keyup', (e)=> {
 		k.children[0].innerHTML = e.key;
 		// ADD NEW KEY MAPPING DATA HERE
 		// RIGHT NOW IT ALWAYS MAPS TO A. FIX THIS
-		layoutMaps.custom['KeyA'] = e.key;
+		console.log(k.id + ' ' + e.key);
+		layoutMaps.custom[k.id] = e.key;
 	}
 
 	// clear input field
@@ -191,6 +195,7 @@ function clearSelectedInput() {
 	let k = document.querySelector('.selectedInputKey');
 	if(k){
 		k.classList.remove('selectedInputKey');
+		k.children[0].classList.remove('pulse');
 	}
 }
 
