@@ -138,9 +138,6 @@ input, #feedback {
 
 }
 
-#keyImage1 {
-	filter: hue-rotate(110deg) brightness(1.5);
-}
 
 #scoreAndClock {
 	display: flex;
@@ -395,16 +392,48 @@ input:checked + .slider:before {
 	background: purple;
 }
 
-#doneButton {
-	width: 15vmax;
-	margin: auto auto 4vmax auto;
-}
-
 #customUIKeyInput {
 	opacity: 0;
 	width: 0;
 	height: 0;
 }
+
+#doneButton {
+	position: relative;
+	width: 2vmax;
+	height: 2vmax;
+	font-size: 1vmax;
+	margin: 0;
+	border: .1vmax solid #aaa;
+	color: #aaa;
+}
+
+#doneButton:hover {
+	border-color: white;
+	color: white;
+}
+
+/*__________________custom level select________________*/
+#customUILevelSelect {
+	display: flex;
+	margin: 2vmax auto 10vmax auto;
+	background: red .2;
+
+	height: 10vmax;
+	width: 100%;
+}
+
+
+.customUILevelButton {
+	font-size: 2vmax;
+	margin: 2vmax auto;
+}
+
+.currentCustomUILevel {
+	border-color: green;
+	color: green;
+} 
+
 
 /*____________________Toggle-able classes______________*/
 

@@ -56,12 +56,12 @@ levelDictionaries = {
 		'lvl7' : alphabet,
 	},	
 	custom : {
-		'lvl1' : 'aeitnsh',
-		'lvl2' : 'oud',
-		'lvl3' : 'rpcb',
-		'lvl4' : 'kglf',
-		'lvl5' : 'ymwv',
-		'lvl6' : 'zxjq',
+		'lvl1' : '',
+		'lvl2' : '',
+		'lvl3' : '',
+		'lvl4' : '',
+		'lvl5' : '',
+		'lvl6' : '',
 		'lvl7' : alphabet,
 	},
 

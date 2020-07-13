@@ -150,11 +150,12 @@ document.addEventListener('keyup', (e)=> {
 	}
 });
 
-// add key listeners for each of the keys the custom input ui
-// When clicked, a key becomes 'selectedInputKey' and all others lose
-// this class. 
+// general click listener for customui elements
 document.addEventListener('click', function (e) {
 
+	// add key listeners for each of the keys the custom input ui
+	// When clicked, a key becomes 'selectedInputKey' and all others lose
+	// this class. 
 	let k = e.target.closest('.cKey');
 	if (k) {
 		// change focus to the customUIKeyInput field
@@ -169,6 +170,22 @@ document.addEventListener('click', function (e) {
 		}
 		k.children[0].classList.add('pulse');
 	}
+
+	k = e.target.closest('.customUILevelButton');
+	
+
+
+	// listener for customUILevelButtons
+	if (k) {
+		let currentSelectedLevel = document.querySelector('.currentCustomUILevel');
+		if(currentSelectedLevel){
+			currentSelectedLevel.classList.remove('currentCustomUILevel');;
+		}
+		
+		customUIKeyInput.focus();
+		k.classList.add('currentCustomUILevel');
+	}
+
 }, false);
 
 // listener for input field. Updates on any input, clearing the current selected
@@ -176,14 +193,27 @@ document.addEventListener('click', function (e) {
 customUIKeyInput.addEventListener('keyup', (e)=> {
 	let k = document.querySelector('.selectedInputKey');
 	// if key entered is not shift, update dom element and key mapping value
-	if(e.keyCode != 16) {
-		k.children[0].classList.remove('pulse');
+	if(e.keyCode != 16 && e.keyCode != 32) {
+		let currentUILev = document.querySelector('.currentCustomUILevel').innerHTML; k.children[0].innerHTML = e.key;
+		// REMOVE OLD KEY FROM ALL LEVEL DICTIONARY LEVELS
+		// for each level, find and remove letter
+		let keys = Object.keys(levelDictionaries['custom']);
+		for(key of keys) {
+			// replace any instances of existing letter
+			levelDictionaries['custom'][key] = levelDictionaries['custom'][key].replace(k.children[0].innerHTML, '');
+			// replace any instances of letter that was already on the key
+			levelDictionaries['custom'][key] = levelDictionaries['custom'][key].replace(e.key, '');
+		}
 
-		k.children[0].innerHTML = e.key;
-		// ADD NEW KEY MAPPING DATA HERE
-		// RIGHT NOW IT ALWAYS MAPS TO A. FIX THIS
-		console.log(k.id + ' ' + e.key);
+		// new keyMapping Data
 		layoutMaps.custom[k.id] = e.key;
+		//new levels data
+		levelDictionaries['custom'][currentUILev]+= e.key;
+		console.log(levelDictionaries['custom'][currentUILev]);
+		// technically we could just do this when the customui window closes
+		// it would make it faster, but slightly less robust. Revisit this 
+		// decision later
+		init();
 	}
 
 	// clear input field
