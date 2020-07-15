@@ -38,6 +38,8 @@ mappingStatusButton = document.querySelector('#mappingToggle label input'),
 mappingStatusText = document.querySelector('#mappingToggle h6 span'),
 // done button on the custom layout ui
 doneButton 		 = document.querySelector('#doneButton'),
+// open button for the custom layout ui
+openUIButton 		 = document.querySelector('.openUIButton'),
 // custom ui input field for custom keys
 customUIKeyInput = document.querySelector('#customUIKeyInput');
 
@@ -63,6 +65,7 @@ var answerString;		  // A string representation of the words for the current tes
 var keyboardMap = layoutMaps['dvorak'];
 var letterDictionary = levelDictionaries['dvorak'];
 var currentLayout = 'dvorak';
+var shiftDown = false; // tracks whether the shift key is currently being pushed
 
 start();
 init();
@@ -111,8 +114,10 @@ select.addEventListener('change', (e)=> {
 	// if custom input is selected, show the ui for custom keyboards
 	if(select.value == 'custom') {
 		customInput.style.display = 'flex';
+		openUIButton.style.display = 'block';
 	}else {
 		customInput.style.display = 'none';
+		openUIButton.style.display = 'none';
 	}
 	// change keyboard map and key dictionary
 	keyboardMap = layoutMaps[select.value];
@@ -129,10 +134,18 @@ select.addEventListener('change', (e)=> {
 /*___________________________________________________________*/
 /*______________listeners for custom ui input________________*/
 
+// listener for custom layout ui open button
+openUIButton.addEventListener('click', ()=> {
+	customInput.style.display = 'flex';
+});
+
+
 // listener for the custom layout ui 'done' button
 doneButton.addEventListener('click', ()=> {
 	customInput.style.display = 'none';
-	updateCheatsheetStyling(currentLevel);
+	// remove active class from current key
+	clearSelectedInput();
+	init();
 });
 
 // listen for shift key to display different layer of custom ui input 
@@ -140,6 +153,7 @@ document.addEventListener('keydown', (e)=> {
 	if(e.keyCode == 16){
 		inputKeyboard.style.display = 'none';
 		inputShiftKeyboard.style.display = 'block';
+		shiftDown = true;
 	}
 });
 // listen for shift key up to display different layer of custom ui input 
@@ -147,6 +161,7 @@ document.addEventListener('keyup', (e)=> {
 	if(e.keyCode == 16){
 		inputKeyboard.style.display = 'block';
 		inputShiftKeyboard.style.display = 'none';
+		shiftDown = false;
 	}
 });
 
@@ -177,43 +192,105 @@ document.addEventListener('click', function (e) {
 
 	// listener for customUILevelButtons
 	if (k) {
+		// remove styling from other buttons
 		let currentSelectedLevel = document.querySelector('.currentCustomUILevel');
 		if(currentSelectedLevel){
 			currentSelectedLevel.classList.remove('currentCustomUILevel');;
 		}
 		
+		// add styling to selected button
 		customUIKeyInput.focus();
 		k.classList.add('currentCustomUILevel');
+		// set new dom element
+		currentSelectedLevel = document.querySelector('.currentCustomUILevel');
+
+		// remove styling from all keys that don't correspond with selected level button
+		// add styling to keys that correspond with selected level button
+		let allCKeys = document.querySelectorAll('.cKey');
+		for(n of allCKeys) {
+			if(n.children[0].innerHTML != 0 &&
+				levelDictionaries['custom'][currentSelectedLevel.innerHTML].includes(n.children[0].innerHTML)) {
+					n.classList.add('active');
+			} else {
+				n.classList.remove('active');
+			}
+		}
+
 	}
 
 }, false);
 
 // listener for input field. Updates on any input, clearing the current selected
 // input key, and setting the new value on the correct layer
-customUIKeyInput.addEventListener('keyup', (e)=> {
+customUIKeyInput.addEventListener('keydown', (e)=> {
 	let k = document.querySelector('.selectedInputKey');
-	// if key entered is not shift, update dom element and key mapping value
-	if(e.keyCode != 16 && e.keyCode != 32) {
-		let currentUILev = document.querySelector('.currentCustomUILevel').innerHTML; k.children[0].innerHTML = e.key;
+	// if key entered is not shift, space, caps, enter, or backspace, update dom element and key mapping value
+	if(e.keyCode != 16 && e.keyCode != 32 && e.keyCode != 8 && e.keyCode != 20 && e.keyCode != 13) {
+		let currentUILev = document.querySelector('.currentCustomUILevel').innerHTML; 
+		k.children[0].innerHTML = e.key;
+		// if we are not already on shift layer, add to dom element shift layer
+		if(!shiftDown) {
+			document.querySelector('#shift' + k.id).children[0].innerHTML = e.key.toUpperCase();
+		}
+		k.classList.add('active');
+
+		// REMOVE OLD KEY FROM ALL LEVEL DICTIONARY LEVELS
+		// for each level, find and remove letter
+		let lvls = Object.keys(levelDictionaries['custom']);
+		for(lvl of lvls) {
+			// replace any instances of letter previously found on key
+			levelDictionaries['custom'][lvl] = levelDictionaries['custom'][lvl].replace(k.children[0].innerHTML, '');
+			// replace any instances of letter that we just pressed
+			levelDictionaries['custom'][lvl] = levelDictionaries['custom'][lvl].replace(e.lvl, '');
+		}
+
+		// new keyMapping Data
+		if(k.id){
+			let keyCode = k.id.toString().replace('custom','');
+			keyCode = keyCode.toString().replace('shift','');
+			if(!shiftDown) {
+				layoutMaps.custom[keyCode] = e.key;
+			}
+
+			// if there is no key already defined for the shift layer, and the shift
+			// key is not being held down, then set the shift value to 
+			// be the uppercase of the new input
+			if(!shiftDown && layoutMaps.custom.shiftLayer[keyCode] == " "){
+				layoutMaps.custom.shiftLayer[keyCode] = e.key.toUpperCase();
+			}else if(shiftDown){
+				// if shift is being held down, the shift layer value should be the input
+				layoutMaps.custom.shiftLayer[keyCode] = e.key
+			}
+		}
+		//new levels data
+		levelDictionaries['custom'][currentUILev]+= e.key;
+		levelDictionaries['custom']['lvl7']+= e.key;
+		//console.log('new key ' + currentUILev + e.key);
+
+		// associate the key element with the current selected level
+
+		// this updates the main keyboard in real time. Could be ommited if performance needs a boost
+		updateCheatsheetStyling(currentLevel);
+
+	}else if(e.keyCode == 8) {
+		// if backspace, remove letter from the ui element and the keyboard map
+		k.children[0].innerHTML = '_';
+		k.classList.remove('active');
+		layoutMaps.custom.shiftLayer[k.id] = " ";
+
 		// REMOVE OLD KEY FROM ALL LEVEL DICTIONARY LEVELS
 		// for each level, find and remove letter
 		let keys = Object.keys(levelDictionaries['custom']);
 		for(key of keys) {
-			// replace any instances of existing letter
-			levelDictionaries['custom'][key] = levelDictionaries['custom'][key].replace(k.children[0].innerHTML, '');
-			// replace any instances of letter that was already on the key
-			levelDictionaries['custom'][key] = levelDictionaries['custom'][key].replace(e.key, '');
+			console.log(k.children[0].innerHTML);
+			// replace any instances of letter previously found on key
+			levelDictionaries['custom'][key] = levelDictionaries['custom'][key].replace(layoutMaps.custom[k.id], '');
 		}
-
-		// new keyMapping Data
-		layoutMaps.custom[k.id] = e.key;
-		//new levels data
-		levelDictionaries['custom'][currentUILev]+= e.key;
-		console.log(levelDictionaries['custom'][currentUILev]);
-		// technically we could just do this when the customui window closes
-		// it would make it faster, but slightly less robust. Revisit this 
-		// decision later
-		init();
+		// remove deleted letter from keymapping
+		if(k.id){
+			//console.log('key added to mapping ' + e.key);
+			layoutMaps.custom[k.id] = ' ';
+		}
 	}
 
 	// clear input field
@@ -226,6 +303,10 @@ function clearSelectedInput() {
 	if(k){
 		k.classList.remove('selectedInputKey');
 		k.children[0].classList.remove('pulse');
+		console.log(k.children[0].innerHTML);
+		if(k.children[0].innerHTML == "_"){
+			k.children[0].innerHTML = "";
+		}
 	}
 }
 
@@ -326,8 +407,6 @@ function updateCheatsheetStyling(level) {
 		n.innerHTML=`
 			<span class='letter'></span>
 		`
-		// the letter that will appear on the key
-		let letter = keyboardMap[n.id];
 		
 		// set of keys to loop through the letter dictionary, which
 		// contains info about which levels each key appears at
@@ -335,6 +414,10 @@ function updateCheatsheetStyling(level) {
 
 		// check active levels and apply styling
 		for(let i = 0; i < level; i++) {
+
+			// the letter that will appear on the key
+			let letter = keyboardMap[n.id];
+
 			if(letterDictionary[objKeys[i]].includes(letter)){
 				n.innerHTML=`
 					<span class='letter'>`+ letter + `</span>
@@ -486,7 +569,6 @@ function endGame() {
 // will return only lower case if onlyLower==true. Creates a list with words
 // containing a balance of current level letters
 function generateFullPrompt() {
-
 	let str = '';
 	// stores the letters we have already seen. Will be reset every time we get all
 	// the letters we are looking for
@@ -497,6 +579,12 @@ function generateFullPrompt() {
 		// criteria. If that happens, reset required letters
 		let circuitBreaker = 0;
 		for(let i = 0; i < scoreMax; i++) {
+			//console.log('in circuit ' + circuitBreaker);
+			if(circuitBreaker > 6000) {
+				str+= levelDictionaries[currentLayout]['lvl'+currentLevel] + ' ';
+				i++;
+			}
+
 			let rand = Math.floor(Math.random()*wordLists['lvl'+currentLevel].length);
 			let wordToAdd = wordLists['lvl'+currentLevel][rand];
 

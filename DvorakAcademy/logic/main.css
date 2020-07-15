@@ -14,6 +14,11 @@ body {
 	font-family: Roboto;
 }
 
+* {
+	transition: border-color .1s linear,
+		opacity .15s linear;
+}
+
 select{
 	position: absolute;
 	top: 2vh;
@@ -265,10 +270,12 @@ input:checked + .slider:before {
 }
 
 .key, .cKey {
-	display: inline-block;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	background-color: transparent;
 	border: .2vmax solid purple;
-	height: 2.8vmax;
+	height: 2.7vmax;
 	width: 5.7%;
 
 	opacity: .5;
@@ -281,9 +288,9 @@ input:checked + .slider:before {
 
 .letter {
 	display: block;
-	width: 50%;
-	height: 50%;
-	margin: 17% auto;
+/*	width: 50%;
+	height: 50%;*/
+	/*margin: 17% auto;*/
 	font-size: 2.2vh;
 	font-weight: bold;
 
@@ -326,6 +333,34 @@ input:checked + .slider:before {
 	filter: brightness(1.5);
 }
 
+
+.container {
+	display: flex;
+	align-items: flex-start;
+}
+
+.openUIButton {
+	background-image: url('https://upload.wikimedia.org/wikipedia/commons/c/cc/Edit_Notepad_Icon.svg');
+	background-size: cover;
+	filter: invert(1);
+
+	position: relative;
+	right: 4.5vmax;
+	top: -.3vmax;
+	margin: 0;
+
+	border: none;
+
+	height: 2.5vmax;
+	width: 2.5vmax;
+
+	display: none;
+}
+
+.openUIButton:hover {
+	transform: scale(1.2);
+}
+
 /*__________________custom ui keyboard________________*/
 
 #customInput {
@@ -342,6 +377,7 @@ input:checked + .slider:before {
 	width: 60vmax;
 
 	display: none;
+	transition: opacity 3s linear;
 }
 
 #inputKeyboard {
@@ -377,6 +413,7 @@ input:checked + .slider:before {
 
 .cKey .letter {
 	z-index: -1;
+	text-transform: none;
 }
 
 .selectedInputKey, .selectedInputKey:hover {
@@ -427,11 +464,18 @@ input:checked + .slider:before {
 .customUILevelButton {
 	font-size: 2vmax;
 	margin: 2vmax auto;
+	opacity: .8;
+}
+
+.customUILevelButton:hover {
+	opacity: 1;
+	filter: brightness(1.5);
 }
 
 .currentCustomUILevel {
 	border-color: green;
 	color: green;
+	opacity: 1;
 } 
 
 
