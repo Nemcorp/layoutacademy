@@ -139,7 +139,7 @@ preferenceMenu 			= document.querySelector('.preferenceMenu'),
 closePreferenceButton 	= document.querySelector('.closePreferenceButton'),
 capitalLettersAllowed 	= document.querySelector('.capitalLettersAllowed'),
 fullSentenceModeToggle		= document.querySelector('.fullSentenceMode'),
-fullSentenceModeLevelButton		= document.querySelector('.fullSentences');
+fullSentenceModeLevelButton		= document.querySelector('.lvl8');
 
 
 
@@ -162,6 +162,7 @@ capitalLettersAllowed.addEventListener('click', ()=> {
 // full sentence mode
 fullSentenceModeToggle.addEventListener('click', ()=> {
 	fullSentenceModeLevelButton.classList.toggle('visible');
+	switchLevel(8);
 	reset();
 });
 
@@ -400,8 +401,21 @@ document.addEventListener('keydown', (e)=> {
 for(button of buttons) {
 	let b = button;
 	b.addEventListener('click', ()=> {
+		let lev = b.innerHTML.replace(/ /,'').toLowerCase();
+		// int representation of level we are choosing
+		lev = (lev[lev.length-1]);
+		if(b.innerHTML == 'All Words') {
+			lev = 7;
+		}else if(b.innerHTML == 'Full Sentences'){
+			lev = 8;
+		}
+		switchLevel(lev);
+	});
+}
 
-
+// switches to level 
+function switchLevel(lev) {
+	console.log(lev);
 		// stop timer
 		gameOn = false;
 
@@ -410,10 +424,9 @@ for(button of buttons) {
 
 		// clear highlighted buttons
 		clearCurrentLevelStyle();
-		b.classList.add('currentLevel');
-		// change wordList
-		let lev = b.innerHTML.replace(/ /,'').toLowerCase();
-
+		console.log('.lvl'+lev);
+		document.querySelector('.lvl'+lev).classList.add('currentLevel');
+		
 		// set full sentence mode to true
 		if(lev == 'fullsentences') {
 			fullSentenceMode = true;
@@ -427,19 +440,16 @@ for(button of buttons) {
 		if(lev=='allwords' || lev == 'fullsentences') {
 			lev = 'level7';
 		}
-			// int representation of level we are choosing
-		let level = (lev[lev.length-1]);
 
 		// window[] here allows us to select the variable levelN, instead of
 		// setting currentLevelList to a string
-		currentLevel = level;
+		currentLevel = lev;
 		
 		// reset everything
 		reset();
 
 		// take care of styling for the cheatsheet
-		updateCheatsheetStyling(level);
-	});
+		updateCheatsheetStyling(lev);
 }
 
 // updates all styling for the cheatsheet by first resetting all keys,

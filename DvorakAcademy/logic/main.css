@@ -72,8 +72,8 @@ select{
 
 .preferenceMenu {
 	position: absolute;
-	/*right: -31vh;*/
-	right: 0;
+	right: -31vh;
+	/*right: 0;*/
 	z-index: 100;
 
 	background: #333;
@@ -93,7 +93,7 @@ select{
 	align-items: flex-end;
 	padding-right: 3vh;
 
-	height: 40vh;
+	height: 50vh;
 }
 
 .preferenceMenu ul li {
@@ -106,6 +106,7 @@ select{
 input[type=checkbox] {
 	width: 2vh;
 	height: 2vh;
+	margin-left: 2vh;
 }
 
 h1	{
@@ -185,6 +186,8 @@ button:focus {
 	display: none;
 	font-size: 1.1vh;
 
+	color: orange;
+	border-color: orange;
 }
 
 #p {
