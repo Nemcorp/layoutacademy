@@ -10,6 +10,8 @@ body {
 	height: 100vh;
 	max-height: 100%;
 	overflow: hidden;
+	margin: 0;
+	padding: 0;
 
 	font-family: Roboto;
 }
@@ -21,16 +23,94 @@ body {
 
 select{
 	position: absolute;
-	top: 2vh;
-	right: 5vh;
+	top: 2vmax;
+	right: 8vmax;
 
 	color: white;
 	background-color: black;
 }
 
+.preferenceButton {
+	background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/6d/Windows_Settings_app_icon.png');
+	background-size: cover;
+	filter: invert(1);
+	background-repeat: no-repeat;
+	border: none;
+
+	opacity: .8;
+	margin: 0;
+	position: absolute;
+	top: 2vmax;
+	right: 2vmax;
+
+	width: 3vmax;
+	height: 3vmax;
+}
+
+.preferenceButton:hover, .closePreferenceButton:hover {
+	opacity: 1;
+	transform: scale(1.1);
+}
+
+.closePreferenceButton {
+	margin: 0;
+	position: relative;
+	top: 1vh;
+	left: 1vh;
+
+	background-image: url('https://svgsilh.com/svg_v2/1727490.svg');
+	background-size: cover;
+	background-repeat: no-repeat;
+
+	height: 2vh;
+	width: 2vh;
+
+	filter: invert(1);
+
+	border: none;
+}
+
+.preferenceMenu {
+	position: absolute;
+	/*right: -31vh;*/
+	right: 0;
+	z-index: 100;
+
+	background: #333;
+	height: 100vh;
+	width: 30vh;
+
+	border-left: .1vh solid white;
+
+	transition: right .08s linear;
+}
+
+.preferenceMenu ul {
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: flex-end;
+	padding-right: 3vh;
+
+	height: 40vh;
+}
+
+.preferenceMenu ul li {
+	color: red;
+	font-size: 2vh;
+	list-style: none;
+
+}
+
+input[type=checkbox] {
+	width: 2vh;
+	height: 2vh;
+}
+
 h1	{
 	position: absolute;
-	top: 1vh;
+	top: 2vmax;
 	font-size: 3.2vmax;
 	margin-left: 33vmax;
 	color: #ddd;
@@ -69,9 +149,10 @@ nav {
 nav button {
 	margin: 0;
 	border-radius: 0%;
-	height: 11vh;
+	flex: 1 1 11vh;
+	margin: .5vh auto;
 	width: 11vh;
-	font-size: 2vh;
+	font-size: 1.5vh;
 }
 
 nav button:hover {
@@ -91,13 +172,19 @@ h2, button {
 button {
 	background-color: transparent;
 	color: #ddd;
-	border: 3px solid #ddd;
+	border: .2vmax solid #ddd;
 
 	text-transform: capitalize;
 }
 
 button:focus {
 	outline: none;
+}
+
+.fullSentences {
+	display: none;
+	font-size: 1.1vh;
+
 }
 
 #p {
@@ -488,6 +575,10 @@ input:checked + .slider:before {
 
 .noDisplay {
 	display: none;
+}
+
+.visible {
+	display: block;
 }
 
 .transparent {

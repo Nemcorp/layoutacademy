@@ -25,12 +25,12 @@ inputKeyboard 	= document.querySelector('#inputKeyboard'),
 // keyboard layout customization ui
 inputShiftKeyboard = document.querySelector('#inputShiftKeyboard'), 
 // the dom element representing the shift keys in customization ui
-customInpur 	= document.querySelector('#customInput'),
+customInput 	= document.querySelector('#customInput'),
 //
 buttons 		= document.querySelector('nav').children,
 //
 currentWord 	= document.querySelector('#currentWord'),
-//
+// layou select menu
 select 			= document.querySelector('select'),
 //
 mappingStatusButton = document.querySelector('#mappingToggle label input'),
@@ -45,7 +45,7 @@ customUIKeyInput = document.querySelector('#customUIKeyInput');
 
 var promptOffset 	= 0;  // is this needed? May delete
 var score;				  // tracks the current number of currect words the user has typed
-var scoreMax 		= 15; // total number of words the user must type
+var scoreMax 		= 20; // total number of words the user must type
 var seconds 		= 0;  // tracks the number of seconds%minutes*60 the current test has been running for 
 var minutes 		= 0;  // tracks the number of minutes the current test has been running for
 var gameOn 			= false; // set to true when user starts typing in input field
@@ -66,6 +66,7 @@ var keyboardMap = layoutMaps['dvorak'];
 var letterDictionary = levelDictionaries['dvorak'];
 var currentLayout = 'dvorak';
 var shiftDown = false; // tracks whether the shift key is currently being pushed
+var fullSentenceMode = false; // if true, all prompts will be replace with sentences
 
 start();
 init();
@@ -128,6 +129,44 @@ select.addEventListener('change', (e)=> {
 	// reset everything
 	init();
 });
+
+
+/*___________________________________________________________*/
+/*____________________preference menu________________________*/
+
+var preferenceButton 	= document.querySelector('.preferenceButton'),
+preferenceMenu 			= document.querySelector('.preferenceMenu'),
+closePreferenceButton 	= document.querySelector('.closePreferenceButton'),
+capitalLettersAllowed 	= document.querySelector('.capitalLettersAllowed'),
+fullSentenceModeToggle		= document.querySelector('.fullSentenceMode'),
+fullSentenceModeLevelButton		= document.querySelector('.fullSentences');
+
+
+
+// listener for preference menu button
+preferenceButton.addEventListener('click', ()=> {
+	preferenceMenu.style.right = 0;
+});
+
+// listener for preference menu close button
+closePreferenceButton.addEventListener('click', ()=> {
+	preferenceMenu.style.right = '-31vh';
+});
+
+// capital letters allowed
+capitalLettersAllowed.addEventListener('click', ()=> {
+	onlyLower = !onlyLower;
+	reset();
+});
+
+// full sentence mode
+fullSentenceModeToggle.addEventListener('click', ()=> {
+	fullSentenceModeLevelButton.classList.toggle('visible');
+	reset();
+});
+
+/*______________________preference menu______________________*/
+/*___________________________________________________________*/
 
 
 
@@ -224,8 +263,8 @@ document.addEventListener('click', function (e) {
 // input key, and setting the new value on the correct layer
 customUIKeyInput.addEventListener('keydown', (e)=> {
 	let k = document.querySelector('.selectedInputKey');
-	// if key entered is not shift, space, caps, enter, or backspace, update dom element and key mapping value
-	if(e.keyCode != 16 && e.keyCode != 32 && e.keyCode != 8 && e.keyCode != 20 && e.keyCode != 13) {
+	// if key entered is not shift, space, caps, enter, backspace, escape, or delete update dom element and key mapping value
+	if(e.keyCode != 16 && e.keyCode != 27 && e.keyCode != 46 && e.keyCode != 32 && e.keyCode != 8 && e.keyCode != 20 && e.keyCode != 13) {
 		let currentUILev = document.querySelector('.currentCustomUILevel').innerHTML; 
 		k.children[0].innerHTML = e.key;
 		// if we are not already on shift layer, add to dom element shift layer
@@ -272,7 +311,7 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 		// this updates the main keyboard in real time. Could be ommited if performance needs a boost
 		updateCheatsheetStyling(currentLevel);
 
-	}else if(e.keyCode == 8) {
+	}else if(e.keyCode == 8 || e.keyCode == 27 || e.keyCode == 46 ) {
 		// if backspace, remove letter from the ui element and the keyboard map
 		k.children[0].innerHTML = '_';
 		k.classList.remove('active');
@@ -280,11 +319,12 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 
 		// REMOVE OLD KEY FROM ALL LEVEL DICTIONARY LEVELS
 		// for each level, find and remove letter
-		let keys = Object.keys(levelDictionaries['custom']);
-		for(key of keys) {
-			console.log(k.children[0].innerHTML);
+		let lvls = Object.keys(levelDictionaries['custom']);
+		for(key of lvls) {
+			let keyCode = k.id.toString().replace('custom','');
+			console.log(layoutMaps.custom[keyCode]);
 			// replace any instances of letter previously found on key
-			levelDictionaries['custom'][key] = levelDictionaries['custom'][key].replace(layoutMaps.custom[k.id], '');
+			levelDictionaries['custom'][key] = levelDictionaries['custom'][key].replace(layoutMaps.custom[keyCode], '');
 		}
 		// remove deleted letter from keymapping
 		if(k.id){
@@ -310,9 +350,9 @@ function clearSelectedInput() {
 	}
 }
 
-
 /*______________listeners for custom ui input________________*/
 /*___________________________________________________________*/
+
 
 
 
@@ -361,6 +401,7 @@ for(button of buttons) {
 	let b = button;
 	b.addEventListener('click', ()=> {
 
+
 		// stop timer
 		gameOn = false;
 
@@ -372,10 +413,18 @@ for(button of buttons) {
 		b.classList.add('currentLevel');
 		// change wordList
 		let lev = b.innerHTML.replace(/ /,'').toLowerCase();
+
+		// set full sentence mode to true
+		if(lev == 'fullsentences') {
+			fullSentenceMode = true;
+		} else {
+			fullSentenceMode = false;
+		}
+
 		//lev = parseInt(b.id[3]);
 		// // hardcode allwords because the button value does 
 		// // not contain the number 7
-		if(lev=='allwords') {
+		if(lev=='allwords' || lev == 'fullsentences') {
 			lev = 'level7';
 		}
 			// int representation of level we are choosing
@@ -570,8 +619,13 @@ function endGame() {
 // containing a balance of current level letters
 function generateFullPrompt() {
 	let str = '';
-	// stores the letters we have already seen. Will be reset every time we get all
-	// the letters we are looking for
+
+	if(fullSentenceMode) {
+		rand = Math.floor(Math.random()*35);
+		console.log(rand);
+		str = sentence.substring(getPosition(sentence, '.', rand)+2);
+		return str;
+	}
 
 	if(wordLists['lvl'+currentLevel].length > 0){
 		let requiredLetters = levelDictionaries[currentLayout]['lvl'+currentLevel].split(''); 
