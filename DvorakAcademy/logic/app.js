@@ -428,18 +428,13 @@ function switchLevel(lev) {
 		document.querySelector('.lvl'+lev).classList.add('currentLevel');
 		
 		// set full sentence mode to true
-		if(lev == 'fullsentences') {
+		if(lev == 8) {
 			fullSentenceMode = true;
 		} else {
 			fullSentenceMode = false;
 		}
 
-		//lev = parseInt(b.id[3]);
-		// // hardcode allwords because the button value does 
-		// // not contain the number 7
-		if(lev=='allwords' || lev == 'fullsentences') {
-			lev = 'level7';
-		}
+		if(lev == 8) lev = 7;
 
 		// window[] here allows us to select the variable levelN, instead of
 		// setting currentLevelList to a string
@@ -577,7 +572,7 @@ function reset(){
 
 function checkAnswer() {
 	// user input
-	inputVal = input.value;
+	let inputVal = input.value;
 
 	return inputVal == correctAnswer;
 }
@@ -586,8 +581,10 @@ function checkAnswer() {
 // that is about to be deleted
 function checkAnswerToIndex(modifier) {
 	// user input
-	inputVal = input.value;
+	let inputVal = input.value;
 
+	console.log('checking input ' +inputVal.slice(0,letterIndex+modifier));
+	console.log(correctAnswer.slice(0,letterIndex+modifier));
 	return inputVal.slice(0,letterIndex+modifier) == correctAnswer.slice(0,letterIndex+modifier);
 }
 
@@ -632,7 +629,6 @@ function generateFullPrompt() {
 
 	if(fullSentenceMode) {
 		rand = Math.floor(Math.random()*35);
-		console.log(rand);
 		str = sentence.substring(getPosition(sentence, '.', rand)+2);
 		return str;
 	}
@@ -800,6 +796,8 @@ input.addEventListener('keydown', (e)=> {
 					input.value += keyboardMap.shiftLayer[char];
 				}
 			}
+		}else {
+			finalInput = e.key;
 		}
 	}else {
 		finalInput = e.key;

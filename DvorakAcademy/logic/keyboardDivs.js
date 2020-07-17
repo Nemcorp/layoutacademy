@@ -1,7 +1,7 @@
 var keyboardDivs = `
 	<div class=row>
 		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
+		<div class="key" id='Digit1'><span class="letter"></span></div>
 		<div class="key"><span class="letter"></span></div>
 		<div class="key"><span class="letter"></span></div>
 		<div class="key"><span class="letter"></span></div>

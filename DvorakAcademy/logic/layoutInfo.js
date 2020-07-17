@@ -102,6 +102,7 @@ var layoutMaps = {
 		'Comma' : 'w',
 		'Period' : 'v',
 		'Slash' : 'z',
+		'Digit1' : '1',
 		'shiftLayer' : {
 					'KeyQ' : "\"",
 					'KeyW' : '<',
@@ -134,6 +135,7 @@ var layoutMaps = {
 					'Comma' : 'W',
 					'Period' : 'V',
 					'Slash' : 'Z',
+					'Digit1' : '!'
 				}
 	},
 	colemak : {

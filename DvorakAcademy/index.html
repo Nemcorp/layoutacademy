@@ -12,7 +12,7 @@
 </head>
 <body>
 
-	<select>
+	<select  autocomplete="off">
 		<option value='dvorak'>Dvorak</option>
 		<option value='colemak'>Colemak</option>
 		<option value='qwerty'>QWERTY</option>
@@ -27,11 +27,11 @@
 		<button class='closePreferenceButton'></button>
 		<ul class='preferences'>
 			<li>Capital Letters Allowed<input class='capitalLettersAllowed' type="checkbox"></li>
-<!-- 			<li>Punctuation Allowed<input class='' type="checkbox"></li>
+			<li>Punctuation Allowed<input class='' type="checkbox"></li>
 			<li>Full Sentence Mode<input class='fullSentenceMode' type="checkbox"></li>
 			<li>Word Scrolling Mode<input class='' type="checkbox" checked></li>
 			<li>Time Limit Mode<input class='' type="checkbox"></li>
-			<li>Word Limit Mode<input class='' type="checkbox" checked> </li> -->
+			<li>Word Limit Mode<input class='' type="checkbox" checked> </li>
 		</ul>
 	</div>
 
@@ -92,13 +92,12 @@
 
 	<div  id='mappingToggle'>
 		<h6>Keyboard Mapping: <span>on</span></h6>
-		<label class="switch">
-  			<input type="checkbox">
+		<label class="switch" >
+  			<input type="checkbox"  autocomplete="off">
  			<span  class="slider"></span>
 		</label>	
 	</div>
 
-<!-- 	<button id='startAgain'>Start Again</button> -->
 
 <script type="text/javascript" src="logic/layoutInfo.js"></script>
 <script type="text/javascript" src="logic/wordList.js"></script>
