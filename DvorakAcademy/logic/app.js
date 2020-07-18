@@ -37,7 +37,7 @@ mappingStatusButton = document.querySelector('#mappingToggle label input'),
 //
 mappingStatusText = document.querySelector('#mappingToggle h6 span'),
 // done button on the custom layout ui
-doneButton 		 = document.querySelector('#doneButton'),
+doneButton 		 = document.querySelector('.doneButton'),
 // open button for the custom layout ui
 openUIButton 		 = document.querySelector('.openUIButton'),
 // custom ui input field for custom keys
@@ -45,7 +45,7 @@ customUIKeyInput = document.querySelector('#customUIKeyInput');
 
 var promptOffset 	= 0;  // is this needed? May delete
 var score;				  // tracks the current number of currect words the user has typed
-var scoreMax 		= 20; // total number of words the user must type
+var scoreMax 		= 50; // total number of words the user must type
 var seconds 		= 0;  // tracks the number of seconds%minutes*60 the current test has been running for 
 var minutes 		= 0;  // tracks the number of minutes the current test has been running for
 var gameOn 			= false; // set to true when user starts typing in input field
@@ -67,6 +67,19 @@ var letterDictionary = levelDictionaries['dvorak'];
 var currentLayout = 'dvorak';
 var shiftDown = false; // tracks whether the shift key is currently being pushed
 var fullSentenceMode = false; // if true, all prompts will be replace with sentences
+var timeLimitMode = false;
+
+var preferenceButton 	= document.querySelector('.preferenceButton'),
+preferenceMenu 			= document.querySelector('.preferenceMenu'),
+closePreferenceButton 	= document.querySelector('.closePreferenceButton'),
+capitalLettersAllowed 	= document.querySelector('.capitalLettersAllowed'),
+fullSentenceModeToggle		= document.querySelector('.fullSentenceMode'),
+fullSentenceModeLevelButton		= document.querySelector('.lvl8'),
+wordLimitModeButton		= document.querySelector('.wordLimitModeButton'),
+wordLimitModeInput	= document.querySelector('.wordLimitModeInput'),
+timeLimitModeButton		= document.querySelector('.timeLimitModeButton'),
+timeLimitModeInput	= document.querySelector('.timeLimitModeInput');
+
 
 start();
 init();
@@ -78,7 +91,7 @@ function start() {
 	document.querySelector('#cheatsheet').innerHTML = keyboardDivs;
 	inputKeyboard.innerHTML = customLayout;
 	inputShiftKeyboard.innerHTML = customShiftLayout;
-
+	// scoreMax = wordLimitModeInput.value;
 }
 
 
@@ -97,9 +110,22 @@ function init() {
 // makes the clock tic
 setInterval(()=> {
 	if(gameOn) {
-		if(seconds >= 59) {
-			seconds = -1;
-			minutes++;
+		if(!timeLimitMode){
+			seconds++;
+			if(seconds >= 60) {
+				seconds = 0;
+				minutes++;
+			}
+		} else {
+			// clock counting down
+			seconds--;
+			if(seconds <= 0 && minutes <=0){
+				endGame();
+			}
+			if(seconds < 0) {
+				seconds = 59;
+				minutes--;
+			}
 		}
 		resetTimeText();
 	}
@@ -134,14 +160,6 @@ select.addEventListener('change', (e)=> {
 /*___________________________________________________________*/
 /*____________________preference menu________________________*/
 
-var preferenceButton 	= document.querySelector('.preferenceButton'),
-preferenceMenu 			= document.querySelector('.preferenceMenu'),
-closePreferenceButton 	= document.querySelector('.closePreferenceButton'),
-capitalLettersAllowed 	= document.querySelector('.capitalLettersAllowed'),
-fullSentenceModeToggle		= document.querySelector('.fullSentenceMode'),
-fullSentenceModeLevelButton		= document.querySelector('.lvl8');
-
-
 
 // listener for preference menu button
 preferenceButton.addEventListener('click', ()=> {
@@ -150,7 +168,7 @@ preferenceButton.addEventListener('click', ()=> {
 
 // listener for preference menu close button
 closePreferenceButton.addEventListener('click', ()=> {
-	preferenceMenu.style.right = '-31vh';
+	preferenceMenu.style.right = '-37vh';
 });
 
 // capital letters allowed
@@ -162,7 +180,101 @@ capitalLettersAllowed.addEventListener('click', ()=> {
 // full sentence mode
 fullSentenceModeToggle.addEventListener('click', ()=> {
 	fullSentenceModeLevelButton.classList.toggle('visible');
-	switchLevel(8);
+	if(!fullSentenceModeToggle.checked){
+		switchLevel(1);
+	}else {
+		switchLevel(8);
+	}
+	reset();
+});
+
+// time limit mode button; if this is checked, uncheck button for word limit and vice versa
+// Toggle display of time limit mode input field
+timeLimitModeButton.addEventListener('click', ()=> {
+	// change mode logic here
+	timeLimitMode = true;
+	seconds = timeLimitModeInput.value%60;
+	minutes = Math.floor(timeLimitModeInput.value/60);
+	scoreText.style.display = 'none';
+
+	// make the word list long enough so that no human typer can reach the end
+	scoreMax = timeLimitModeInput.value*4;
+
+	// toggle value of word limit mode button
+	wordLimitModeButton.checked = !wordLimitModeButton.checked;
+
+	// toggle display of input fields
+	timeLimitModeInput.classList.toggle('noDisplay');
+	wordLimitModeInput.classList.toggle('noDisplay');
+
+	reset();
+});
+
+// time limit mode field
+timeLimitModeInput.addEventListener('change', ()=> {
+	let wholeSecond = Math.floor(timeLimitModeInput.value);
+
+	// set the dom element to a whole number (in case the user puts in a decimal)
+	timeLimitModeInput.value = wholeSecond;
+
+	if(wholeSecond >= 10 && wholeSecond <= 240){
+		seconds = wholeSecond%60;
+		minutes = Math.floor(wholeSecond/60);
+	}else if (wholeSecond > 240){
+		seconds = 0;
+		minutes = 10;
+		timeLimitModeInput.value = 240;
+	}else {
+		seconds = 10;
+		timeLimitModeInput.value = 10;
+	}
+
+	// if the new time is more than half the scoreMax, increase this number
+	if(timeLimitModeInput.value > (scoreMax/2)) {
+		console.log(scoreMax/2);
+		// make the word list long enough so that no human typer can reach the end
+		scoreMax = timeLimitModeInput.value*4;
+		reset();
+	}
+
+	gameOn = false;
+	resetTimeText();
+});
+
+// word Limit mode butto; if this is checked, uncheck button for time limit and vice versa
+// Toggle display of word limit mode input field
+wordLimitModeButton.addEventListener('click', ()=> {
+	// change mode logic here
+	timeLimitMode = false;
+	seconds = 0;
+	minutes = 0;
+	scoreText.style.display = 'flex';
+
+	// set score max back to the chosen value
+	scoreMax = wordLimitModeInput.value;
+
+	// toggle value of time limit mode button
+	timeLimitModeButton.checked = !timeLimitModeButton.checked;
+
+	// toggle display of input fields
+	timeLimitModeInput.classList.toggle('noDisplay');
+	wordLimitModeInput.classList.toggle('noDisplay');
+
+	reset();
+});
+
+// word Limit input field
+wordLimitModeInput.addEventListener('change', ()=> {
+	if(wordLimitModeInput.value > 10 && wordLimitModeInput.value <= 500){
+		scoreMax = wordLimitModeInput.value;
+	}else if (wordLimitModeInput.value > 500){
+		scoreMax = 500;
+		wordLimitModeInput.value = 500;
+	}else {
+		scoreMax = 10;
+		wordLimitModeInput.value = 10;
+	}
+
 	reset();
 });
 
@@ -260,7 +372,7 @@ document.addEventListener('click', function (e) {
 
 }, false);
 
-// listener for input field. Updates on any input, clearing the current selected
+// listener for custom input field. Updates on any input, clearing the current selected
 // input key, and setting the new value on the correct layer
 customUIKeyInput.addEventListener('keydown', (e)=> {
 	let k = document.querySelector('.selectedInputKey');
@@ -363,13 +475,17 @@ function clearSelectedInput() {
 // negative feedback
 document.addEventListener('keydown', (e)=> {
 	// if on the last word, check every letter so we don't need a space
-	if(score == scoreMax-1 && checkAnswer() && gameOn) {
+	if(!timeLimitMode && score == scoreMax-1 && checkAnswer() && gameOn) {
 		console.log('game over');
 		endGame();
 	}
 
 	if(e.keyCode === 13 || e.keyCode === 32) {
 		if(checkAnswer() && gameOn) {
+			// increment correct to account for the space bar being pressed. This code
+			// could probably be somewhere else
+			correct++;
+
 			// stops a ' ' character from being put in the input bar
 			// it wouldn't appear until after this function, and would
 			// still be there when the user goes to type the next word
@@ -424,7 +540,7 @@ function switchLevel(lev) {
 
 		// clear highlighted buttons
 		clearCurrentLevelStyle();
-		console.log('.lvl'+lev);
+		// console.log('.lvl'+lev);
 		document.querySelector('.lvl'+lev).classList.add('currentLevel');
 		
 		// set full sentence mode to true
@@ -434,7 +550,9 @@ function switchLevel(lev) {
 			fullSentenceMode = false;
 		}
 
-		if(lev == 8) lev = 7;
+		if(lev == 8) {
+			lev = 7;
+		}
 
 		// window[] here allows us to select the variable levelN, instead of
 		// setting currentLevelList to a string
@@ -515,9 +633,13 @@ resetButton.addEventListener('click', ()=> {
 
 /*________________FUNCTIONS___________________*/
 
-// runs on page load
+// resets everything to the beginning of game state. Run when the reset
+// button is called or when a level is changed
 // Set a new prompt word and change variable text
 function reset(){
+	// stop the timer
+	gameOn = false;
+
 
 	console.log('reset called');
 	// set current letter index back to 0
@@ -535,12 +657,18 @@ function reset(){
 	score = -1;
 
 	// reset clock
-	minutes = 0;
-	// same as with score, seconds must be -1 to compensate for the initial tic
-	seconds = -1;
+	if(!timeLimitMode) {
+		minutes = 0;
+		seconds = 0;
+	} else {
+		seconds = timeLimitModeInput.value%60;
+		minutes = Math.floor(timeLimitModeInput.value/60);
+	}
 
 	// reset timeText
 	resetTimeText();
+
+	// set mapping to off
 
 	// set accuracyText to be transparent
 	testResults.classList.add('transparent');
@@ -598,9 +726,16 @@ function endGame() {
 	// pause timer
 	gameOn = false;
 
+	// calculate wpm
+	let wpm;
+	if(!timeLimitMode) {
+		wpm = (((correct+errors)/5)/(minutes+(seconds/60))).toFixed(2);
+	} else {
+		wpm = (((correct+errors)/5)/(timeLimitModeInput.value/60)).toFixed(2);
+	}
 	// set accuracyText
 	accuracyText.innerHTML="Accuracy: " + ((100*correct)/(correct+errors)).toFixed(2) + '%';
-	wpmText.innerHTML = 'WPM: ' + (((correct+errors+scoreMax)/5)/(minutes+(seconds/60))).toFixed(2);
+	wpmText.innerHTML = 'WPM: ' + wpm;
 	// make accuracy visible
 	testResults.classList.toggle('transparent');
 
@@ -740,7 +875,7 @@ function updateScoreText() {
 }
 
 function resetTimeText() {
-	timeText.innerHTML = minutes + 'm :' + ++seconds + ' s';
+	timeText.innerHTML = minutes + 'm :' + seconds + ' s';
 }
 
 // removes currentLevel styles from all buttons. Use every time the 

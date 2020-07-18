@@ -52,7 +52,7 @@ select{
 	transform: scale(1.1);
 }
 
-.closePreferenceButton {
+.closePreferenceButton, .doneButton {
 	margin: 0;
 	position: relative;
 	top: 1vh;
@@ -72,13 +72,13 @@ select{
 
 .preferenceMenu {
 	position: absolute;
-	right: -31vh;
+	right: -37vh;
 	/*right: 0;*/
 	z-index: 100;
 
 	background: #333;
 	height: 100vh;
-	width: 30vh;
+	width: 33vh;
 
 	border-left: .1vh solid white;
 
@@ -86,14 +86,14 @@ select{
 }
 
 .preferenceMenu ul {
-	padding: 0;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
+	flex-wrap: nowrap;
 	align-items: flex-end;
-	padding-right: 3vh;
+	padding: 0 1vh 0 0;
 
-	height: 50vh;
+	height: 20vh;
 }
 
 .preferenceMenu ul li {
@@ -107,6 +107,14 @@ input[type=checkbox] {
 	width: 2vh;
 	height: 2vh;
 	margin-left: 2vh;
+}
+
+li input {
+	font-size: 1.7vh;
+	width: 5vh;
+	height: 1.7vh;
+
+	margin: 0 1.5vh 0 auto;
 }
 
 h1	{
@@ -182,7 +190,7 @@ button:focus {
 	outline: none;
 }
 
-.fullSentences {
+.lvl8 {
 	display: none;
 	font-size: 1.1vh;
 
@@ -463,7 +471,7 @@ input:checked + .slider:before {
 	border: .2vmax solid #444;
 	border-radius: 1vmax;
 	background-color: #333;
-	height: 33vmax;
+	height: 34vmax;
 	width: 60vmax;
 
 	display: none;
@@ -472,14 +480,14 @@ input:checked + .slider:before {
 
 #inputKeyboard {
 	display: block;
-	margin: 3vh 2vmax 0 2vmax;
+	margin: 4vmax 2vmax 0 2vmax;
 	width: 93%;
 	white-space: nowrap;
 }
 
 #inputShiftKeyboard {
 	display: block;
-	margin: 3vh 2vmax 0 2vmax;
+	margin: 4vmax 2vmax 0 2vmax;
 	width: 93%;
 	white-space: nowrap;
 	display: none;
@@ -498,12 +506,13 @@ input:checked + .slider:before {
 }
 
 .cKey:hover {
-	border-color: blue;
+	border-color: white;
 }
 
 .cKey .letter {
 	z-index: -1;
 	text-transform: none;
+	font-size: 2vmax;
 }
 
 .selectedInputKey, .selectedInputKey:hover {
@@ -525,19 +534,20 @@ input:checked + .slider:before {
 	height: 0;
 }
 
-#doneButton {
-	position: relative;
-	width: 2vmax;
-	height: 2vmax;
-	font-size: 1vmax;
+.doneButton {
+	background-size: cover;
+	background-repeat: no-repeat;
+
+	top: 1vmax;
+	left: 1vmax;
+	height: 1vmax;
+	width: 1vmax;
+	padding: 1vmax;
 	margin: 0;
-	border: .1vmax solid #aaa;
-	color: #aaa;
 }
 
-#doneButton:hover {
-	border-color: white;
-	color: white;
+.doneButton:hover {
+	transform: scale(1.2);
 }
 
 /*__________________custom level select________________*/

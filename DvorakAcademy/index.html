@@ -27,11 +27,16 @@
 		<button class='closePreferenceButton'></button>
 		<ul class='preferences'>
 			<li>Capital Letters Allowed<input class='capitalLettersAllowed' type="checkbox"></li>
-			<li>Punctuation Allowed<input class='' type="checkbox"></li>
+			<!-- <li>Punctuation Allowed<input class='' type="checkbox"></li> -->
 			<li>Full Sentence Mode<input class='fullSentenceMode' type="checkbox"></li>
-			<li>Word Scrolling Mode<input class='' type="checkbox" checked></li>
-			<li>Time Limit Mode<input class='' type="checkbox"></li>
-			<li>Word Limit Mode<input class='' type="checkbox" checked> </li>
+			<!-- <li>Word Scrolling Mode<input class='' type="checkbox" checked></li> -->
+			<li>
+				<input class='timeLimitModeInput noDisplay' type="number" value="60">
+				Time Limit Mode<input class='timeLimitModeButton' type="checkbox"></li>
+			<li>  
+				<input class='wordLimitModeInput' type="number" value="50">
+				Word Limit Mode <input class='wordLimitModeButton' type="checkbox" checked> 
+			</li>
 		</ul>
 	</div>
 
@@ -39,7 +44,7 @@
 	<h1><span id="layoutName"></span> Academy</h1>
 
 	<nav>
-		<button class='currentLevel' id='lvl1'>Level 1</button>
+		<button class='currentLevel lvl1'>Level 1</button>
 		<button class='lvl2'>Level 2</button>
 		<button class='lvl3'>Level 3</button>
 		<button class='lvl4'>Level 4</button>
@@ -51,7 +56,7 @@
 	</nav>
 
 	<div id="customInput">
-		<button id='doneButton'>X</button>
+		<button class='doneButton'></button>
 		<div id='inputKeyboard'></div>
 		<div id='inputShiftKeyboard'></div>
 		<input type="text" name="customKey" id="customUIKeyInput">
@@ -74,7 +79,7 @@
 		<input id = 'userInput' type="paragraph" spellcheck="false">
 		<div id='feedback'>
 			<div id='scoreAndClock'>
-				<span id="scoreText">0/50</span>
+				<span id="scoreText">0/60</span>
 				<span id="timeText">0m :0 s</span>
 			</div>
 			<div id='testResults' class='transparent'>
