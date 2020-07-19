@@ -376,6 +376,21 @@ document.addEventListener('click', function (e) {
 // input key, and setting the new value on the correct layer
 customUIKeyInput.addEventListener('keydown', (e)=> {
 	let k = document.querySelector('.selectedInputKey');
+
+	// if there was already a value for this key, remove it from all levels
+	console.log(k.children[0].value);
+	if(k.children[0].value != '_') {
+		console.log('non blank');
+		 let lvls = Object.keys(levelDictionaries['custom']);
+		for(key of lvls) {
+			let keyCode = k.id.toString().replace('custom','');
+			console.log(layoutMaps.custom[keyCode]);
+			// replace any instances of letter previously found on key
+			levelDictionaries['custom'][key] = levelDictionaries['custom'][key].replace(layoutMaps.custom[keyCode], '');
+		}
+	}
+
+
 	// if key entered is not shift, space, caps, enter, backspace, escape, or delete update dom element and key mapping value
 	if(e.keyCode != 16 && e.keyCode != 27 && e.keyCode != 46 && e.keyCode != 32 && e.keyCode != 8 && e.keyCode != 20 && e.keyCode != 13) {
 		let currentUILev = document.querySelector('.currentCustomUILevel').innerHTML; 
@@ -386,15 +401,6 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 		}
 		k.classList.add('active');
 
-		// REMOVE OLD KEY FROM ALL LEVEL DICTIONARY LEVELS
-		// for each level, find and remove letter
-		let lvls = Object.keys(levelDictionaries['custom']);
-		for(lvl of lvls) {
-			// replace any instances of letter previously found on key
-			levelDictionaries['custom'][lvl] = levelDictionaries['custom'][lvl].replace(k.children[0].innerHTML, '');
-			// replace any instances of letter that we just pressed
-			levelDictionaries['custom'][lvl] = levelDictionaries['custom'][lvl].replace(e.lvl, '');
-		}
 
 		// new keyMapping Data
 		if(k.id){
@@ -414,6 +420,7 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 				layoutMaps.custom.shiftLayer[keyCode] = e.key
 			}
 		}
+
 		//new levels data
 		levelDictionaries['custom'][currentUILev]+= e.key;
 		levelDictionaries['custom']['lvl7']+= e.key;
@@ -430,15 +437,6 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 		k.classList.remove('active');
 		layoutMaps.custom.shiftLayer[k.id] = " ";
 
-		// REMOVE OLD KEY FROM ALL LEVEL DICTIONARY LEVELS
-		// for each level, find and remove letter
-		let lvls = Object.keys(levelDictionaries['custom']);
-		for(key of lvls) {
-			let keyCode = k.id.toString().replace('custom','');
-			console.log(layoutMaps.custom[keyCode]);
-			// replace any instances of letter previously found on key
-			levelDictionaries['custom'][key] = levelDictionaries['custom'][key].replace(layoutMaps.custom[keyCode], '');
-		}
 		// remove deleted letter from keymapping
 		if(k.id){
 			//console.log('key added to mapping ' + e.key);

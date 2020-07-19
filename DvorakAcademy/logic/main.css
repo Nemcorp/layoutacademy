@@ -93,7 +93,7 @@ select{
 	align-items: flex-end;
 	padding: 0 1vh 0 0;
 
-	height: 20vh;
+	height: 40vh;
 }
 
 .preferenceMenu ul li {
@@ -469,7 +469,6 @@ input:checked + .slider:before {
 	z-index: 100;
 
 	border: .2vmax solid #444;
-	border-radius: 1vmax;
 	background-color: #333;
 	height: 34vmax;
 	width: 60vmax;
@@ -565,6 +564,8 @@ input:checked + .slider:before {
 	font-size: 2vmax;
 	margin: 2vmax auto;
 	opacity: .8;
+
+	background-color: #191919;
 }
 
 .customUILevelButton:hover {
@@ -575,6 +576,7 @@ input:checked + .slider:before {
 .currentCustomUILevel {
 	border-color: green;
 	color: green;
+	background-color: #2f3f2f;
 	opacity: 1;
 } 
 
