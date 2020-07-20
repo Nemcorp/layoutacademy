@@ -102,6 +102,7 @@ var layoutMaps = {
 		'Comma' : 'w',
 		'Period' : 'v',
 		'Slash' : 'z',
+		'Backquote' : '`',
 		'Digit1' : '1',
 		'shiftLayer' : {
 					'KeyQ' : "\"",

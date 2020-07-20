@@ -300,22 +300,22 @@ doneButton.addEventListener('click', ()=> {
 	init();
 });
 
-// listen for shift key to display different layer of custom ui input 
-document.addEventListener('keydown', (e)=> { 
-	if(e.keyCode == 16){
-		inputKeyboard.style.display = 'none';
-		inputShiftKeyboard.style.display = 'block';
-		shiftDown = true;
-	}
-});
-// listen for shift key up to display different layer of custom ui input 
-document.addEventListener('keyup', (e)=> { 
-	if(e.keyCode == 16){
-		inputKeyboard.style.display = 'block';
-		inputShiftKeyboard.style.display = 'none';
-		shiftDown = false;
-	}
-});
+// // listen for shift key to display different layer of custom ui input 
+// document.addEventListener('keydown', (e)=> { 
+// 	if(e.keyCode == 16){
+// 		inputKeyboard.style.display = 'none';
+// 		inputShiftKeyboard.style.display = 'block';
+// 		shiftDown = true;
+// 	}
+// });
+// // listen for shift key up to display different layer of custom ui input 
+// document.addEventListener('keyup', (e)=> { 
+// 	if(e.keyCode == 16){
+// 		inputKeyboard.style.display = 'block';
+// 		inputShiftKeyboard.style.display = 'none';
+// 		shiftDown = false;
+// 	}
+// });
 
 // general click listener for customui elements
 document.addEventListener('click', function (e) {
@@ -378,9 +378,8 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 	let k = document.querySelector('.selectedInputKey');
 
 	// if there was already a value for this key, remove it from all levels
-	console.log(k.children[0].value);
+	// SEEMS LIKE THIS IF IS ALWAYS TRUE. FIX IT
 	if(k.children[0].value != '_') {
-		console.log('non blank');
 		 let lvls = Object.keys(levelDictionaries['custom']);
 		for(key of lvls) {
 			let keyCode = k.id.toString().replace('custom','');
@@ -391,21 +390,26 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 	}
 
 
-	// if key entered is not shift, space, caps, enter, backspace, escape, or delete update dom element and key mapping value
-	if(e.keyCode != 16 && e.keyCode != 27 && e.keyCode != 46 && e.keyCode != 32 && e.keyCode != 8 && e.keyCode != 20 && e.keyCode != 13) {
+	// if key entered is not shift, control, space, caps, enter, backspace, escape, 
+	// or delete, left or right arrows, update dom element and key mapping value
+	if(e.keyCode != 16 && e.keyCode != 17 && e.keyCode != 27 && e.keyCode != 46 && e.keyCode 
+		!= 32 && e.keyCode != 8 && e.keyCode != 20 && e.keyCode != 13 && e.keyCode != 37 && e.keyCode != 39) {
 		let currentUILev = document.querySelector('.currentCustomUILevel').innerHTML; 
 		k.children[0].innerHTML = e.key;
 		// if we are not already on shift layer, add to dom element shift layer
 		if(!shiftDown) {
-			document.querySelector('#shift' + k.id).children[0].innerHTML = e.key.toUpperCase();
+			// document.querySelector('#shift' + k.id).children[0].innerHTML = e.key.toUpperCase();
 		}
 		k.classList.add('active');
 
 
 		// new keyMapping Data
+		console.log(k.id);
 		if(k.id){
+			console.log(k.id);
 			let keyCode = k.id.toString().replace('custom','');
 			keyCode = keyCode.toString().replace('shift','');
+			console.log(keyCode);
 			if(!shiftDown) {
 				layoutMaps.custom[keyCode] = e.key;
 			}

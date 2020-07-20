@@ -1,19 +1,19 @@
 var keyboardDivs = `
 	<div class=row>
-		<div class="key"><span class="letter"></span></div>
+		<div class="key" id='Backquote'><span class="letter"></span></div>
 		<div class="key" id='Digit1'><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key big"><span class="letter"></span></div>
+		<div class="key" id='Digit2'><span class="letter"></span></div>
+		<div class="key" id='Digit3'><span class="letter"></span></div>
+		<div class="key" id='Digit4'><span class="letter"></span></div>
+		<div class="key" id='Digit5'><span class="letter"></span></div>
+		<div class="key" id='Digit6'><span class="letter"></span></div>
+		<div class="key" id='Digit7'><span class="letter"></span></div>
+		<div class="key" id='Digit8'><span class="letter"></span></div>
+		<div class="key" id='Digit9'><span class="letter"></span></div>
+		<div class="key" id='Digit0'><span class="letter"></span></div>
+		<div class="key" id='Minus'><span class="letter"></span></div>
+		<div class="key" id='Equal'><span class="letter"></span></div>
+		<div class="key big" id='BackSpace'><span class="letter"></span></div>
 	</div>
 	<div class=row>
 		<div class="key big"><span class="letter"></span></div>
@@ -75,20 +75,20 @@ var keyboardDivs = `
 
 var customLayout = `
 	<div class=row>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey big"><span class="letter"></span></div>
+		<div class="cKey" id='customBackquote'><span class="letter"></span></div>
+		<div class="cKey" id='customDigit1'><span class="letter"></span></div>
+		<div class="cKey" id='customDigit2'><span class="letter"></span></div>
+		<div class="cKey" id='customDigit3'><span class="letter"></span></div>
+		<div class="cKey" id='customDigit4'><span class="letter"></span></div>
+		<div class="cKey" id='customDigit5'><span class="letter"></span></div>
+		<div class="cKey" id='customDigit6'><span class="letter"></span></div>
+		<div class="cKey" id='customDigit7'><span class="letter"></span></div>
+		<div class="cKey" id='customDigit8'><span class="letter"></span></div>
+		<div class="cKey" id='customDigit9'><span class="letter"></span></div>
+		<div class="cKey" id='customDigit0'><span class="letter"></span></div>
+		<div class="cKey" id='customMinus'><span class="letter"></span></div>
+		<div class="cKey" id='customEqual'><span class="letter"></span></div>
+		<div class="cKey big" id='customBackSpace'><span class="letter"></span></div>
 	</div>
 	<div class=row>
 		<div class="cKey big" id='customTab' ><span class="letter"></span></div>
@@ -107,7 +107,7 @@ var customLayout = `
 		<div class="cKey" id='customBackslash'><span class="letter"></span></div>
 	</div>
 	<div class=row>
-		<div class="cKey bigger"><span class="letter"></span></div>
+		<div class="cKey bigger" id='customCapsLock'><span class="letter"></span></div>
 		<div class="cKey lvl1" id='customKeyA'>
 			<span class="letter"></span>
 		</div>
@@ -121,7 +121,7 @@ var customLayout = `
 		<div class="cKey lvl1" id='customKeyL'><span class="letter"></span></div>
 		<div class="cKey lvl1" id='customSemicolon'><span class="letter"></span></div>
 		<div class="cKey" id='customQuote'><span class="letter"></span></div>
-		<div class="cKey bigger"><span class="letter"></span></div>
+		<div class="cKey bigger" id='customEnter'><span class="letter"></span></div>
 	</div>
 	<div class=row>
 		<div class="cKey biggest"><span class="letter"></span></div>
