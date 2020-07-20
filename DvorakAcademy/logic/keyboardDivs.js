@@ -33,8 +33,7 @@ var keyboardDivs = `
 	</div>
 	<div class=row>
 		<div class="key bigger"><span class="letter"></span></div>
-		<div class="key lvl1" id='KeyA'><span class="letter"></span></div>
-		<div class="key lvl1" id='KeyS'><span class="letter"></span></div>
+		<div class="key lvl1" id='KeyA'><span class="letter"></span></div><div class="key lvl1" id='KeyS'><span class="letter"></span></div>
 		<div class="key lvl1" id='KeyD'><span class="letter"></span></div>
 		<div class="key lvl1" id='KeyF'><span class="letter"></span></div>
 		<div class="key lvl2" id='KeyG'><span class="letter"></span></div>
@@ -88,7 +87,7 @@ var customLayout = `
 		<div class="cKey" id='customDigit0'><span class="letter"></span></div>
 		<div class="cKey" id='customMinus'><span class="letter"></span></div>
 		<div class="cKey" id='customEqual'><span class="letter"></span></div>
-		<div class="cKey big" id='customBackSpace'><span class="letter"></span></div>
+		<div class="cKey big rowEnd" id='customBackSpace'><span class="letter"></span></div>
 	</div>
 	<div class=row>
 		<div class="cKey big" id='customTab' ><span class="letter"></span></div>
@@ -104,7 +103,7 @@ var customLayout = `
 		<div class="cKey" id='customKeyP'><span  class="letter"></span></div>
 		<div class="cKey" id='customBracketLeft'><span  class="letter"></span></div>
 		<div class="cKey" id='customBracketRight'><span  class="letter"></span></div>
-		<div class="cKey" id='customBackslash'><span class="letter"></span></div>
+		<div class="cKey rowEnd" id='customBackslash'><span class="letter"></span></div>
 	</div>
 	<div class=row>
 		<div class="cKey bigger" id='customCapsLock'><span class="letter"></span></div>
@@ -121,7 +120,7 @@ var customLayout = `
 		<div class="cKey lvl1" id='customKeyL'><span class="letter"></span></div>
 		<div class="cKey lvl1" id='customSemicolon'><span class="letter"></span></div>
 		<div class="cKey" id='customQuote'><span class="letter"></span></div>
-		<div class="cKey bigger" id='customEnter'><span class="letter"></span></div>
+		<div class="cKey bigger rowEnd" id='customEnter'><span class="letter"></span></div>
 	</div>
 	<div class=row>
 		<div class="cKey biggest"><span class="letter"></span></div>
@@ -135,9 +134,9 @@ var customLayout = `
 		<div class="cKey lvl5" id='customComma'><span class="letter"></span></div>
 		<div class="cKey lvl6" id='customPeriod'><span class="letter"></span></div>
 		<div class="cKey lvl6" id='customSlash'><span class="letter"></span></div>
-		<div class="cKey biggest"><span class="letter"></span></div>
+		<div class="cKey biggest rowEnd finalKey"><span class="letter"></span></div>
 	</div>
-	<div class=row>
+	<div class='row'>
 		<div class="cKey"><span class="letter"></span></div>
 		<div class="cKey"><span class="letter"></span></div>
 		<div class="cKey"><span class="letter"></span></div>
@@ -146,7 +145,7 @@ var customLayout = `
 		<div class="cKey"><span class="letter"></span></div>
 		<div class="cKey"><span class="letter"></span></div>
 		<div class="cKey bigger"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
+		<div class="cKey rowEnd"><span class="letter"></span></div>
 	</div>
 `;
 

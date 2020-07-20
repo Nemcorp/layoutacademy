@@ -517,6 +517,7 @@ input:checked + .slider:before {
 
 .selectedInputKey, .selectedInputKey:hover {
 	border-color: white;
+	opacity: .9;
 }
 
 .pulse {

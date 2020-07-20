@@ -160,6 +160,21 @@ select.addEventListener('change', (e)=> {
 /*___________________________________________________________*/
 /*____________________preference menu________________________*/
 
+// close preference menu on escape key. While we're at it, also close custom
+// ui menu
+document.addEventListener('keydown', (e)=> {
+	if(e.keyCode == 27) {
+		preferenceMenu.style.right = '-37vh';
+		
+		// close custom ui menu
+		if(customInput.style.display != 'none'){
+			customInput.style.display = 'none';
+			// remove active class from current key
+			clearSelectedInput();
+			init();
+		}
+	}
+});
 
 // listener for preference menu button
 preferenceButton.addEventListener('click', ()=> {
@@ -372,6 +387,7 @@ document.addEventListener('click', function (e) {
 
 }, false);
 
+
 // listener for custom input field. Updates on any input, clearing the current selected
 // input key, and setting the new value on the correct layer
 customUIKeyInput.addEventListener('keydown', (e)=> {
@@ -435,7 +451,7 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 		// this updates the main keyboard in real time. Could be ommited if performance needs a boost
 		updateCheatsheetStyling(currentLevel);
 
-	}else if(e.keyCode == 8 || e.keyCode == 27 || e.keyCode == 46 ) {
+	}else if(e.keyCode == 8 || e.keyCode == 46 ) {
 		// if backspace, remove letter from the ui element and the keyboard map
 		k.children[0].innerHTML = '_';
 		k.classList.remove('active');
@@ -450,7 +466,26 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 
 	// clear input field
 	customUIKeyInput.value = '';
+
+	// switch to next input key
+	switchSelectedInputKey();
 });
+
+function switchSelectedInputKey() {
+	let k = document.querySelector('.selectedInputKey').nextElementSibling;
+	if (k.classList.contains('finalKey')){
+		k = document.querySelector('.selectedInputKey');
+	}else if(k.classList.contains('rowEnd')) {
+		k = document.querySelector('.selectedInputKey').parentElement.nextElementSibling.children[1];
+	}
+
+		clearSelectedInput();
+		k.classList.add('selectedInputKey');
+		if(k.children[0].innerHTML == "") {
+			k.children[0].innerHTML = "_";
+		}
+		k.children[0].classList.add('pulse');
+}
 
 // remove 'selectedInputKey' from any keys previously clicked
 function clearSelectedInput() {
