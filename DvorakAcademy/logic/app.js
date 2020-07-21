@@ -332,13 +332,23 @@ doneButton.addEventListener('click', ()=> {
 // 	}
 // });
 
-// general click listener for customui elements
+// general click listener
 document.addEventListener('click', function (e) {
+
+	// close prefence menu if click is anywhere other than the preference menu
+	let k = e.target.closest('.preferenceMenu');
+	if(!k){
+		k = e.target.closest('.preferenceButton');
+	}
+	if(!k) {
+		preferenceMenu.style.right = '-37vh';
+	}
+
 
 	// add key listeners for each of the keys the custom input ui
 	// When clicked, a key becomes 'selectedInputKey' and all others lose
 	// this class. 
-	let k = e.target.closest('.cKey');
+	k = e.target.closest('.cKey');
 	if (k) {
 		// change focus to the customUIKeyInput field
 		customUIKeyInput.focus();
@@ -507,11 +517,99 @@ function clearSelectedInput() {
 
 
 
-// listens for the enter  and space key. Checks to see if input contains the
-// correct word. If yes, generate new word. If no, give user
-// negative feedback
-document.addEventListener('keydown', (e)=> {
-	// if on the last word, check every letter so we don't need a space
+// input key listener
+input.addEventListener('keydown', (e)=> {
+	
+	/*___________________________________________________*/
+	/*____________________key mapping____________________*/
+
+	// this is the actual character typed by the user
+	let char = e.code;
+	let finalInput;
+
+	// prevent default char from being typed and replace new char from keyboard map
+	if (mapping) {
+		if(char in keyboardMap && gameOn) {
+			e.preventDefault();
+			if(!e.shiftKey) {
+				finalInput = keyboardMap[char];
+				input.value += keyboardMap[char];
+			}else {
+			// if shift key is pressed, get final input from
+			// keymap shift layer. If shiftlayer doesn't exist
+			// use a simple toUpperCase
+				if(keyboardMap.shiftLayer == 'default'){
+					finalInput = keyboardMap[char].toUpperCase();
+					input.value += keyboardMap[char].toUpperCase();
+				}else {
+					// get char from shiftLayer
+					finalInput = keyboardMap.shiftLayer[char];
+					input.value += keyboardMap.shiftLayer[char];
+				}
+			}
+		}else {
+			finalInput = e.key;
+		}
+	}else {
+		finalInput = e.key;
+	}
+
+	/*____________________key mapping____________________*/
+	/*___________________________________________________*/
+
+
+
+	/*_________________________________________________________*/
+	/*____________________accuracy checking____________________*/
+
+	// if we have a backspace, decrement letter index
+	if(e.keyCode == 8) {
+		letterIndex--;
+		// letter index cannot be < 0
+		if(letterIndex < 0) {
+			letterIndex = 0;
+		}
+	}
+
+	// if key produces a character, (ie not shift, backspace, or another 
+	// utility key) increment letter index
+	if(e.keyCode != 16 && e.keyCode != 13 && e.keyCode != 17 
+		&& e.keyCode != 20 && e.keyCode != 8) {
+		letterIndex++;
+	}
+
+	// check if answer is correct and apply the correct styling. 
+	// Also increment 'errors' or 'correct'
+	if(checkAnswerToIndex()) {
+		input.style.color = 'black';
+		// no points awarded for backspace
+		if(e.keyCode != 8) {
+			correct++;
+		}
+	}else {
+		input.style.color = 'red';
+		// no points awarded for backspace
+		if(e.keyCode != 8) {
+			errors++;
+		}
+	}
+	
+	console.log('errors: ' + errors + ' \n correct: ' + correct);
+	console.log("accuracy: " + correct/(errors+correct));
+
+	/*____________________accuracy checking____________________*/
+	/*_________________________________________________________*/
+
+
+
+
+	/*_________________________________________________________________________*/
+	/*____________________listener for space and enter keys____________________*/
+	// listens for the enter  and space key. Checks to see if input contains the
+	// correct word. If yes, generate new word. If no, give user
+	// negative feedback
+
+	// if on the last word, check every letter so we don't need a space to end the game
 	if(!timeLimitMode && score == scoreMax-1 && checkAnswer() && gameOn) {
 		console.log('game over');
 		endGame();
@@ -519,9 +617,6 @@ document.addEventListener('keydown', (e)=> {
 
 	if(e.keyCode === 13 || e.keyCode === 32) {
 		if(checkAnswer() && gameOn) {
-			// increment correct to account for the space bar being pressed. This code
-			// could probably be somewhere else
-			correct++;
 
 			// stops a ' ' character from being put in the input bar
 			// it wouldn't appear until after this function, and would
@@ -547,7 +642,65 @@ document.addEventListener('keydown', (e)=> {
 		
 		}// end if statement
 	}// end keyEvent if statement
-});
+
+	/*____________________listener for space and enter keys____________________*/
+	/*_________________________________________________________________________*/
+
+
+}); // end input key listner
+
+
+// returns true if the letters typed SO FAR are correct
+function checkAnswerToIndex() {
+	// user input
+	let inputVal = input.value;
+
+	// console.log('checking input ' +inputVal.slice(0,letterIndex));
+	// console.log(correctAnswer.slice(0,letterIndex));
+	return inputVal.slice(0,letterIndex) == correctAnswer.slice(0,letterIndex);
+}
+
+// listens for the enter  and space key. Checks to see if input contains the
+// correct word. If yes, generate new word. If no, give user
+// negative feedback
+// document.addEventListener('keydown', (e)=> {
+// 	// if on the last word, check every letter so we don't need a space
+// 	if(!timeLimitMode && score == scoreMax-1 && checkAnswer() && gameOn) {
+// 		console.log('game over');
+// 		endGame();
+// 	}
+
+// 	if(e.keyCode === 13 || e.keyCode === 32) {
+// 		if(checkAnswer() && gameOn) {
+// 			// increment correct to account for the space bar being pressed. This code
+// 			// could probably be somewhere else
+// 			correct++;
+
+// 			// stops a ' ' character from being put in the input bar
+// 			// it wouldn't appear until after this function, and would
+// 			// still be there when the user goes to type the next word
+// 			e.preventDefault();
+
+// 			generateRandomPrompt();
+
+// 			// update scoreText
+// 			updateScoreText();
+
+// 			// end game if score == scoreMax
+// 			if(score >= scoreMax){
+// 				endGame();
+// 			}
+
+// 			// clear input field
+// 			document.querySelector('#userInput').value = '';
+
+// 			// set letter index (where in the word the user currently is)
+// 			// to the beginning of the word
+// 			letterIndex = 0;
+		
+// 		}// end if statement
+// 	}// end keyEvent if statement
+// });
 
 
 // add event listeners to level buttons
@@ -742,16 +895,6 @@ function checkAnswer() {
 	return inputVal == correctAnswer;
 }
 
-// modifier is set to -1 when keystroke is backspace, to account for the character
-// that is about to be deleted
-function checkAnswerToIndex(modifier) {
-	// user input
-	let inputVal = input.value;
-
-	console.log('checking input ' +inputVal.slice(0,letterIndex+modifier));
-	console.log(correctAnswer.slice(0,letterIndex+modifier));
-	return inputVal.slice(0,letterIndex+modifier) == correctAnswer.slice(0,letterIndex+modifier);
-}
 
 function endGame() {
 	// erase prompt
@@ -935,89 +1078,10 @@ function createTestSets(){
 	}
 }
 
-
-/*_________________________________________________________*/
-/*remaps keystroke input  and keeps track of score. Have funn!!!!*/
-/*_________________________________________________________*/
-
-
-
-// key remapping
-input.addEventListener('keydown', (e)=> {
-	// this is the actual character typed by the user
-	let char = e.code;
-	let finalInput;
-
-	// prevent default char from being typed and replace new char from keyboard map
-	if (mapping) {
-		if(char in keyboardMap && gameOn) {
-			e.preventDefault();
-			if(!e.shiftKey) {
-				finalInput = keyboardMap[char];
-				input.value += keyboardMap[char];
-			}else {
-			// if shift key is pressed, get final input from
-			// keymap shift layer. If shiftlayer doesn't exist
-			// use a simple toUpperCase
-				if(keyboardMap.shiftLayer == 'default'){
-					finalInput = keyboardMap[char].toUpperCase();
-					input.value += keyboardMap[char].toUpperCase();
-				}else {
-					// get char from shiftLayer
-					finalInput = keyboardMap.shiftLayer[char];
-					input.value += keyboardMap.shiftLayer[char];
-				}
-			}
-		}else {
-			finalInput = e.key;
-		}
-	}else {
-		finalInput = e.key;
-	}
-
-	// keep track of wrong keystrokes
-	// console.log('expected: ' + correctAnswer.charAt(letterIndex));
-	// console.log('actual: ' + finalInput);
-
-	if(finalInput == correctAnswer.charAt(letterIndex)){
-		correct++;
-	}else if(e.keyCode == 16 || e.keyCode == 13 || e.keyCode == 17 || e.keyCode == 20) {
-		// if we hit the shift or return or ctr or caps key, we need to decrement letterIndex, because they
-		// aren't actual keystrokes
-		letterIndex--;
-	}else if(e.keyCode == 8) {
-		// check answer to current point in the word. If it is correct, apply normal styling
-		if(checkAnswerToIndex(-1)) {
-			input.style.color = 'black';
-		}
-		// if backspace, letterIndex should be decremented twice,
-		// once for once to cancel out the increment, and again to
-		// move backwords in the word
-		if(letterIndex!=0){
-			letterIndex-=2;
-		}else {
-			letterIndex--;
-		}
-	}else{
-		if(checkAnswerToIndex(0)) {
-			errors++;
-			input.style.color = 'red';
-		}
-		if(e.keyCode == 32) {
-			errors--;
-		}
-	}
-
-	// console.log('score: ' + correct + ' / ' + (correct + errors));
-
-	letterIndex++;
-});
-
-
+// fixes a small bug in mozilla
 document.addEventListener('keyup', (e)=> {
 	e.preventDefault();
 	//console.log('prevented');
-
 });
 
 
