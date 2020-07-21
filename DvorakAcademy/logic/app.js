@@ -1,7 +1,7 @@
 /*_____________dom elements_________*/
 
 // the string of text that shows the words for the user to type
-var prompt 		= document.querySelector('#prompt'),
+var prompt 		= document.querySelector('.prompt'),
 //
 wordChain 		= document.querySelector('#wordChain'),
 //
@@ -65,20 +65,23 @@ var answerString;		  // A string representation of the words for the current tes
 var keyboardMap = layoutMaps['dvorak'];
 var letterDictionary = levelDictionaries['dvorak'];
 var currentLayout = 'dvorak';
-var shiftDown = false; // tracks whether the shift key is currently being pushed
-var fullSentenceMode = false; // if true, all prompts will be replace with sentences
-var timeLimitMode = false;
+var shiftDown 			= false; // tracks whether the shift key is currently being pushed
+var fullSentenceMode 	= false; // if true, all prompts will be replace with sentences
+var timeLimitMode 		= false;
+var wordScrollingMode 	= true; // true by default. 
 
-var preferenceButton 	= document.querySelector('.preferenceButton'),
-preferenceMenu 			= document.querySelector('.preferenceMenu'),
-closePreferenceButton 	= document.querySelector('.closePreferenceButton'),
-capitalLettersAllowed 	= document.querySelector('.capitalLettersAllowed'),
+// preference menu dom elements
+var preferenceButton 		= document.querySelector('.preferenceButton'),
+preferenceMenu 				= document.querySelector('.preferenceMenu'),
+closePreferenceButton 		= document.querySelector('.closePreferenceButton'),
+capitalLettersAllowed 		= document.querySelector('.capitalLettersAllowed'),
 fullSentenceModeToggle		= document.querySelector('.fullSentenceMode'),
-fullSentenceModeLevelButton		= document.querySelector('.lvl8'),
-wordLimitModeButton		= document.querySelector('.wordLimitModeButton'),
-wordLimitModeInput	= document.querySelector('.wordLimitModeInput'),
-timeLimitModeButton		= document.querySelector('.timeLimitModeButton'),
-timeLimitModeInput	= document.querySelector('.timeLimitModeInput');
+fullSentenceModeLevelButton	= document.querySelector('.lvl8'),
+wordLimitModeButton			= document.querySelector('.wordLimitModeButton'),
+wordLimitModeInput			= document.querySelector('.wordLimitModeInput'),
+timeLimitModeButton			= document.querySelector('.timeLimitModeButton'),
+timeLimitModeInput			= document.querySelector('.timeLimitModeInput')
+wordScrollingModeButton		= document.querySelector('.wordScrollingModeButton');
 
 
 start();
@@ -272,6 +275,13 @@ wordLimitModeInput.addEventListener('change', ()=> {
 
 	reset();
 });
+
+
+// word scrolling mode 
+wordScrollingModeButton.addEventListener('click', ()=> {
+	prompt.classList.add('paragraph');
+});
+
 
 /*______________________preference menu______________________*/
 /*___________________________________________________________*/
@@ -631,17 +641,34 @@ input.addEventListener('keydown', (e)=> {
 		// no points awarded for backspace
 		if(e.keyCode != 8) {
 			correct++;
+			// if letter (in the promp) exists, color it green
+			if(prompt.children[score].children[letterIndex-1]) {
+				prompt.children[score].children[letterIndex-1].style.color = 'green';
+			}
+		}else {
+			// if backspace, color it grey again
+			if(prompt.children[score].children[letterIndex]) {
+				prompt.children[score].children[letterIndex].style.color = 'gray';
+			}
 		}
 	}else {
 		input.style.color = 'red';
 		// no points awarded for backspace
 		if(e.keyCode != 8) {
 			errors++;
+			if(prompt.children[score].children[letterIndex-1]) {
+				prompt.children[score].children[letterIndex-1].style.color = 'red';
+			}
+		}else {
+			// if backspace, color it grey again
+			if(prompt.children[score].children[letterIndex]) {
+				prompt.children[score].children[letterIndex].style.color = 'gray';
+			}
 		}
 	}
 	
-	console.log('errors: ' + errors + ' \n correct: ' + correct);
-	console.log("accuracy: " + correct/(errors+correct));
+	// console.log('errors: ' + errors + ' \n correct: ' + correct);
+	// console.log("accuracy: " + correct/(errors+correct));
 
 	/*____________________accuracy checking____________________*/
 	/*_________________________________________________________*/
@@ -669,7 +696,7 @@ input.addEventListener('keydown', (e)=> {
 			// still be there when the user goes to type the next word
 			e.preventDefault();
 
-			generateRandomPrompt();
+			handleCorrectWord();
 
 			// update scoreText
 			updateScoreText();
@@ -816,6 +843,9 @@ mappingStatusButton.addEventListener('click', ()=> {
 		mappingStatusText.innerHTML = 'on';
 		mapping = true;
 	}
+
+	// change focus back to input
+	input.focus();
 });
 
 // resetButton listener
@@ -874,16 +904,29 @@ function reset(){
 	prompt.classList.remove('noDisplay');
 
 	answerString = generateFullPrompt();
-	words = answerString.split(' ');
+	words = answerString.split('');
 	//reset prompt
-	prompt.innerHTML = '';
-	for(i = 0; i < scoreMax; i++) {
-		prompt.innerHTML += `
-			<span id='id`+i+`'> ` + words[i] + ` </span>
-		`;
-	}
+	let promptString = "";
+	let idCount = 0;
+	promptString= "<span class='word' id='id"+idCount+"'>";
+	// loop through all letters in prompt
+	for(i = 0; i < words.length; i++) {
+		// if letter is a space, that means we have a new word
+		if(words[i] == " "){
+			idCount++;
+			promptString += "</span><span class='word' id='id"+idCount+"'>";
+		}else {
+			promptString += `<span>`+words[i]+`</span>`;
+		}
 
-	generateRandomPrompt();
+		// if last word in the list, close out the final word span tag
+		if(i == words.length-1){
+			promptString += "</span>";
+		}
+	}
+	prompt.innerHTML = promptString;
+
+	handleCorrectWord();
 
 	// change the 0/50 text
 	updateScoreText();
@@ -1030,19 +1073,24 @@ function containsUpperCase(word) {
 
 // updates the correct answer and manipulates the dom
 // called every time a correct word is typed
-// RENAME THIS PLEASE. Function name not representative of what it does
-function generateRandomPrompt() {
+function handleCorrectWord() {
 	// make sure no 'incorrect' styling still exists
 	input.style.color = 'black';
 
+	if(wordScrollingMode) {
+		// update display
+		prompt.style.left = '-' + promptOffset+ 'px';
+		let cur = document.querySelector('#id' + (score+1));
+		console.log(cur);		
+		if(score >= 0) {
+			document.querySelector('#id' + (score)).style.opacity = '0';
+		}
+		promptOffset += cur.offsetWidth + 8;
+	}else {
+		// paragraph mode
+		// if end of line, move prompt up
 
-	// update display
-	prompt.style.left = '-' + promptOffset+ 'px';
-	let cur = document.querySelector('#id' + (score+1));
-	if(score >= 0) {
-		document.querySelector('#id' + (score)).style.opacity = '0';
 	}
-	promptOffset += cur.offsetWidth;
 
 	// save the correct answer to a variable before removing it 
 	// from the answer string
@@ -1050,6 +1098,18 @@ function generateRandomPrompt() {
 
 	//remove the first word from the answer string
 	answerString = answerString.substr(answerString.indexOf(" ") + 1);
+
+	// console.log(prompt.children[0].innerHTML.length);
+	// let l = prompt.children[0].innerHTML.length;
+	// let wordArr;
+	// // turn the first word into spans
+	// for(let i = 0; i < l; i++){
+	// 	wordArr.push('<span style="color: yellow;">'+i+'</span>');
+
+	// 	console.log('in prompt ' + i);
+	// }
+
+	// prompt.children[0].innerHTML = wordArr;
 }
 
 // updates the numerator and denomitator of the scoretext on 

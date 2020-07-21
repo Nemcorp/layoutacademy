@@ -29,10 +29,13 @@
 			<li>Capital Letters Allowed<input class='capitalLettersAllowed' type="checkbox"></li>
 			<!-- <li>Punctuation Allowed<input class='' type="checkbox"></li> -->
 			<li>Full Sentence Mode<input class='fullSentenceMode' type="checkbox"></li>
-			<!-- <li>Word Scrolling Mode<input class='' type="checkbox" checked></li> -->
+			<li>Word Scrolling Mode
+				<input class='wordScrollingModeButton' type="checkbox" checked>
+			</li>
 			<li>
 				<input class='timeLimitModeInput noDisplay' type="number" value="60">
-				Time Limit Mode<input class='timeLimitModeButton' type="checkbox"></li>
+				Time Limit Mode<input class='timeLimitModeButton' type="checkbox">
+			</li>
 			<li>  
 				<input class='wordLimitModeInput' type="number" value="50">
 				Word Limit Mode <input class='wordLimitModeButton' type="checkbox" checked> 
@@ -41,7 +44,7 @@
 	</div>
 
 
-	<h1><span id="layoutName"></span> Academy</h1>
+	<h1><span id="layoutName">Dvorak</span> Academy</h1>
 
 	<nav>
 		<button class='currentLevel lvl1'>Level 1</button>
@@ -72,14 +75,14 @@
 
 	<section id="main">
 		<div id='p'>
-			<h2 id="prompt" class='noDisplay'>
+			<h2 class='noDisplay prompt paragraph'>
 			</h2>
 		</div>
 		<button id="resetButton" class='noDisplay'>Reset</button>
 		<input id = 'userInput' type="paragraph" spellcheck="false">
 		<div id='feedback'>
 			<div id='scoreAndClock'>
-				<span id="scoreText">0/60</span>
+				<span id="scoreText">0/50</span>
 				<span id="timeText">0m :0 s</span>
 			</div>
 			<div id='testResults' class='transparent'>

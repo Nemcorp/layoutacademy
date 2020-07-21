@@ -128,7 +128,7 @@ var customLayout = `
 		<div class="cKey lvl6" id='customKeyX'><span class="letter"></span></div>
 		<div class="cKey lvl6" id='customKeyC'><span class="letter"></span></div>
 		<div class="cKey lvl4" id='customKeyV'><span class="letter"></span></div>
-		<div class="cKey lvl4" id='custom rowStartKeyB'><span class="letter"></span></div>
+		<div class="cKey lvl4" id='customKeyB'><span class="letter"></span></div>
 		<div class="cKey lvl4" id='customKeyN'><span class="letter"></span></div>
 		<div class="cKey lvl4" id='customKeyM'><span class="letter"></span></div>
 		<div class="cKey lvl5" id='customComma'><span class="letter"></span></div>

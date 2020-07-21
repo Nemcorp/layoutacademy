@@ -204,14 +204,31 @@ button:focus {
     from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
 }
 
-#prompt {
+.prompt {
 	position: relative;
 	white-space: nowrap;
 	font-size: 2.3vmax;
-	padding-right: 20vh;
+	padding: 0 20vh 0 0;
 	width: 28vmax;
 	color: white;
 	transition: left .1s linear;
+}
+
+.prompt .word {
+	padding: 0;
+	margin: 0 8px 0 0;
+}
+
+h2 {
+	padding: 0;
+}
+
+.paragraph {
+	color: grey;
+	white-space: normal;
+	padding: 0;
+	width: 40vmax;
+	font-size: 1.8vmax;
 }
 
 /* is this actually styling anything? Maight be able to delete*/
