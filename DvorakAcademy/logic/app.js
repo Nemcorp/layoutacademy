@@ -136,26 +136,6 @@ input.addEventListener('keydown', (e)=> {
 	gameOn = true;
 });
 
-// listens for layout change
-select.addEventListener('change', (e)=> {
-	// if custom input is selected, show the ui for custom keyboards
-	if(select.value == 'custom') {
-		customInput.style.display = 'flex';
-		openUIButton.style.display = 'block';
-	}else {
-		customInput.style.display = 'none';
-		openUIButton.style.display = 'none';
-	}
-	// change keyboard map and key dictionary
-	keyboardMap = layoutMaps[select.value];
-	console.log(select.value);
-	letterDictionary = levelDictionaries[select.value];
-	currentLayout = select.value;
-
-	// reset everything
-	init();
-});
-
 
 /*___________________________________________________________*/
 /*____________________preference menu________________________*/
@@ -301,6 +281,26 @@ wordLimitModeInput.addEventListener('change', ()=> {
 /*___________________________________________________________*/
 /*______________listeners for custom ui input________________*/
 
+// listens for layout change
+select.addEventListener('change', (e)=> {
+	// if custom input is selected, show the ui for custom keyboards
+	if(select.value == 'custom') {
+		customInput.style.display = 'flex';
+		openUIButton.style.display = 'block';
+	}else {
+		customInput.style.display = 'none';
+		openUIButton.style.display = 'none';
+	}
+	// change keyboard map and key dictionary
+	keyboardMap = layoutMaps[select.value];
+	console.log(select.value);
+	letterDictionary = levelDictionaries[select.value];
+	currentLayout = select.value;
+
+	// reset everything
+	init();
+});
+
 // listener for custom layout ui open button
 openUIButton.addEventListener('click', ()=> {
 	customInput.style.display = 'flex';
@@ -404,14 +404,15 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 	let k = document.querySelector('.selectedInputKey');
 
 	// if there was already a value for this key, remove it from all levels
-	// SEEMS LIKE THIS IF IS ALWAYS TRUE. FIX IT
-	if(k.children[0].value != '_') {
-		 let lvls = Object.keys(levelDictionaries['custom']);
-		for(key of lvls) {
+	if(k.children[0].innerHTML != '_') {
+		let lvls = Object.keys(levelDictionaries['custom']);
+		for(lvl of lvls) {
 			let keyCode = k.id.toString().replace('custom','');
 			console.log(layoutMaps.custom[keyCode]);
 			// replace any instances of letter previously found on key
-			levelDictionaries['custom'][key] = levelDictionaries['custom'][key].replace(layoutMaps.custom[keyCode], '');
+			levelDictionaries['custom'][lvl] = levelDictionaries['custom'][lvl].replace(layoutMaps.custom[keyCode], '');
+			// replace mapping for letter previously found on key
+			layoutMaps['custom'][keyCode] = " ";
 		}
 	}
 
@@ -419,23 +420,22 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 	// if key entered is not shift, control, space, caps, enter, backspace, escape, 
 	// or delete, left or right arrows, update dom element and key mapping value
 	if(e.keyCode != 16 && e.keyCode != 17 && e.keyCode != 27 && e.keyCode != 46 && e.keyCode 
-		!= 32 && e.keyCode != 8 && e.keyCode != 20 && e.keyCode != 13 && e.keyCode != 37 && e.keyCode != 39) {
+		!= 32 && e.keyCode != 8 && e.keyCode != 20 && e.keyCode != 13 && e.keyCode != 37 
+		&& e.keyCode != 39 && e.keyCode != 38 && e.keyCode != 40) {
 		let currentUILev = document.querySelector('.currentCustomUILevel').innerHTML; 
 		k.children[0].innerHTML = e.key;
-		// if we are not already on shift layer, add to dom element shift layer
-		if(!shiftDown) {
-			// document.querySelector('#shift' + k.id).children[0].innerHTML = e.key.toUpperCase();
-		}
+	
+		// // if we are not already on shift layer, add to dom element shift layer
+		// if(!shiftDown) {
+		// 	// document.querySelector('#shift' + k.id).children[0].innerHTML = e.key.toUpperCase();
+		// }
 		k.classList.add('active');
 
 
 		// new keyMapping Data
-		console.log(k.id);
 		if(k.id){
-			console.log(k.id);
 			let keyCode = k.id.toString().replace('custom','');
 			keyCode = keyCode.toString().replace('shift','');
-			console.log(keyCode);
 			if(!shiftDown) {
 				layoutMaps.custom[keyCode] = e.key;
 			}
@@ -460,7 +460,9 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 
 		// this updates the main keyboard in real time. Could be ommited if performance needs a boost
 		updateCheatsheetStyling(currentLevel);
-
+		
+		// switch to next input key
+		switchSelectedInputKey('right');
 	}else if(e.keyCode == 8 || e.keyCode == 46 ) {
 		// if backspace, remove letter from the ui element and the keyboard map
 		k.children[0].innerHTML = '_';
@@ -472,21 +474,65 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 			//console.log('key added to mapping ' + e.key);
 			layoutMaps.custom[k.id] = ' ';
 		}
+	}else if(e.keyCode == 37) {
+		console.log('left');
+		switchSelectedInputKey('left');
+	}else if(e.keyCode == 39) {
+		console.log('right');
+		switchSelectedInputKey('right');
+	}else if(e.keyCode == 38) {
+		console.log('up');
+		switchSelectedInputKey('up');
+	}else if(e.keyCode == 40) {
+		console.log('down');
+		switchSelectedInputKey('down');
 	}
 
 	// clear input field
 	customUIKeyInput.value = '';
-
-	// switch to next input key
-	switchSelectedInputKey();
 });
 
-function switchSelectedInputKey() {
-	let k = document.querySelector('.selectedInputKey').nextElementSibling;
+// switches the focus to the next input key, determined by the direction parameter
+// Parameter is either left, right, up, or down
+function switchSelectedInputKey(direction) {
+	let k; // the key to jump to
+	if(direction == 'right'){
+		k = document.querySelector('.selectedInputKey').nextElementSibling;
+	}else if(direction == 'left'){
+		k = document.querySelector('.selectedInputKey').previousElementSibling;
+	}else if(direction == 'up'){
+		let keyPosition;
+		let currentKey = document.querySelector('.selectedInputKey');
+		for(let i = 0; i < currentKey.parentElement.children.length; i++) {
+  			if (currentKey.parentElement.children[i] == currentKey) {
+  				console.log('found! ' + i);
+  				keyPosition = i;
+  				break;
+  			}
+  		}
+		k = document.querySelector('.selectedInputKey').parentElement.previousElementSibling.children[keyPosition];
+	}else if(direction == 'down'){
+		let keyPosition;
+		let currentKey = document.querySelector('.selectedInputKey');
+		for(let i = 0; i < currentKey.parentElement.children.length; i++) {
+  			if (currentKey.parentElement.children[i] == currentKey) {
+  				console.log('found! ' + i);
+  				keyPosition = i;
+  				break;
+  			}
+  		}
+		k = document.querySelector('.selectedInputKey').parentElement.nextElementSibling.children[keyPosition];
+	}
+
 	if (k.classList.contains('finalKey')){
+		//if last valid key on keyboard, don't change keysz
 		k = document.querySelector('.selectedInputKey');
 	}else if(k.classList.contains('rowEnd')) {
+		// if last valid key on row, move down a row
 		k = document.querySelector('.selectedInputKey').parentElement.nextElementSibling.children[1];
+	}else if(k.classList.contains('rowStart')) {
+		// if first valid key on row, move up a row
+		k = document.querySelector('.selectedInputKey').parentElement.previousElementSibling.children[11];
 	}
 
 		clearSelectedInput();
@@ -660,48 +706,6 @@ function checkAnswerToIndex() {
 	return inputVal.slice(0,letterIndex) == correctAnswer.slice(0,letterIndex);
 }
 
-// listens for the enter  and space key. Checks to see if input contains the
-// correct word. If yes, generate new word. If no, give user
-// negative feedback
-// document.addEventListener('keydown', (e)=> {
-// 	// if on the last word, check every letter so we don't need a space
-// 	if(!timeLimitMode && score == scoreMax-1 && checkAnswer() && gameOn) {
-// 		console.log('game over');
-// 		endGame();
-// 	}
-
-// 	if(e.keyCode === 13 || e.keyCode === 32) {
-// 		if(checkAnswer() && gameOn) {
-// 			// increment correct to account for the space bar being pressed. This code
-// 			// could probably be somewhere else
-// 			correct++;
-
-// 			// stops a ' ' character from being put in the input bar
-// 			// it wouldn't appear until after this function, and would
-// 			// still be there when the user goes to type the next word
-// 			e.preventDefault();
-
-// 			generateRandomPrompt();
-
-// 			// update scoreText
-// 			updateScoreText();
-
-// 			// end game if score == scoreMax
-// 			if(score >= scoreMax){
-// 				endGame();
-// 			}
-
-// 			// clear input field
-// 			document.querySelector('#userInput').value = '';
-
-// 			// set letter index (where in the word the user currently is)
-// 			// to the beginning of the word
-// 			letterIndex = 0;
-		
-// 		}// end if statement
-// 	}// end keyEvent if statement
-// });
-
 
 // add event listeners to level buttons
 for(button of buttons) {
@@ -821,7 +825,7 @@ resetButton.addEventListener('click', ()=> {
 });
 
 
-/*________________FUNCTIONS___________________*/
+/*________________OTHER FUNCTIONS___________________*/
 
 // resets everything to the beginning of game state. Run when the reset
 // button is called or when a level is changed
