@@ -37,14 +37,14 @@
 				Time Limit Mode<input class='timeLimitModeButton' type="checkbox">
 			</li>
 			<li>  
-				<input class='wordLimitModeInput' type="number" value="50">
+				<input class='wordLimitModeInput' type="number" value="50" step="10">
 				Word Limit Mode <input class='wordLimitModeButton' type="checkbox" checked> 
 			</li>
 		</ul>
 	</div>
 
 
-	<h1><span id="layoutName">Dvorak</span> Academy</h1>
+	<!-- <h1><span id="layoutName">Dvorak</span> Academy</h1> -->
 
 	<nav>
 		<button class='currentLevel lvl1'>Level 1</button>
@@ -74,13 +74,16 @@
 	</div>
 
 	<section id="main">
-		<div id='p'>
-			<h2 class='noDisplay prompt paragraph'>
-			</h2>
-		</div>
-		<button id="resetButton" class='noDisplay'>Reset</button>
-		<input id = 'userInput' type="paragraph" spellcheck="false">
-		<div id='feedback'>
+
+		<h1><span id="layoutName">Dvorak</span> Academy</h1>
+
+		<div class='typingArea'>
+			<div class='fade' id='fadeElement'>
+				<h2 class='noDisplay prompt'>
+				</h2>
+			</div>
+			<button id="resetButton" class='noDisplay'>Reset</button>
+			<input id = 'userInput' type="paragraph" spellcheck="false">
 			<div id='scoreAndClock'>
 				<span id="scoreText">0/50</span>
 				<span id="timeText">0m :0 s</span>
@@ -89,11 +92,11 @@
 				<div id='accuracyText'></div>
 				<div id='wpmText'></div>
 			</div>
-			<div class='container'>
-				<div id='cheatsheet'></div>
-				<div>
-					<button class='openUIButton'></button>
-				</div>
+		</div>
+		<div class='cheatsheetContainer'>
+			<div id='cheatsheet'></div>
+			<div>
+				<button class='openUIButton'></button>
 			</div>
 		</div>
 	</section>

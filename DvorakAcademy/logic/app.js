@@ -59,7 +59,7 @@ var letterIndex 	= 0;  // Keeps track of where in a word the user is
 var onlyLower		= true;  // If only lower is true, incude only words
 					      // without capital letters
 var mapping 		= true;  // if true, user keybard input will be mapped to the chosen layout. No mapping otherwise
-var answerString;		  // A string representation of the words for the current test. After a correct word is typed,
+var answerString = "";		  // A string representation of the words for the current test. After a correct word is typed,
 						  // it is removed from the beginning of answerString. By the end of the test, there should be 
 						  // no words in answerString
 var keyboardMap = layoutMaps['dvorak'];
@@ -69,6 +69,13 @@ var shiftDown 			= false; // tracks whether the shift key is currently being pus
 var fullSentenceMode 	= false; // if true, all prompts will be replace with sentences
 var timeLimitMode 		= false;
 var wordScrollingMode 	= true; // true by default. 
+var wordIndex =-1;
+var sentenceStartIndex = -1; // keeps track of where we are in full sentence mode
+var sentenceEndIndex;
+var lineLength = 35;
+var lineIndex = 0;  // tracks which line of the prompt we are currently on
+var idCount = 0;
+var answerWordArray = [];
 
 // preference menu dom elements
 var preferenceButton 		= document.querySelector('.preferenceButton'),
@@ -212,28 +219,18 @@ timeLimitModeButton.addEventListener('click', ()=> {
 timeLimitModeInput.addEventListener('change', ()=> {
 	let wholeSecond = Math.floor(timeLimitModeInput.value);
 
+	scoreMax = wholeSecond*10;
+	
+	if(wholeSecond < 1  || wholeSecond > 10000) {
+		wholeSecond = 60
+	}
+
 	// set the dom element to a whole number (in case the user puts in a decimal)
 	timeLimitModeInput.value = wholeSecond;
 
-	if(wholeSecond >= 10 && wholeSecond <= 240){
-		seconds = wholeSecond%60;
-		minutes = Math.floor(wholeSecond/60);
-	}else if (wholeSecond > 240){
-		seconds = 0;
-		minutes = 10;
-		timeLimitModeInput.value = 240;
-	}else {
-		seconds = 10;
-		timeLimitModeInput.value = 10;
-	}
+	seconds = wholeSecond%60;
+	minutes = Math.floor(wholeSecond/60);
 
-	// if the new time is more than half the scoreMax, increase this number
-	if(timeLimitModeInput.value > (scoreMax/2)) {
-		console.log(scoreMax/2);
-		// make the word list long enough so that no human typer can reach the end
-		scoreMax = timeLimitModeInput.value*4;
-		reset();
-	}
 
 	gameOn = false;
 	resetTimeText();
@@ -264,6 +261,7 @@ wordLimitModeButton.addEventListener('click', ()=> {
 // word Limit input field
 wordLimitModeInput.addEventListener('change', ()=> {
 	if(wordLimitModeInput.value > 10 && wordLimitModeInput.value <= 500){
+		wordLimitModeInput.value = Math.ceil(wordLimitModeInput.value / 10) * 10;
 		scoreMax = wordLimitModeInput.value;
 	}else if (wordLimitModeInput.value > 500){
 		scoreMax = 500;
@@ -279,7 +277,11 @@ wordLimitModeInput.addEventListener('change', ()=> {
 
 // word scrolling mode 
 wordScrollingModeButton.addEventListener('click', ()=> {
-	prompt.classList.add('paragraph');
+	prompt.classList.toggle('paragraph');
+	wordScrollingMode = !wordScrollingMode;
+	// remove fade from parent
+	document.querySelector('#fadeElement').classList.toggle('fade');
+	reset();
 });
 
 
@@ -575,7 +577,6 @@ function clearSelectedInput() {
 
 // input key listener
 input.addEventListener('keydown', (e)=> {
-	
 	/*___________________________________________________*/
 	/*____________________key mapping____________________*/
 
@@ -642,13 +643,14 @@ input.addEventListener('keydown', (e)=> {
 		if(e.keyCode != 8) {
 			correct++;
 			// if letter (in the promp) exists, color it green
-			if(prompt.children[score].children[letterIndex-1]) {
-				prompt.children[score].children[letterIndex-1].style.color = 'green';
+			console.log(lineIndex);
+			if(prompt.children[lineIndex].children[wordIndex].children[letterIndex-1]) {
+				prompt.children[lineIndex].children[wordIndex].children[letterIndex-1].style.color = 'green';
 			}
 		}else {
 			// if backspace, color it grey again
-			if(prompt.children[score].children[letterIndex]) {
-				prompt.children[score].children[letterIndex].style.color = 'gray';
+			if(prompt.children[lineIndex].children[wordIndex].children[letterIndex]) {
+				prompt.children[lineIndex].children[wordIndex].children[letterIndex].style.color = 'gray';
 			}
 		}
 	}else {
@@ -656,13 +658,13 @@ input.addEventListener('keydown', (e)=> {
 		// no points awarded for backspace
 		if(e.keyCode != 8) {
 			errors++;
-			if(prompt.children[score].children[letterIndex-1]) {
-				prompt.children[score].children[letterIndex-1].style.color = 'red';
+			if(prompt.children[lineIndex].children[wordIndex].children[letterIndex-1]) {
+				prompt.children[lineIndex].children[wordIndex].children[letterIndex-1].style.color = 'red';
 			}
 		}else {
 			// if backspace, color it grey again
-			if(prompt.children[score].children[letterIndex]) {
-				prompt.children[score].children[letterIndex].style.color = 'gray';
+			if(prompt.children[lineIndex].children[wordIndex].children[letterIndex]) {
+				prompt.children[lineIndex].children[wordIndex].children[letterIndex].style.color = 'gray';
 			}
 		}
 	}
@@ -861,6 +863,19 @@ resetButton.addEventListener('click', ()=> {
 // button is called or when a level is changed
 // Set a new prompt word and change variable text
 function reset(){
+
+ 	prompt.innerHTML = '';
+ 	answerString = '';
+ 	input.value = '';
+ 	answerWordArray = [];
+ 	lineIndex = 0;
+
+	idCount = 0; 
+
+	wordIndex =-1;
+	sentenceStartIndex = -1;
+
+
 	// stop the timer
 	gameOn = false;
 
@@ -903,36 +918,61 @@ function reset(){
 	//set prompt to visible
 	prompt.classList.remove('noDisplay');
 
-	answerString = generateFullPrompt();
-	words = answerString.split('');
-	//reset prompt
-	let promptString = "";
-	let idCount = 0;
-	promptString= "<span class='word' id='id"+idCount+"'>";
-	// loop through all letters in prompt
-	for(i = 0; i < words.length; i++) {
-		// if letter is a space, that means we have a new word
-		if(words[i] == " "){
-			idCount++;
-			promptString += "</span><span class='word' id='id"+idCount+"'>";
-		}else {
-			promptString += `<span>`+words[i]+`</span>`;
-		}
 
-		// if last word in the list, close out the final word span tag
-		if(i == words.length-1){
-			promptString += "</span>";
+	for(let i = 1; i <=3 ; i++){
+		addLineToPrompt();
+		if(i == 1) {
+			correctAnswer = answerWordArray[0];
 		}
 	}
-	prompt.innerHTML = promptString;
 
+	answerLetterArray = answerString.split('');
+	//reset prompt
+
+	// why is this here?
 	handleCorrectWord();
-
 	// change the 0/50 text
 	updateScoreText();
 
 	// change focus to the input field
 	input.focus();
+}
+
+// generates a new line, adds it to prompt, and to answerWordArray
+function addLineToPrompt(){
+	let lineToAdd = generateLine(scoreMax-score-answerWordArray.length-1);
+	answerString += lineToAdd;
+	prompt.innerHTML += convertLineToHTML(lineToAdd);
+	answerWordArray = answerWordArray.concat(lineToAdd.split(' '));
+}
+
+// takes an array of letter and turns them into html elements representing lines
+// and words. These will be used as the prompt, which can then be styled accordingly
+function convertLineToHTML(letters) {
+	let promptString = "";
+
+	promptString = "<span class='line'><span class='word' id='id"+idCount+"'>";
+	// loop through all letters in prompt
+	for(i = 0; i <= letters.length; i++) {
+		//console.log(letters[i]);
+
+		 // if last word in the list, close out the final word span tag
+		if(i == letters.length){
+			promptString += "</span></span>";
+			idCount++;
+		}else if(letters[i] == " "){
+		// if letter is a space, that means we have a new word
+			//console.log('new word');
+			idCount++;
+			promptString += " </span>"
+			promptString += "<span class='word' id='id"+idCount+"'>";
+		}else {
+			promptString += `<span>`+letters[i]+`</span>`;
+		}
+
+	}
+	promptString += " </span>"
+	return promptString;
 }
 
 function checkAnswer() {
@@ -941,6 +981,7 @@ function checkAnswer() {
 
 	return inputVal == correctAnswer;
 }
+
 
 
 function endGame() {
@@ -983,28 +1024,52 @@ function endGame() {
 	letterIndex = 0;
 }
 
-// creates a string of length 'scoreMax' that will be used as the prompt
-// will return only lower case if onlyLower==true. Creates a list with words
-// containing a balance of current level letters
-function generateFullPrompt() {
+// generates a single line to be appended to the answer array
+// if a line with a maximum number of words is desired, pass it in as a parameter
+function generateLine(maxWords) {
 	let str = '';
 
 	if(fullSentenceMode) {
-		rand = Math.floor(Math.random()*35);
-		str = sentence.substring(getPosition(sentence, '.', rand)+2);
+		// let rand = Math.floor(Math.random()*35);
+		let rand = 0;
+		if(sentenceStartIndex == -1) {
+			sentenceStartIndex = getPosition(sentence, '.', rand)+1;
+			sentenceEndIndex = sentence.substring(sentenceStartIndex + lineLength+2).indexOf(" ") + 
+								sentenceStartIndex +lineLength+1;
+			console.log(sentenceStartIndex);
+			console.log(sentenceEndIndex);
+			str = sentence.substring(sentenceStartIndex, sentenceEndIndex+1);
+		}else{
+
+			sentenceStartIndex = sentenceEndIndex+1;
+			sentenceEndIndex = sentence.substring(sentenceStartIndex + lineLength+2).indexOf(" ") + 
+								sentenceStartIndex +lineLength+1;
+			str = sentence.substring(sentenceStartIndex, sentenceEndIndex+1);
+			console.log(sentenceStartIndex);
+			console.log(sentenceEndIndex);
+		}
+		str = str.substring(1);
 		return str;
 	}
+
 
 	if(wordLists['lvl'+currentLevel].length > 0){
 		let requiredLetters = levelDictionaries[currentLayout]['lvl'+currentLevel].split(''); 
 		// if this counter hits 3000, there are likely no words matching the search
 		// criteria. If that happens, reset required letters
 		let circuitBreaker = 0;
-		for(let i = 0; i < scoreMax; i++) {
+
+		let wordsCreated = 0;
+
+		for(let i = 0; i < lineLength; i = i) {
+			if(wordsCreated >= maxWords){
+				break;
+			}
 			//console.log('in circuit ' + circuitBreaker);
 			if(circuitBreaker > 6000) {
 				str+= levelDictionaries[currentLayout]['lvl'+currentLevel] + ' ';
-				i++;
+				i+= wordToAdd.length;
+				wordsCreated++;
 			}
 
 			let rand = Math.floor(Math.random()*wordLists['lvl'+currentLevel].length);
@@ -1013,14 +1078,17 @@ function generateFullPrompt() {
 			// if the word does not contain any required letters, throw it out and choose again
 			if(!contains(wordToAdd, requiredLetters)) {
 				//console.log(wordToAdd + ' doesnt have any required letters');
-				i--;
+				
 			}else if(onlyLower && containsUpperCase(wordToAdd)) {
 				// if only lower case is allowed and the word to add contains an uppercase,
 				// throw out the word and try again
-				i--;
+				
 			}else {
-
+				// if last word of the line, don't add a space
 				str += wordToAdd + ' ';
+				i+= wordToAdd.length;
+				wordsCreated++;
+			
 
 				// remove any new key letters from our required list
 				removeIncludedLetters(requiredLetters, wordToAdd);
@@ -1039,10 +1107,20 @@ function generateFullPrompt() {
 	}else {
 		// if there are no words with the required letters, all words should be set to the
 		// current list of required letters
-		for(let i = 0; i < scoreMax; i++) {
+		let wordsCreated = 0;
+		for(let i = 0; i < lineLength; i = i) {
 			str+= levelDictionaries[currentLayout]['lvl'+currentLevel] + ' ';
+			wordsCreated++;
+			if(wordsCreated >= maxWords){
+				break;
+			}
+			i+= levelDictionaries[currentLayout]['lvl'+currentLevel].length;
 		}
 	}
+
+	// line should not end in a space. Remove the final space char
+	str = str.substring(0, str.length - 1);
+	//console.log(str.split(" "));
 	return str;
 }
 
@@ -1077,39 +1155,48 @@ function handleCorrectWord() {
 	// make sure no 'incorrect' styling still exists
 	input.style.color = 'black';
 
+	if(wordIndex >= prompt.children[lineIndex].children.length-1){
+		wordIndex = -1;
+		lineIndex++;
+		// this counter the tiny bit of space added to the line span elements that
+		// i think must come from the letter spacing of 3px
+		promptOffset += 6;
+		
+		// when we reach the end of a line, generate a new one IF 
+		// we are more than  2 lines from from the end. This ensures that
+		// no extra words are generated when we near the end of the test
+
+		addLineToPrompt();
+
+		//make the first line of the prompt transparent
+		if(!wordScrollingMode){
+			prompt.children[lineIndex-1].style.display = 'none';
+		}
+		
+	}
+
+	let cur = document.querySelector('#id' + (score+1));
+
 	if(wordScrollingMode) {
 		// update display
-		prompt.style.left = '-' + promptOffset+ 'px';
-		let cur = document.querySelector('#id' + (score+1));
-		console.log(cur);		
-		if(score >= 0) {
+		// move prompt left
+		prompt.style.left = '-' + promptOffset+ 'px';		
+		// make already typed words transparent
+		if(wordIndex >= 0) {
 			document.querySelector('#id' + (score)).style.opacity = '0';
 		}
-		promptOffset += cur.offsetWidth + 8;
-	}else {
-		// paragraph mode
-		// if end of line, move prompt up
-
+		// set the offset value of the next word
+		promptOffset += cur.offsetWidth;
 	}
 
 	// save the correct answer to a variable before removing it 
 	// from the answer string
-	correctAnswer = answerString.split(' ')[0];
+	correctAnswer = answerWordArray[0];
 
 	//remove the first word from the answer string
-	answerString = answerString.substr(answerString.indexOf(" ") + 1);
+	answerWordArray.shift();
 
-	// console.log(prompt.children[0].innerHTML.length);
-	// let l = prompt.children[0].innerHTML.length;
-	// let wordArr;
-	// // turn the first word into spans
-	// for(let i = 0; i < l; i++){
-	// 	wordArr.push('<span style="color: yellow;">'+i+'</span>');
-
-	// 	console.log('in prompt ' + i);
-	// }
-
-	// prompt.children[0].innerHTML = wordArr;
+	wordIndex++;
 }
 
 // updates the numerator and denomitator of the scoretext on 
