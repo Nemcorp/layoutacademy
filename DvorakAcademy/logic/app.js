@@ -580,36 +580,39 @@ input.addEventListener('keydown', (e)=> {
 	/*___________________________________________________*/
 	/*____________________key mapping____________________*/
 
+	// get rid of default key press. We'll handle it ourselves
+	e.preventDefault();
+
+
 	// this is the actual character typed by the user
 	let char = e.code;
-	let finalInput;
 
 	// prevent default char from being typed and replace new char from keyboard map
 	if (mapping) {
 		if(char in keyboardMap && gameOn) {
-			e.preventDefault();
 			if(!e.shiftKey) {
-				finalInput = keyboardMap[char];
 				input.value += keyboardMap[char];
 			}else {
 			// if shift key is pressed, get final input from
 			// keymap shift layer. If shiftlayer doesn't exist
 			// use a simple toUpperCase
 				if(keyboardMap.shiftLayer == 'default'){
-					finalInput = keyboardMap[char].toUpperCase();
 					input.value += keyboardMap[char].toUpperCase();
 				}else {
 					// get char from shiftLayer
-					finalInput = keyboardMap.shiftLayer[char];
 					input.value += keyboardMap.shiftLayer[char];
 				}
 			}
-		}else {
-			finalInput = e.key;
 		}
 	}else {
-		finalInput = e.key;
+		if(e.keyCode != 8 && e.keyCode != 9 && e.keyCode != 20 &&
+			e.keyCode != 16 && e.keyCode != 17 && e.keyCode != 46 
+			&& e.keyCode != 13 && e.keyCode != 32 ){
+				input.value += e.key;
+		}
 	}
+
+	console.log(input.value);
 
 	/*____________________key mapping____________________*/
 	/*___________________________________________________*/
@@ -619,8 +622,9 @@ input.addEventListener('keydown', (e)=> {
 	/*_________________________________________________________*/
 	/*____________________accuracy checking____________________*/
 
-	// if we have a backspace, decrement letter index
+	// if we have a backspace, decrement letter index and role back the input value
 	if(e.keyCode == 8) {
+		input.value = input.value.substr(0,input.value.length-1);
 		letterIndex--;
 		// letter index cannot be < 0
 		if(letterIndex < 0) {
@@ -691,6 +695,7 @@ input.addEventListener('keydown', (e)=> {
 	}
 
 	if(e.keyCode === 13 || e.keyCode === 32) {
+		console.log('checking answer');
 		if(checkAnswer() && gameOn) {
 
 			// stops a ' ' character from being put in the input bar
@@ -730,7 +735,8 @@ function checkAnswerToIndex() {
 	// user input
 	let inputVal = input.value;
 
-	// console.log('checking input ' +inputVal.slice(0,letterIndex));
+	console.log(input.value);
+	console.log('checking input ' +inputVal.slice(0,letterIndex));
 	// console.log(correctAnswer.slice(0,letterIndex));
 	return inputVal.slice(0,letterIndex) == correctAnswer.slice(0,letterIndex);
 }
@@ -976,6 +982,8 @@ function convertLineToHTML(letters) {
 }
 
 function checkAnswer() {
+	console.log('checking answer: ' + input.value+'!');
+	console.log('correct answer: ' + correctAnswer+'!');
 	// user input
 	let inputVal = input.value;
 
