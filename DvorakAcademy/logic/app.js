@@ -88,8 +88,9 @@ wordLimitModeButton			= document.querySelector('.wordLimitModeButton'),
 wordLimitModeInput			= document.querySelector('.wordLimitModeInput'),
 timeLimitModeButton			= document.querySelector('.timeLimitModeButton'),
 timeLimitModeInput			= document.querySelector('.timeLimitModeInput')
-wordScrollingModeButton		= document.querySelector('.wordScrollingModeButton');
-
+wordScrollingModeButton		= document.querySelector('.wordScrollingModeButton'),
+punctuationModeButton       = document.querySelector('.punctuationModeButton');
+var punctuation = ""; // this contains puncuation to include in our test sets. Set to empty at first
 
 start();
 init();
@@ -282,6 +283,22 @@ wordScrollingModeButton.addEventListener('click', ()=> {
 	// remove fade from parent
 	document.querySelector('#fadeElement').classList.toggle('fade');
 	reset();
+});
+
+// punctuation mode 
+punctuationModeButton.addEventListener('click', ()=> {
+	console.log('punctuation mode toggled');
+	// if turning punctuation mode on
+	if(punctuation == "") {
+		punctuation = "'.-";
+	}else { // if turning punctuation mode off
+		punctuation = "";
+	}
+
+	createTestSets();
+	reset();
+	
+
 });
 
 
@@ -612,8 +629,6 @@ input.addEventListener('keydown', (e)=> {
 		}
 	}
 
-	console.log(input.value);
-
 	/*____________________key mapping____________________*/
 	/*___________________________________________________*/
 
@@ -647,7 +662,6 @@ input.addEventListener('keydown', (e)=> {
 		if(e.keyCode != 8) {
 			correct++;
 			// if letter (in the promp) exists, color it green
-			console.log(lineIndex);
 			if(prompt.children[lineIndex].children[wordIndex].children[letterIndex-1]) {
 				prompt.children[lineIndex].children[wordIndex].children[letterIndex-1].style.color = 'green';
 			}
@@ -735,8 +749,7 @@ function checkAnswerToIndex() {
 	// user input
 	let inputVal = input.value;
 
-	console.log(input.value);
-	console.log('checking input ' +inputVal.slice(0,letterIndex));
+	//.log('checking input ' +inputVal.slice(0,letterIndex));
 	// console.log(correctAnswer.slice(0,letterIndex));
 	return inputVal.slice(0,letterIndex) == correctAnswer.slice(0,letterIndex);
 }
@@ -1062,8 +1075,10 @@ function generateLine(maxWords) {
 
 
 	if(wordLists['lvl'+currentLevel].length > 0){
-		let requiredLetters = levelDictionaries[currentLayout]['lvl'+currentLevel].split(''); 
-		// if this counter hits 3000, there are likely no words matching the search
+		let startingLetters = levelDictionaries[currentLayout]['lvl'+currentLevel]+punctuation;
+		let requiredLetters = startingLetters.split(''); 
+	
+		// if this counter hits a high enough number, there are likely no words matching the search
 		// criteria. If that happens, reset required letters
 		let circuitBreaker = 0;
 
@@ -1073,15 +1088,24 @@ function generateLine(maxWords) {
 			if(wordsCreated >= maxWords){
 				break;
 			}
-			//console.log('in circuit ' + circuitBreaker);
-			if(circuitBreaker > 6000) {
-				str+= levelDictionaries[currentLayout]['lvl'+currentLevel] + ' ';
-				i+= wordToAdd.length;
-				wordsCreated++;
-			}
 
 			let rand = Math.floor(Math.random()*wordLists['lvl'+currentLevel].length);
 			let wordToAdd = wordLists['lvl'+currentLevel][rand];
+
+
+			//console.log('in circuit ' + circuitBreaker);
+			if(circuitBreaker > 12000) {
+				if(circuitBreaker > 30000){
+					str+= levelDictionaries[currentLayout]['lvl'+currentLevel] + ' ';
+					i+= wordToAdd.length;
+					wordsCreated++;	
+					circuitBreaker = 0;
+					requiredLetters = startingLetters.split(''); 
+					console.log('taking too long to find proper word');
+				}else {
+					requiredLetters = startingLetters.split(''); 
+				}
+			}
 
 			// if the word does not contain any required letters, throw it out and choose again
 			if(!contains(wordToAdd, requiredLetters)) {
@@ -1102,14 +1126,14 @@ function generateLine(maxWords) {
 				removeIncludedLetters(requiredLetters, wordToAdd);
 								// if we have used all required letters, reset it
 				if(requiredLetters.length == 0 ) {
-					requiredLetters = levelDictionaries[currentLayout]['lvl'+currentLevel].split(''); 
+					requiredLetters = startingLetters.split(); 
 				}
 			}
 
 			circuitBreaker++;
 			// if we're having trouble finding a word with a require letter, reset 'required letters'
 			if(circuitBreaker > 3000) {
-				requiredLetters = levelDictionaries[currentLayout]['lvl'+currentLevel].split('');
+				requiredLetters = startingLetters.split();
 			}
 		}
 	}else {
@@ -1117,12 +1141,13 @@ function generateLine(maxWords) {
 		// current list of required letters
 		let wordsCreated = 0;
 		for(let i = 0; i < lineLength; i = i) {
-			str+= levelDictionaries[currentLayout]['lvl'+currentLevel] + ' ';
+			console.log('no words with required letters');
+			str+= startingLetters + ' ';
 			wordsCreated++;
 			if(wordsCreated >= maxWords){
 				break;
 			}
-			i+= levelDictionaries[currentLayout]['lvl'+currentLevel].length;
+			i+= startingLetters.length;
 		}
 	}
 
@@ -1232,8 +1257,15 @@ function createTestSets(){
 
 	// for each level, add new letters to the test set and create a new list
 	for(let i = 0; i < objKeys.length; i++) {
+		// add punctuation
+		if(i == 0){
+			testSet += punctuation;
+		}
 		testSet += letterDictionary[objKeys[i]];
-		wordLists[objKeys[i]] = generateList(testSet, levelDictionaries[currentLayout]['lvl'+(i+1)]);
+		wordLists[objKeys[i]] = [];
+		//console.log('level ' +(i+1) + ": " + wordLists[objKeys[i]]);
+		wordLists[objKeys[i]] = generateList(testSet, levelDictionaries[currentLayout]['lvl'+(i+1)]+punctuation);
+		//console.log('level ' +(i+1) + ": " + wordLists[objKeys[i]]);
 	}
 }
 
