@@ -68,8 +68,9 @@ var currentLayout = 'dvorak';
 var shiftDown 			= false; // tracks whether the shift key is currently being pushed
 var fullSentenceMode 	= false; // if true, all prompts will be replace with sentences
 var timeLimitMode 		= false;
-var wordScrollingMode 	= true; // true by default. 
-var wordIndex =-1;
+var wordScrollingMode 	= true;  // true by default. 
+var deleteFirstLine		= false; // make this true every time we finish typing a line
+var deleteLatestWord    = false; // if true, delete last word typed. Set to true whenever a word is finished
 var sentenceStartIndex = -1; // keeps track of where we are in full sentence mode
 var sentenceEndIndex;
 var lineLength = 35;
@@ -595,6 +596,22 @@ function clearSelectedInput() {
 
 // input key listener
 input.addEventListener('keydown', (e)=> {
+
+	// removes first line on the first letter of the first word of a new line
+	if(deleteLatestWord) {
+		prompt.classList.remove('smoothScroll');
+		// delete last line fromt prompt and set the offset back to 0
+		prompt.firstChild.removeChild(prompt.firstChild.firstChild);
+		if(prompt.firstChild.children.length == 0){
+			console.log('delete first line');
+			prompt.removeChild(prompt.firstChild);
+		}
+		promptOffset = 0;
+		prompt.style.left = '-' + promptOffset+ 'px';
+		deleteLatestWord = false;
+	}
+
+
 	/*___________________________________________________*/
 	/*____________________key mapping____________________*/
 
@@ -663,13 +680,13 @@ input.addEventListener('keydown', (e)=> {
 		if(e.keyCode != 8) {
 			correct++;
 			// if letter (in the promp) exists, color it green
-			if(prompt.children[lineIndex].children[wordIndex].children[letterIndex-1]) {
-				prompt.children[lineIndex].children[wordIndex].children[letterIndex-1].style.color = 'green';
+			if(prompt.children[0].children[0].children[letterIndex-1]) {
+				prompt.children[0].children[0].children[letterIndex-1].style.color = 'green';
 			}
 		}else {
 			// if backspace, color it grey again
-			if(prompt.children[lineIndex].children[wordIndex].children[letterIndex]) {
-				prompt.children[lineIndex].children[wordIndex].children[letterIndex].style.color = 'gray';
+			if(prompt.children[0].children[0].children[letterIndex]) {
+				prompt.children[0].children[0].children[letterIndex].style.color = 'gray';
 			}
 		}
 	}else {
@@ -677,13 +694,13 @@ input.addEventListener('keydown', (e)=> {
 		// no points awarded for backspace
 		if(e.keyCode != 8) {
 			errors++;
-			if(prompt.children[lineIndex].children[wordIndex].children[letterIndex-1]) {
-				prompt.children[lineIndex].children[wordIndex].children[letterIndex-1].style.color = 'red';
+			if(prompt.children[0].children[0].children[letterIndex-1]) {
+				prompt.children[0].children[0].children[letterIndex-1].style.color = 'red';
 			}
 		}else {
 			// if backspace, color it grey again
-			if(prompt.children[lineIndex].children[wordIndex].children[letterIndex]) {
-				prompt.children[lineIndex].children[wordIndex].children[letterIndex].style.color = 'gray';
+			if(prompt.children[0].children[0].children[letterIndex]) {
+				prompt.children[0].children[0].children[letterIndex].style.color = 'gray';
 			}
 		}
 	}
@@ -710,7 +727,6 @@ input.addEventListener('keydown', (e)=> {
 	}
 
 	if(e.keyCode === 13 || e.keyCode === 32) {
-		console.log('checking answer');
 		if(checkAnswer() && gameOn) {
 
 			// stops a ' ' character from being put in the input bar
@@ -835,7 +851,6 @@ function updateCheatsheetStyling(level) {
 			let letter = keyboardMap[n.id];
 
 			let lettersToCheck = letterDictionary[objKeys[i]]+punctuation;
-			console.log(lettersToCheck);
 
 			if(lettersToCheck.includes(letter)){
 				n.innerHTML=`
@@ -899,7 +914,6 @@ function reset(){
 
 	idCount = 0; 
 
-	wordIndex =-1;
 	sentenceStartIndex = -1;
 
 
@@ -956,8 +970,6 @@ function reset(){
 	answerLetterArray = answerString.split('');
 	//reset prompt
 
-	// why is this here?
-	handleCorrectWord();
 	// change the 0/50 text
 	updateScoreText();
 
@@ -985,7 +997,7 @@ function convertLineToHTML(letters) {
 
 		 // if last word in the list, close out the final word span tag
 		if(i == letters.length){
-			promptString += "</span></span>";
+			promptString += "</span> </span>";
 			idCount++;
 		}else if(letters[i] == " "){
 		// if letter is a space, that means we have a new word
@@ -998,13 +1010,11 @@ function convertLineToHTML(letters) {
 		}
 
 	}
-	promptString += " </span>"
 	return promptString;
 }
 
 function checkAnswer() {
-	console.log('checking answer: ' + input.value+'!');
-	console.log('correct answer: ' + correctAnswer+'!');
+	// console.log('correct answer: ' + correctAnswer);
 	// user input
 	let inputVal = input.value;
 
@@ -1065,8 +1075,6 @@ function generateLine(maxWords) {
 			sentenceStartIndex = getPosition(sentence, '.', rand)+1;
 			sentenceEndIndex = sentence.substring(sentenceStartIndex + lineLength+2).indexOf(" ") + 
 								sentenceStartIndex +lineLength+1;
-			console.log(sentenceStartIndex);
-			console.log(sentenceEndIndex);
 			str = sentence.substring(sentenceStartIndex, sentenceEndIndex+1);
 		}else{
 
@@ -1161,7 +1169,7 @@ function generateLine(maxWords) {
 
 	// line should not end in a space. Remove the final space char
 	str = str.substring(0, str.length - 1);
-	//console.log(str.split(" "));
+	//console.log(str);
 	return str;
 }
 
@@ -1195,13 +1203,14 @@ function containsUpperCase(word) {
 function handleCorrectWord() {
 	// make sure no 'incorrect' styling still exists
 	input.style.color = 'black';
+	deleteLatestWord = true;
 
-	if(wordIndex >= prompt.children[lineIndex].children.length-1){
-		wordIndex = -1;
+	//remove the first word from the answer string
+	answerWordArray.shift();
+
+	if(prompt.children[0].children.length-1 == 0){
+		console.log('new line ' + prompt);
 		lineIndex++;
-		// this counter the tiny bit of space added to the line span elements that
-		// i think must come from the letter spacing of 3px
-		promptOffset += 6;
 		
 		// when we reach the end of a line, generate a new one IF 
 		// we are more than  2 lines from from the end. This ensures that
@@ -1213,31 +1222,26 @@ function handleCorrectWord() {
 		if(!wordScrollingMode){
 			prompt.children[lineIndex-1].style.display = 'none';
 		}
-		
 	}
 
 	let cur = document.querySelector('#id' + (score+1));
 
 	if(wordScrollingMode) {
 		// update display
+		prompt.classList.add('smoothScroll');
+		// set the offset value of the next word
+		promptOffset += prompt.children[0].children[0].offsetWidth;
 		// move prompt left
 		prompt.style.left = '-' + promptOffset+ 'px';		
 		// make already typed words transparent
-		if(wordIndex >= 0) {
-			document.querySelector('#id' + (score)).style.opacity = '0';
-		}
-		// set the offset value of the next word
-		promptOffset += cur.offsetWidth;
+		prompt.children[0].firstChild.style.opacity = 0;
 	}
+
 
 	// save the correct answer to a variable before removing it 
 	// from the answer string
 	correctAnswer = answerWordArray[0];
 
-	//remove the first word from the answer string
-	answerWordArray.shift();
-
-	wordIndex++;
 }
 
 // updates the numerator and denomitator of the scoretext on 
