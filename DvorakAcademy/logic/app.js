@@ -296,6 +296,7 @@ punctuationModeButton.addEventListener('click', ()=> {
 	}
 
 	createTestSets();
+	updateCheatsheetStyling(currentLevel);
 	reset();
 	
 
@@ -818,6 +819,7 @@ function updateCheatsheetStyling(level) {
 		n.classList.add('inactive');
 		n.classList.remove('active');
 		n.classList.remove('currentLevelKeys');
+		n.classList.remove('punctuation');
 		n.innerHTML=`
 			<span class='letter'></span>
 		`
@@ -832,12 +834,18 @@ function updateCheatsheetStyling(level) {
 			// the letter that will appear on the key
 			let letter = keyboardMap[n.id];
 
-			if(letterDictionary[objKeys[i]].includes(letter)){
+			let lettersToCheck = letterDictionary[objKeys[i]]+punctuation;
+			console.log(lettersToCheck);
+
+			if(lettersToCheck.includes(letter)){
 				n.innerHTML=`
 					<span class='letter'>`+ letter + `</span>
 				`	
 				n.classList.remove('inactive');
-				if(i==0){
+				if(punctuation.includes(letter)){
+					n.classList.remove('active');
+					n.classList.add('punctuation');
+				}else if(i==0){
 					n.classList.add('homeRow');
 				}else if(i==6){
 					// all words selected

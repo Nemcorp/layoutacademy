@@ -460,6 +460,13 @@ input:checked + .slider:before {
 	filter: brightness(1.5);
 }
 
+.punctuation {
+	border-color: white;
+	color: white;
+	opacity: 1;
+	filter: brightness(1.5);
+}
+}
 
 .cheatsheetContainer {
 	display: flex;

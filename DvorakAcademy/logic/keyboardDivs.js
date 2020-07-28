@@ -27,9 +27,9 @@ var keyboardDivs = `
 		<div class="key lvl5" id='KeyI'><span class="letter"></span></div>
 		<div class="key lvl5" id='KeyO'><span class="letter"></span></div>
 		<div class="key lvl5" id='KeyP'><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
-		<div class="key"><span class="letter"></span></div>
+		<div class="key" id='BracketLeft'><span class="letter"></span></div>
+		<div class="key" id='BracketRight'><span class="letter"></span></div>
+		<div class="key" id='Backslash'><span class="letter"></span></div>
 	</div>
 	<div class=row>
 		<div class="key bigger"><span class="letter"></span></div>
