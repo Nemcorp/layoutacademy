@@ -75,6 +75,7 @@ var sentenceStartIndex = -1; // keeps track of where we are in full sentence mod
 var sentenceEndIndex;
 var lineLength = 35;
 var lineIndex = 0;  // tracks which line of the prompt we are currently on
+var wordIndex = 0;  // tracks which word you are on (ONLY IN PARAGRAPH MODE)
 var idCount = 0;
 var answerWordArray = [];
 
@@ -684,13 +685,13 @@ input.addEventListener('keydown', (e)=> {
 		if(e.keyCode != 8) {
 			correct++;
 			// if letter (in the promp) exists, color it green
-			if(prompt.children[0].children[0].children[letterIndex-1]) {
-				prompt.children[0].children[0].children[letterIndex-1].style.color = 'green';
+			if(prompt.children[0].children[wordIndex].children[letterIndex-1]) {
+				prompt.children[0].children[wordIndex].children[letterIndex-1].style.color = 'green';
 			}
 		}else {
 			// if backspace, color it grey again
-			if(prompt.children[0].children[0].children[letterIndex]) {
-				prompt.children[0].children[0].children[letterIndex].style.color = 'gray';
+			if(prompt.children[0].children[wordIndex].children[letterIndex]) {
+				prompt.children[0].children[wordIndex].children[letterIndex].style.color = 'gray';
 			}
 		}
 	}else {
@@ -698,19 +699,19 @@ input.addEventListener('keydown', (e)=> {
 		// no points awarded for backspace
 		if(e.keyCode != 8) {
 			errors++;
-			if(prompt.children[0].children[0].children[letterIndex-1]) {
-				prompt.children[0].children[0].children[letterIndex-1].style.color = 'red';
+			if(prompt.children[0].children[wordIndex].children[letterIndex-1]) {
+				prompt.children[0].children[wordIndex].children[letterIndex-1].style.color = 'red';
 			}
 		}else {
 			// if backspace, color it grey again
-			if(prompt.children[0].children[0].children[letterIndex]) {
-				prompt.children[0].children[0].children[letterIndex].style.color = 'gray';
+			if(prompt.children[0].children[wordIndex].children[letterIndex]) {
+				prompt.children[0].children[wordIndex].children[letterIndex].style.color = 'gray';
 			}
 		}
 	}
 	
-	console.log('errors: ' + errors + ' \n correct: ' + correct);
-	console.log("accuracy: " + correct/(errors+correct));
+	//console.log('errors: ' + errors + ' \n correct: ' + correct);
+	//console.log("accuracy: " + correct/(errors+correct));
 
 	/*____________________accuracy checking____________________*/
 	/*_________________________________________________________*/
@@ -917,7 +918,6 @@ function reset(){
  	answerString = '';
  	input.value = '';
  	answerWordArray = [];
- 	lineIndex = 0;
 
 	idCount = 0; 
 
@@ -931,6 +931,8 @@ function reset(){
 	console.log('reset called');
 	// set current letter index back to 0
 	letterIndex = 0;
+	wordIndex = 0;
+	lineIndex = 0;
 
 	// prompt offset back to 0
 	promptOffset = 0;
@@ -1214,7 +1216,7 @@ function handleCorrectWord() {
 	//remove the first word from the answer string
 	answerWordArray.shift();
 
-	if(prompt.children[0].children.length-1 == 0){
+	if(prompt.children[0].children.length-1 == 0 || wordIndex >= prompt.children[0].children.length-1){
 		console.log('new line ' + prompt);
 		lineIndex++;
 		
@@ -1227,6 +1229,7 @@ function handleCorrectWord() {
 		//make the first line of the prompt transparent
 		if(!wordScrollingMode){
 			prompt.removeChild(prompt.children[0]);
+			wordIndex = -1;
 		}
 	}
 
@@ -1242,6 +1245,9 @@ function handleCorrectWord() {
 		prompt.style.left = '-' + promptOffset+ 'px';		
 		// make already typed words transparent
 		prompt.children[0].firstChild.style.opacity = 0;
+	}else {
+		// if in paragraph mode, increase word index
+		wordIndex++;
 	}
 
 
