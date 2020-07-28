@@ -64,7 +64,7 @@ var keyboardDivs = `
 		<div class="key"><span class="letter"></span></div>
 		<div class="key"><span class="letter"></span></div>
 		<div class="key"><span class="letter"></span></div>
-		<div class="key space"><span class="letter"></span></div>
+		<div class="key Space"><span class="letter"></span></div>
 		<div class="key"><span class="letter"></span></div>
 		<div class="key"><span class="letter"></span></div>
 		<div class="key bigger"><span class="letter"></span></div>
@@ -141,7 +141,7 @@ var customLayout = `
 		<div class="cKey"><span class="letter"></span></div>
 		<div class="cKey"><span class="letter"></span></div>
 		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey space"><span class="letter"></span></div>
+		<div class="cKey Space"><span class="letter"></span></div>
 		<div class="cKey"><span class="letter"></span></div>
 		<div class="cKey"><span class="letter"></span></div>
 		<div class="cKey bigger"><span class="letter"></span></div>
@@ -217,7 +217,7 @@ var customShiftLayout = `
 		<div class="cKey"><span class="letter"></span></div>
 		<div class="cKey"><span class="letter"></span></div>
 		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey space"><span class="letter"></span></div>
+		<div class="cKey Space"><span class="letter"></span></div>
 		<div class="cKey"><span class="letter"></span></div>
 		<div class="cKey"><span class="letter"></span></div>
 		<div class="cKey bigger"><span class="letter"></span></div>

@@ -645,6 +645,10 @@ input.addEventListener('keydown', (e)=> {
 			&& e.keyCode != 13 && e.keyCode != 32 ){
 				input.value += e.key;
 		}
+		if(e.keyCode == 32){
+			console.log('space bar');
+			input.value += " ";
+		}
 	}
 
 	/*____________________key mapping____________________*/
@@ -705,8 +709,8 @@ input.addEventListener('keydown', (e)=> {
 		}
 	}
 	
-	// console.log('errors: ' + errors + ' \n correct: ' + correct);
-	// console.log("accuracy: " + correct/(errors+correct));
+	console.log('errors: ' + errors + ' \n correct: ' + correct);
+	console.log("accuracy: " + correct/(errors+correct));
 
 	/*____________________accuracy checking____________________*/
 	/*_________________________________________________________*/
@@ -751,7 +755,10 @@ input.addEventListener('keydown', (e)=> {
 			// to the beginning of the word
 			letterIndex = 0;
 		
-		}// end if statement
+		}else {
+			console.log('error space');
+			input.value += " ";
+		}
 	}// end keyEvent if statement
 
 	/*____________________listener for space and enter keys____________________*/
@@ -1203,7 +1210,6 @@ function containsUpperCase(word) {
 function handleCorrectWord() {
 	// make sure no 'incorrect' styling still exists
 	input.style.color = 'black';
-	deleteLatestWord = true;
 
 	//remove the first word from the answer string
 	answerWordArray.shift();
@@ -1220,13 +1226,14 @@ function handleCorrectWord() {
 
 		//make the first line of the prompt transparent
 		if(!wordScrollingMode){
-			prompt.children[lineIndex-1].style.display = 'none';
+			prompt.removeChild(prompt.children[0]);
 		}
 	}
 
 	let cur = document.querySelector('#id' + (score+1));
 
 	if(wordScrollingMode) {
+		deleteLatestWord = true;
 		// update display
 		prompt.classList.add('smoothScroll');
 		// set the offset value of the next word
