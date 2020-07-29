@@ -1,4 +1,4 @@
-var alphabet = 'abcdefghijklmnopqrstuvwxyz';
+var alphabet = "abcdefghijklmnopqrstuvwxyz";
 
 levelDictionaries = {
 	dvorak : {

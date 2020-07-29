@@ -79,6 +79,9 @@ var wordIndex = 0;  // tracks which word you are on (ONLY IN PARAGRAPH MODE)
 var idCount = 0;
 var answerWordArray = [];
 var specialKeyCodes = [27, 9, 20, 17, 18, 93, 36, 37, 38, 39, 40, 144, 36, 8, 16, 30, 32, 13, 8]; // list of all keycodes for keys we typically want to ignore
+var punctuation = ""; // this contains puncuation to include in our test sets. Set to empty at first
+var requiredLetters = "";//levelDictionaries[currentLayout]['lvl'+currentLevel]+punctuation;; // keeps track of letters that still need to be used in the current level
+
 
 // preference menu dom elements
 var preferenceButton 		= document.querySelector('.preferenceButton'),
@@ -93,7 +96,6 @@ timeLimitModeButton			= document.querySelector('.timeLimitModeButton'),
 timeLimitModeInput			= document.querySelector('.timeLimitModeInput')
 wordScrollingModeButton		= document.querySelector('.wordScrollingModeButton'),
 punctuationModeButton       = document.querySelector('.punctuationModeButton');
-var punctuation = ""; // this contains puncuation to include in our test sets. Set to empty at first
 
 start();
 init();
@@ -319,6 +321,8 @@ select.addEventListener('change', (e)=> {
 	if(select.value == 'custom') {
 		customInput.style.display = 'flex';
 		openUIButton.style.display = 'block';
+		let k = document.querySelector('.defaultSelectedKey');
+		selectInputKey(k);
 	}else {
 		customInput.style.display = 'none';
 		openUIButton.style.display = 'none';
@@ -331,13 +335,31 @@ select.addEventListener('change', (e)=> {
 
 	// reset everything
 	init();
+
+	if(select.value == 'custom'){
+		customUIKeyInput.focus();
+	}
 });
 
 // listener for custom layout ui open button
 openUIButton.addEventListener('click', ()=> {
 	customInput.style.display = 'flex';
+	let k = document.querySelector('.defaultSelectedKey');
+	selectInputKey(k);
 });
 
+// selects an input key on the custom keyboard and applies the correct styling
+function selectInputKey(k){
+	// clear previous styling
+	clearSelectedInput();
+
+	k.classList.add('selectedInputKey');
+	if(k.children[0].innerHTML == '') {
+		k.children[0].innerHTML = '_';
+	}
+	k.children[0].classList.add('pulse');
+	customUIKeyInput.focus();
+}
 
 // listener for the custom layout ui 'done' button
 doneButton.addEventListener('click', ()=> {
@@ -604,7 +626,6 @@ input.addEventListener('keydown', (e)=> {
 		// delete last line fromt prompt and set the offset back to 0
 		prompt.firstChild.removeChild(prompt.firstChild.firstChild);
 		if(prompt.firstChild.children.length == 0){
-			console.log('delete first line');
 			prompt.removeChild(prompt.firstChild);
 		}
 		promptOffset = 0;
@@ -641,15 +662,15 @@ input.addEventListener('keydown', (e)=> {
 			}
 		}
 	}else {
-		console.log(e.keyCode);
-		console.log(specialKeyCodes.includes(e.keyCode));
+		//console.log(e.keyCode);
+		//console.log(specialKeyCodes.includes(e.keyCode));
 		if(!specialKeyCodes.includes(e.keyCode) || e.keyCode > 48){
 			input.value += e.key;
 		}else {
-			console.log('special Key');
+			//console.log('special Key');
 		}
 		if(e.keyCode == 32){
-			console.log('space bar');
+			//console.log('space bar');
 			//input.value += " ";
 		}
 	}
@@ -664,7 +685,7 @@ input.addEventListener('keydown', (e)=> {
 
 	// if we have a backspace, decrement letter index and role back the input value
 	if(e.keyCode == 8) {
-		console.log('backspace');
+		//console.log('backspace');
 		input.value = input.value.substr(0,input.value.length-1);
 		letterIndex--;
 		// letter index cannot be < 0
@@ -917,10 +938,14 @@ resetButton.addEventListener('click', ()=> {
 // Set a new prompt word and change variable text
 function reset(){
 
+	deleteFirstLine		= false; // make this true every time we finish typing a line
+	deleteLatestWord    = false;
+
  	prompt.innerHTML = '';
  	answerString = '';
  	input.value = '';
  	answerWordArray = [];
+
 
 	idCount = 0; 
 
@@ -939,6 +964,7 @@ function reset(){
 
 	// prompt offset back to 0
 	promptOffset = 0;
+	prompt.style.left = 0;
 
 	// set correct and errors counts to 0
 	correct = 0;
@@ -947,6 +973,8 @@ function reset(){
 	// set to -1 before each game because score is incremented every time we call
 	// updateScoreText(), including on first load
 	score = -1;
+
+	requiredLetters = (levelDictionaries[currentLayout]['lvl'+currentLevel]+punctuation).split("");
 
 	// reset clock
 	if(!timeLimitMode) {
@@ -1078,6 +1106,7 @@ function endGame() {
 // generates a single line to be appended to the answer array
 // if a line with a maximum number of words is desired, pass it in as a parameter
 function generateLine(maxWords) {
+	console.log('genning a line');
 	let str = '';
 
 	if(fullSentenceMode) {
@@ -1104,7 +1133,7 @@ function generateLine(maxWords) {
 
 	if(wordLists['lvl'+currentLevel].length > 0){
 		let startingLetters = levelDictionaries[currentLayout]['lvl'+currentLevel]+punctuation;
-		let requiredLetters = startingLetters.split(''); 
+		//requiredLetters = startingLetters.split(''); 
 	
 		// if this counter hits a high enough number, there are likely no words matching the search
 		// criteria. If that happens, reset required letters
@@ -1137,8 +1166,7 @@ function generateLine(maxWords) {
 
 			// if the word does not contain any required letters, throw it out and choose again
 			if(!contains(wordToAdd, requiredLetters)) {
-				//console.log(wordToAdd + ' doesnt have any required letters');
-				
+				// console.log(wordToAdd + ' doesnt have any required letters from ' + requiredLetters);
 			}else if(onlyLower && containsUpperCase(wordToAdd)) {
 				// if only lower case is allowed and the word to add contains an uppercase,
 				// throw out the word and try again
@@ -1154,7 +1182,7 @@ function generateLine(maxWords) {
 				removeIncludedLetters(requiredLetters, wordToAdd);
 								// if we have used all required letters, reset it
 				if(requiredLetters.length == 0 ) {
-					requiredLetters = startingLetters.split(); 
+					requiredLetters = startingLetters.split(''); 
 				}
 			}
 
@@ -1181,7 +1209,6 @@ function generateLine(maxWords) {
 
 	// line should not end in a space. Remove the final space char
 	str = str.substring(0, str.length - 1);
-	//console.log(str);
 	return str;
 }
 
@@ -1280,20 +1307,20 @@ function clearCurrentLevelStyle() {
 
 // set the word list for each level
 function createTestSets(){
-	let objKeys = Object.keys(wordLists);
-	let testSet = ''; // the list of letters to be included in each level
+	let objKeys = Object.keys(wordLists); // the level keys of each of the wordLists
+	let includedLetters = punctuation; // the list of letters to be included in each level
 
 	// for each level, add new letters to the test set and create a new list
 	for(let i = 0; i < objKeys.length; i++) {
+		let requiredLetters = levelDictionaries[currentLayout]['lvl'+(i+1)]+punctuation;
 		// add punctuation
-		if(i == 0){
-			testSet += punctuation;
-		}
-		testSet += letterDictionary[objKeys[i]];
+	
+		includedLetters += letterDictionary[objKeys[i]];
+
 		wordLists[objKeys[i]] = [];
 		//console.log('level ' +(i+1) + ": " + wordLists[objKeys[i]]);
-		wordLists[objKeys[i]] = generateList(testSet, levelDictionaries[currentLayout]['lvl'+(i+1)]+punctuation);
-		//console.log('level ' +(i+1) + ": " + wordLists[objKeys[i]]);
+		wordLists[objKeys[i]] = generateList(includedLetters, requiredLetters);
+		// if(i == 6) console.log('level ' +(i+1) + ": " + wordLists[objKeys[i]]);
 	}
 }
 

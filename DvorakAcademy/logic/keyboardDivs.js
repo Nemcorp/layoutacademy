@@ -91,7 +91,7 @@ var customLayout = `
 	</div>
 	<div class=row>
 		<div class="cKey big rowStart" id='customTab' ><span class="letter"></span></div>
-		<div class="cKey normalCKey" id='customKeyQ'><span  class="letter"></span></div>
+		<div class="cKey normalCKey selectedInputKey defaultSelectedKey" id='customKeyQ'><span  class="letter pulse">_</span></div>
 		<div class="cKey normalCKey" id='customKeyW'><span  class="letter"></span></div>
 		<div class="cKey normalCKey" id='customKeyE'><span  class="letter"></span></div>
 		<div class="cKey normalCKey" id='customKeyR'><span  class="letter"></span></div>
