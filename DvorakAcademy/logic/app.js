@@ -78,6 +78,7 @@ var lineIndex = 0;  // tracks which line of the prompt we are currently on
 var wordIndex = 0;  // tracks which word you are on (ONLY IN PARAGRAPH MODE)
 var idCount = 0;
 var answerWordArray = [];
+var specialKeyCodes = [27, 9, 20, 17, 18, 93, 36, 37, 38, 39, 40, 144, 36, 8, 16, 30, 32, 13]; // list of all keycodes for keys we typically want to ignore
 
 // preference menu dom elements
 var preferenceButton 		= document.querySelector('.preferenceButton'),
@@ -641,14 +642,17 @@ input.addEventListener('keydown', (e)=> {
 			}
 		}
 	}else {
-		if(e.keyCode != 8 && e.keyCode != 9 && e.keyCode != 20 &&
-			e.keyCode != 16 && e.keyCode != 17 && e.keyCode != 46 
-			&& e.keyCode != 13 && e.keyCode != 32 ){
-				input.value += e.key;
+		console.log(e.keyCode);
+		console.log(specialKeyCodes.includes(e.keyCode));
+		if(specialKeyCodes.includes(e.keyCode)){
+				// input.value += e.key;
+			
+		}else {
+			input.value += e.key;
 		}
 		if(e.keyCode == 32){
 			console.log('space bar');
-			input.value += " ";
+			//input.value += " ";
 		}
 	}
 
@@ -672,8 +676,7 @@ input.addEventListener('keydown', (e)=> {
 
 	// if key produces a character, (ie not shift, backspace, or another 
 	// utility key) increment letter index
-	if(e.keyCode != 16 && e.keyCode != 13 && e.keyCode != 17 
-		&& e.keyCode != 20 && e.keyCode != 8) {
+	if(!specialKeyCodes.includes(e.keyCode)){
 		letterIndex++;
 	}
 
@@ -759,6 +762,7 @@ input.addEventListener('keydown', (e)=> {
 		}else {
 			console.log('error space');
 			input.value += " ";
+			letterIndex++;
 		}
 	}// end keyEvent if statement
 
@@ -774,8 +778,8 @@ function checkAnswerToIndex() {
 	// user input
 	let inputVal = input.value;
 
-	//.log('checking input ' +inputVal.slice(0,letterIndex));
-	// console.log(correctAnswer.slice(0,letterIndex));
+	console.log('checking input ' +inputVal.slice(0,letterIndex) + "!");
+	console.log(correctAnswer.slice(0,letterIndex)+ "!");
 	return inputVal.slice(0,letterIndex) == correctAnswer.slice(0,letterIndex);
 }
 
