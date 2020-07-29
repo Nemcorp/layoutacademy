@@ -91,49 +91,49 @@ var customLayout = `
 	</div>
 	<div class=row>
 		<div class="cKey big rowStart" id='customTab' ><span class="letter"></span></div>
-		<div class="cKey" id='customKeyQ'><span  class="letter"></span></div>
-		<div class="cKey" id='customKeyW'><span  class="letter"></span></div>
-		<div class="cKey" id='customKeyE'><span  class="letter"></span></div>
-		<div class="cKey" id='customKeyR'><span  class="letter"></span></div>
-		<div class="cKey" id='customKeyT'><span  class="letter"></span></div>
-		<div class="cKey" id='customKeyY'><span  class="letter"></span></div>
-		<div class="cKey" id='customKeyU'><span  class="letter"></span></div>
-		<div class="cKey" id='customKeyI'><span  class="letter"></span></div>
-		<div class="cKey" id='customKeyO'><span  class="letter"></span></div>
-		<div class="cKey" id='customKeyP'><span  class="letter"></span></div>
-		<div class="cKey" id='customBracketLeft'><span  class="letter"></span></div>
-		<div class="cKey" id='customBracketRight'><span  class="letter"></span></div>
+		<div class="cKey normalCKey" id='customKeyQ'><span  class="letter"></span></div>
+		<div class="cKey normalCKey" id='customKeyW'><span  class="letter"></span></div>
+		<div class="cKey normalCKey" id='customKeyE'><span  class="letter"></span></div>
+		<div class="cKey normalCKey" id='customKeyR'><span  class="letter"></span></div>
+		<div class="cKey normalCKey" id='customKeyT'><span  class="letter"></span></div>
+		<div class="cKey normalCKey" id='customKeyY'><span  class="letter"></span></div>
+		<div class="cKey normalCKey" id='customKeyU'><span  class="letter"></span></div>
+		<div class="cKey normalCKey" id='customKeyI'><span  class="letter"></span></div>
+		<div class="cKey normalCKey" id='customKeyO'><span  class="letter"></span></div>
+		<div class="cKey normalCKey" id='customKeyP'><span  class="letter"></span></div>
+		<div class="cKey normalCKey" id='customBracketLeft'><span  class="letter"></span></div>
+		<div class="cKey normalCKey" id='customBracketRight'><span  class="letter"></span></div>
 		<div class="cKey rowEnd" id='customBackslash'><span class="letter"></span></div>
 	</div>
 	<div class=row>
 		<div class="cKey bigger rowStart" id='customCapsLock'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='customKeyA'>
+		<div class="cKey lvl1 normalCKey" id='customKeyA'>
 			<span class="letter"></span>
 		</div>
-		<div class="cKey lvl1" id='customKeyS'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='customKeyD'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='customKeyF'><span class="letter"></span></div>
-		<div class="cKey lvl2" id='customKeyG'><span class="letter"></span></div>
-		<div class="cKey lvl2" id='customKeyH'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='customKeyJ'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='customKeyK'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='customKeyL'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='customSemicolon'><span class="letter"></span></div>
-		<div class="cKey" id='customQuote'><span class="letter"></span></div>
+		<div class="cKey lvl1 normalCKey" id='customKeyS'><span class="letter"></span></div>
+		<div class="cKey lvl1 normalCKey" id='customKeyD'><span class="letter"></span></div>
+		<div class="cKey lvl1 normalCKey" id='customKeyF'><span class="letter"></span></div>
+		<div class="cKey lvl2 normalCKey" id='customKeyG'><span class="letter"></span></div>
+		<div class="cKey lvl2 normalCKey" id='customKeyH'><span class="letter"></span></div>
+		<div class="cKey lvl1 normalCKey" id='customKeyJ'><span class="letter"></span></div>
+		<div class="cKey lvl1 normalCKey" id='customKeyK'><span class="letter"></span></div>
+		<div class="cKey lvl1 normalCKey" id='customKeyL'><span class="letter"></span></div>
+		<div class="cKey lvl1 normalCKey" id='customSemicolon'><span class="letter"></span></div>
+		<div class="cKey normalCKey" id='customQuote'><span class="letter"></span></div>
 		<div class="cKey bigger rowEnd" id='customEnter'><span class="letter"></span></div>
 	</div>
 	<div class=row>
 		<div class="cKey biggest rowStart"><span class="letter"></span></div>
-		<div class="cKey" id='customKeyZ'><span class="letter"></span></div>
-		<div class="cKey lvl6" id='customKeyX'><span class="letter"></span></div>
-		<div class="cKey lvl6" id='customKeyC'><span class="letter"></span></div>
-		<div class="cKey lvl4" id='customKeyV'><span class="letter"></span></div>
-		<div class="cKey lvl4" id='customKeyB'><span class="letter"></span></div>
-		<div class="cKey lvl4" id='customKeyN'><span class="letter"></span></div>
-		<div class="cKey lvl4" id='customKeyM'><span class="letter"></span></div>
-		<div class="cKey lvl5" id='customComma'><span class="letter"></span></div>
-		<div class="cKey lvl6" id='customPeriod'><span class="letter"></span></div>
-		<div class="cKey lvl6" id='customSlash'><span class="letter"></span></div>
+		<div class="cKey normalCKey" id='customKeyZ'><span class="letter"></span></div>
+		<div class="cKey lvl6 normalCKey" id='customKeyX'><span class="letter"></span></div>
+		<div class="cKey lvl6 normalCKey" id='customKeyC'><span class="letter"></span></div>
+		<div class="cKey lvl4 normalCKey" id='customKeyV'><span class="letter"></span></div>
+		<div class="cKey lvl4 normalCKey" id='customKeyB'><span class="letter"></span></div>
+		<div class="cKey lvl4 normalCKey" id='customKeyN'><span class="letter"></span></div>
+		<div class="cKey lvl4 normalCKey" id='customKeyM'><span class="letter"></span></div>
+		<div class="cKey lvl5 normalCKey" id='customComma'><span class="letter"></span></div>
+		<div class="cKey lvl6 normalCKey" id='customPeriod'><span class="letter"></span></div>
+		<div class="cKey lvl6 normalCKey" id='customSlash'><span class="letter"></span></div>
 		<div class="cKey biggest rowEnd finalKey"><span class="letter"></span></div>
 	</div>
 	<div class='row'>
@@ -148,89 +148,3 @@ var customLayout = `
 		<div class="cKey rowEnd"><span class="letter"></span></div>
 	</div>
 `;
-
-
-var customShiftLayout = `
-	<div class=row>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey big"><span class="letter"></span></div>
-	</div>
-	<div class=row>
-		<div class="cKey big"><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomKeyQ'><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomKeyW'><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomKeyE'><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomKeyR'><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomKeyT'><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomKeyY'><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomKeyU'><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomKeyI'><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomKeyO'><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomKeyP'><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomBracketLeft'><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomBracketRight'><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-	</div>
-	<div class=row>
-		<div class="cKey bigger"><span class="letter"></span></div>
-		<div class="cKey lvl1" id='shiftcustomKeyA'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='shiftcustomKeyS'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='shiftcustomKeyD'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='shiftcustomKeyF'><span class="letter"></span></div>
-		<div class="cKey lvl2" id='shiftcustomKeyG'><span class="letter"></span></div>
-		<div class="cKey lvl2" id='shiftcustomKeyH'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='shiftcustomKeyJ'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='shiftcustomKeyK'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='shiftcustomKeyL'><span class="letter"></span></div>
-		<div class="cKey lvl1" id='shiftcustomSemicolon'><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomQuote'><span class="letter"></span></div>
-		<div class="cKey bigger"><span class="letter"></span></div>
-	</div>
-	<div class=row>
-		<div class="cKey biggest"><span class="letter"></span></div>
-		<div class="cKey" id='shiftcustomKeyZ'><span class="letter"></span></div>
-		<div class="cKey lvl6" id='shiftcustomKeyX'><span class="letter"></span></div>
-		<div class="cKey lvl6" id='shiftcustomKeyC'><span class="letter"></span></div>
-		<div class="cKey lvl4" id='shiftcustomKeyV'><span class="letter"></span></div>
-		<div class="cKey lvl4" id='shiftcustomKeyB'><span class="letter"></span></div>
-		<div class="cKey lvl4" id='shiftcustomKeyN'><span class="letter"></span></div>
-		<div class="cKey lvl4" id='shiftcustomKeyM'><span class="letter"></span></div>
-		<div class="cKey lvl5" id='shiftcustomComma'><span class="letter"></span></div>
-		<div class="cKey lvl6" id='shiftcustomPeriod'><span class="letter"></span></div>
-		<div class="cKey lvl6" id='shiftcustomSlash'><span class="letter"></span></div>
-		<div class="cKey biggest"><span class="letter"></span></div>
-	</div>
-	<div class=row>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey Space"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-		<div class="cKey bigger"><span class="letter"></span></div>
-		<div class="cKey"><span class="letter"></span></div>
-	</div>
-`;
-
-
-
-
-
-
-
-
-
-

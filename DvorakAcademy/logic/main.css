@@ -558,6 +558,10 @@ input:checked + .slider:before {
 	font-size: 2vmax;
 }
 
+.normalCKey {
+	border-color: #777;
+}
+
 .selectedInputKey, .selectedInputKey:hover {
 	border-color: white;
 	opacity: .9;
