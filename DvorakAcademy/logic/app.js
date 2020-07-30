@@ -25,7 +25,7 @@ inputKeyboard 	= document.querySelector('#inputKeyboard'),
 // keyboard layout customization ui
 inputShiftKeyboard = document.querySelector('#inputShiftKeyboard'), 
 // the dom element representing the shift keys in customization ui
-customInput 	= document.querySelector('#customInput'),
+customInput 	= document.querySelector('.customInput'),
 //
 buttons 		= document.querySelector('nav').children,
 //
@@ -36,8 +36,10 @@ select 			= document.querySelector('select'),
 mappingStatusButton = document.querySelector('#mappingToggle label input'),
 //
 mappingStatusText = document.querySelector('#mappingToggle h6 span'),
-// done button on the custom layout ui
-doneButton 		 = document.querySelector('.doneButton'),
+// save button on the custom layout ui
+saveButton 		 = document.querySelector('.saveButton'),
+// discard button on the custom layout ui
+discardButton 		 = document.querySelector('.discardButton'),
 // open button for the custom layout ui
 openUIButton 		 = document.querySelector('.openUIButton'),
 // custom ui input field for custom keys
@@ -81,7 +83,8 @@ var answerWordArray = [];
 var specialKeyCodes = [27, 9, 20, 17, 18, 93, 36, 37, 38, 39, 40, 144, 36, 8, 16, 30, 32, 13, 8]; // list of all keycodes for keys we typically want to ignore
 var punctuation = ""; // this contains puncuation to include in our test sets. Set to empty at first
 var requiredLetters = "";//levelDictionaries[currentLayout]['lvl'+currentLevel]+punctuation;; // keeps track of letters that still need to be used in the current level
-
+var initialCustomKeyboardState = ''; // saves a temporary copy of a keyboard layout that a user can return to by discarding changes
+var initialCustomLevelsState = ''; // saves a temporary copy of custom levels that a user can return to by discarding changes
 
 // preference menu dom elements
 var preferenceButton 		= document.querySelector('.preferenceButton'),
@@ -319,10 +322,8 @@ punctuationModeButton.addEventListener('click', ()=> {
 select.addEventListener('change', (e)=> {
 	// if custom input is selected, show the ui for custom keyboards
 	if(select.value == 'custom') {
-		customInput.style.display = 'flex';
 		openUIButton.style.display = 'block';
-		let k = document.querySelector('.defaultSelectedKey');
-		selectInputKey(k);
+		startCustomKeyboardEditing();
 	}else {
 		customInput.style.display = 'none';
 		openUIButton.style.display = 'none';
@@ -344,10 +345,18 @@ select.addEventListener('change', (e)=> {
 
 // listener for custom layout ui open button
 openUIButton.addEventListener('click', ()=> {
+	startCustomKeyboardEditing();
+});
+
+// called whenever a user opens the custom editor. Sets correct displays and saves an initial state
+// of the keyboard to refer back to if the user wants to discard changes
+function startCustomKeyboardEditing() {
+	initialCustomKeyboardState = Object.assign({}, layoutMaps['custom']);
+	initialCustomLevelsState = Object.assign({}, levelDictionaries['custom']);
 	customInput.style.display = 'flex';
 	let k = document.querySelector('.defaultSelectedKey');
 	selectInputKey(k);
-});
+}
 
 // selects an input key on the custom keyboard and applies the correct styling
 function selectInputKey(k){
@@ -363,29 +372,28 @@ function selectInputKey(k){
 }
 
 // listener for the custom layout ui 'done' button
-doneButton.addEventListener('click', ()=> {
+saveButton.addEventListener('click', ()=> {
 	customInput.style.display = 'none';
 	// remove active class from current key
 	clearSelectedInput();
 	init();
 });
 
-// // listen for shift key to display different layer of custom ui input 
-// document.addEventListener('keydown', (e)=> { 
-// 	if(e.keyCode == 16){
-// 		inputKeyboard.style.display = 'none';
-// 		inputShiftKeyboard.style.display = 'block';
-// 		shiftDown = true;
-// 	}
-// });
-// // listen for shift key up to display different layer of custom ui input 
-// document.addEventListener('keyup', (e)=> { 
-// 	if(e.keyCode == 16){
-// 		inputKeyboard.style.display = 'block';
-// 		inputShiftKeyboard.style.display = 'none';
-// 		shiftDown = false;
-// 	}
-// });
+// listener for the custom layout ui 'done' button
+discardButton.addEventListener('click', ()=> {
+	customInput.style.display = 'none';
+	// remove active class from current key
+	clearSelectedInput();
+
+
+	// load the old layout to revert changes, aka discard changes
+	loadCustomLayout(initialCustomKeyboardState);
+	loadCustomLevels(initialCustomLevelsState);
+
+	console.log(levelDictionaries.custom);
+
+	init();
+});
 
 // general click listener
 document.addEventListener('click', function (e) {
@@ -460,15 +468,7 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 
 	// if there was already a value for this key, remove it from all levels
 	if(k.children[0].innerHTML != '_') {
-		let lvls = Object.keys(levelDictionaries['custom']);
-		for(lvl of lvls) {
-			let keyCode = k.id.toString().replace('custom','');
-			console.log(layoutMaps.custom[keyCode]);
-			// replace any instances of letter previously found on key
-			levelDictionaries['custom'][lvl] = levelDictionaries['custom'][lvl].replace(layoutMaps.custom[keyCode], '');
-			// replace mapping for letter previously found on key
-			layoutMaps['custom'][keyCode] = " ";
-		}
+		removeKeyFromLevels(k);
 	}
 
 
@@ -495,15 +495,7 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 				layoutMaps.custom[keyCode] = e.key;
 			}
 
-			// if there is no key already defined for the shift layer, and the shift
-			// key is not being held down, then set the shift value to 
-			// be the uppercase of the new input
-			if(!shiftDown && layoutMaps.custom.shiftLayer[keyCode] == " "){
-				layoutMaps.custom.shiftLayer[keyCode] = e.key.toUpperCase();
-			}else if(shiftDown){
-				// if shift is being held down, the shift layer value should be the input
-				layoutMaps.custom.shiftLayer[keyCode] = e.key
-			}
+			layoutMaps.custom.shiftLayer[keyCode] = e.key.toUpperCase();
 		}
 
 		//new levels data
@@ -519,18 +511,19 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 		// switch to next input key
 		switchSelectedInputKey('right');
 	}else if(e.keyCode == 8 || e.keyCode == 46 ) {
+		// switchSelectedInputKey('left');
 		// if backspace, remove letter from the ui element and the keyboard map
 		k.children[0].innerHTML = '_';
 		k.classList.remove('active');
 		layoutMaps.custom.shiftLayer[k.id] = " ";
 
-		// remove deleted letter from keymapping
+		// remove deleted letter from keymapping and levels
 		if(k.id){
 			//console.log('key added to mapping ' + e.key);
 			layoutMaps.custom[k.id] = ' ';
+			removeKeyFromLevels(k);
 		}
 	}else if(e.keyCode == 37) {
-		console.log('left');
 		switchSelectedInputKey('left');
 	}else if(e.keyCode == 39) {
 		console.log('right');
@@ -546,6 +539,50 @@ customUIKeyInput.addEventListener('keydown', (e)=> {
 	// clear input field
 	customUIKeyInput.value = '';
 });
+
+// given a key object, k, remove a value of the letter on k from all levels
+function removeKeyFromLevels(k) {
+	let lvls = Object.keys(levelDictionaries['custom']);
+	for(lvl of lvls) {
+		let keyCode = k.id.toString().replace('custom','');
+		//console.log(levelDictionaries.custom.lvl[keyCode]);
+		// replace any instances of letter previously found on key
+		levelDictionaries['custom'][lvl] = levelDictionaries['custom'][lvl].replace(k.children[0].innerHTML, '');
+		// replace mapping for letter previously found on key
+		layoutMaps['custom'][keyCode] = " ";
+	}
+}
+
+// sets the custom keyboard layout to be equal to the json parameter passed in
+function loadCustomLayout(newCustomLayout) {
+	console.log('new layout');
+	layoutMaps.custom = Object.assign({},newCustomLayout);
+	keyboardMap = layoutMaps.custom;
+
+	let customKeys = document.querySelectorAll('.cKey');
+	// load letters onto the custom ui input keyboard
+	customKeys.forEach((cKey)=> {
+		let currentKeyName = cKey.id.substring(6);
+		// console.log(currentKeyName);
+		
+		// if the value of the new layout key is not undefined, set it to the corresponding dom element
+		if(keyboardMap[currentKeyName]){
+			// if key is blank, remove active styling
+			if(keyboardMap[currentKeyName] == " "){
+				cKey.classList.remove('active');
+			}
+			cKey.innerHTML = `
+				<span class='letter'>` + keyboardMap[currentKeyName] + `</span>
+			`;
+		}	
+	});
+}
+
+// sets the custom levels to be equal to the json parameter passed in
+function loadCustomLevels(newCustomLevels) {
+	levelDictionaries.custom = Object.assign({},newCustomLevels);
+	letterDictionary = levelDictionaries['custom'];
+}
 
 // switches the focus to the next input key, determined by the direction parameter
 // Parameter is either left, right, up, or down
@@ -799,8 +836,8 @@ function checkAnswerToIndex() {
 	// user input
 	let inputVal = input.value;
 
-	console.log('checking input ' +inputVal.slice(0,letterIndex) + "!");
-	console.log(correctAnswer.slice(0,letterIndex)+ "!");
+	// console.log('checking input ' +inputVal.slice(0,letterIndex) + "!");
+	// console.log(correctAnswer.slice(0,letterIndex)+ "!");
 	return inputVal.slice(0,letterIndex) == correctAnswer.slice(0,letterIndex);
 }
 
@@ -1109,7 +1146,6 @@ function endGame() {
 // generates a single line to be appended to the answer array
 // if a line with a maximum number of words is desired, pass it in as a parameter
 function generateLine(maxWords) {
-	console.log('genning a line');
 	let str = '';
 
 	if(fullSentenceMode) {
@@ -1170,6 +1206,7 @@ function generateLine(maxWords) {
 
 			// if the word does not contain any required letters, throw it out and choose again
 			if(!contains(wordToAdd, requiredLetters)) {
+
 				// console.log(wordToAdd + ' doesnt have any required letters from ' + requiredLetters);
 			}else if(onlyLower && containsUpperCase(wordToAdd)) {
 				// if only lower case is allowed and the word to add contains an uppercase,
@@ -1192,8 +1229,12 @@ function generateLine(maxWords) {
 
 			circuitBreaker++;
 			// if we're having trouble finding a word with a require letter, reset 'required letters'
-			if(circuitBreaker > 3000) {
-				requiredLetters = startingLetters.split();
+			if(circuitBreaker > 7000) {
+				console.log('couldnt find word with ' + requiredLetters);
+				str += randomLetterJumble() + ' ';
+				i+= wordToAdd.length;
+				wordsCreated++;
+				requiredLetters = startingLetters.split('');
 			}
 		}
 	}else {
@@ -1201,14 +1242,17 @@ function generateLine(maxWords) {
 		// if there are no words with the required letters, all words should be set to the
 		// current list of required letters
 		let wordsCreated = 0;
-		for(let i = 0; i < lineLength; i = i) {
-			console.log('no words with required letters');
-			str+= startingLetters + ' ';
-			wordsCreated++;
-			if(wordsCreated >= maxWords){
-				break;
+		if(levelDictionaries[currentLayout]['lvl'+currentLevel].length == 0){
+			str = "!!!NO KEYS FOR THIS LEVEL!!!";
+		}else {
+			for(let i = 0; i < lineLength; i = i) {
+				str+= randomLetterJumble() + ' ';
+				wordsCreated++;
+				if(wordsCreated >= maxWords){
+					break;
+				}
+				i+= startingLetters.length;
 			}
-			i+= startingLetters.length;
 		}
 	}
 
@@ -1216,6 +1260,20 @@ function generateLine(maxWords) {
 	str = str.substring(0, str.length - 1);
 	return str;
 }
+
+// creates a random jumble of letters to be used when no words are found for a target letter
+function randomLetterJumble(){
+	let randWordLength = Math.floor(Math.random()*5);
+	let jumble = "";
+	for(let i = 0; i < randWordLength; i++){
+		let rand = Math.floor(Math.random()*levelDictionaries[currentLayout]['lvl'+currentLevel].length);
+		jumble+= levelDictionaries[currentLayout]['lvl'+currentLevel][rand];
+
+	}
+
+	return jumble;
+}
+
 
 // takes an array and removes any required letters that are found in 'word'
 // for example, if required letters == ['a', 'b', 'c', 'd'] and word=='cat', this

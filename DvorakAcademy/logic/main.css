@@ -510,7 +510,7 @@ input:checked + .slider:before {
 
 /*__________________custom ui keyboard________________*/
 
-#customInput {
+.customInput {
 	position: absolute;
 	display: flex;
 	flex-direction: column;
@@ -587,20 +587,28 @@ input:checked + .slider:before {
 	height: 0;
 }
 
-.doneButton {
+.buttonHolder {
+	display: flex;
+	justify-content: space-between;
+
+	width: 90%;
+}
+
+.saveButton, .discardButton {
 	background-size: cover;
 	background-repeat: no-repeat;
+	font-size: 2.3vmax;
 
-	top: 1vmax;
-	left: 1vmax;
 	height: 1vmax;
 	width: 1vmax;
 	padding: 1vmax;
 	margin: 0;
+	border: none;
 }
 
-.doneButton:hover {
-	transform: scale(1.2);
+
+.saveButton:hover, .discardButton:hover {
+	transform: scale(1.05);
 }
 
 /*__________________custom level select________________*/
