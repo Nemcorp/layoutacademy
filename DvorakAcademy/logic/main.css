@@ -442,13 +442,24 @@ input:checked + .slider:before {
 	width: 39%;
 }
 
+.inactive {
+	opacity: .6;
+	border-color: #8727b8;
+}
 
 .currentLevelKeys {
 	border-color: green;
 	color: green;
 	opacity: 1;
-	filter: brightness(1.5);
+	filter: brightness(1.2);
 }
+
+.homeRow {
+	border-color: orange;
+	color: orange;
+	opacity: 1;
+}
+
 
 .active {
 	border-color: #8727b8;
@@ -457,11 +468,8 @@ input:checked + .slider:before {
 	filter: brightness(1.5);
 }
 
-.homeRow {
-	border-color: orange;
-	color: orange;
-	opacity: 1;
-}
+
+
 .punctuation {
 	border-color: white;
 	color: white;
@@ -626,10 +634,6 @@ input:checked + .slider:before {
 
 /*____________________Toggle-able classes______________*/
 
-.inactive {
-	opacity: .6;
-	border-color: #8727b8;
-}
 
 .noDisplay {
 	display: none;

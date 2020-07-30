@@ -33,16 +33,16 @@ var keyboardDivs = `
 	</div>
 	<div class=row>
 		<div class="key bigger"><span class="letter"></span></div>
-		<div class="key lvl1 homeRow" id='KeyA'><span class="letter"></span></div>
-		<div class="key lvl1 homeRow" id='KeyS'><span class="letter"></span></div>
-		<div class="key lvl1 homeRow" id='KeyD'><span class="letter"></span></div>
-		<div class="key lvl1 homeRow" id='KeyF'><span class="letter"></span></div>
+		<div class="key lvl1 restingPosition" id='KeyA'><span class="letter"></span></div>
+		<div class="key lvl1 restingPosition" id='KeyS'><span class="letter"></span></div>
+		<div class="key lvl1 restingPosition" id='KeyD'><span class="letter"></span></div>
+		<div class="key lvl1 restingPosition" id='KeyF'><span class="letter"></span></div>
 		<div class="key lvl2" id='KeyG'><span class="letter"></span></div>
 		<div class="key lvl2" id='KeyH'><span class="letter"></span></div>
-		<div class="key lvl1 homeRow" id='KeyJ'><span class="letter"></span></div>
-		<div class="key lvl1 homeRow" id='KeyK'><span class="letter"></span></div>
-		<div class="key lvl1 homeRow" id='KeyL'><span class="letter"></span></div>
-		<div class="key lvl1 homeRow" id='Semicolon'><span class="letter"></span></div>
+		<div class="key lvl1 restingPosition" id='KeyJ'><span class="letter"></span></div>
+		<div class="key lvl1 restingPosition" id='KeyK'><span class="letter"></span></div>
+		<div class="key lvl1 restingPosition" id='KeyL'><span class="letter"></span></div>
+		<div class="key lvl1 restingPosition" id='Semicolon'><span class="letter"></span></div>
 		<div class="key" id='Quote'><span class="letter"></span></div>
 		<div class="key bigger"><span class="letter"></span></div>
 	</div>

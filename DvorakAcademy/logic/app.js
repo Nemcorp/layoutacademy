@@ -339,6 +339,16 @@ select.addEventListener('change', (e)=> {
 	if(select.value == 'custom'){
 		customUIKeyInput.focus();
 	}
+
+	if(select.value == 'qwerty' || select.value == 'custom'){
+		document.querySelectorAll(".restingPosition").forEach((currentVal)=> {
+			currentVal.children[0].style.textDecoration = "underline";
+		});
+	}else {
+		document.querySelectorAll(".restingPosition").forEach((currentVal)=> {
+			currentVal.style.backgroundColor = 'black';
+		});
+	}
 });
 
 // listener for custom layout ui open button
@@ -679,69 +689,6 @@ input.addEventListener('keydown', (e)=> {
 	/*___________________________________________________*/
 
 
-
-	/*_________________________________________________________*/
-	/*____________________accuracy checking____________________*/
-
-	// if we have a backspace, decrement letter index and role back the input value
-	if(e.keyCode == 8) {
-		//console.log('backspace');
-		input.value = input.value.substr(0,input.value.length-1);
-		letterIndex--;
-		// letter index cannot be < 0
-		if(letterIndex < 0) {
-			letterIndex = 0;
-		}
-	}
-
-	// if key produces a character, (ie not shift, backspace, or another 
-	// utility key) increment letter index
-	if(!specialKeyCodes.includes(e.keyCode) || e.keyCode > 48){
-		letterIndex++;
-	}
-
-	// check if answer is correct and apply the correct styling. 
-	// Also increment 'errors' or 'correct'
-	if(checkAnswerToIndex()) {
-		input.style.color = 'black';
-		// no points awarded for backspace
-		if(e.keyCode != 8) {
-			correct++;
-			// if letter (in the promp) exists, color it green
-			if(prompt.children[0].children[wordIndex].children[letterIndex-1]) {
-				prompt.children[0].children[wordIndex].children[letterIndex-1].style.color = 'green';
-			}
-		}else {
-			// if backspace, color it grey again
-			if(prompt.children[0].children[wordIndex].children[letterIndex]) {
-				prompt.children[0].children[wordIndex].children[letterIndex].style.color = 'gray';
-			}
-		}
-	}else {
-		input.style.color = 'red';
-		// no points awarded for backspace
-		if(e.keyCode != 8) {
-			errors++;
-			if(prompt.children[0].children[wordIndex].children[letterIndex-1]) {
-				prompt.children[0].children[wordIndex].children[letterIndex-1].style.color = 'red';
-			}
-		}else {
-			// if backspace, color it grey again
-			if(prompt.children[0].children[wordIndex].children[letterIndex]) {
-				prompt.children[0].children[wordIndex].children[letterIndex].style.color = 'gray';
-			}
-		}
-	}
-	
-	//console.log('errors: ' + errors + ' \n correct: ' + correct);
-	//console.log("accuracy: " + correct/(errors+correct));
-
-	/*____________________accuracy checking____________________*/
-	/*_________________________________________________________*/
-
-
-
-
 	/*_________________________________________________________________________*/
 	/*____________________listener for space and enter keys____________________*/
 	// listens for the enter  and space key. Checks to see if input contains the
@@ -785,9 +732,72 @@ input.addEventListener('keydown', (e)=> {
 			letterIndex++;
 		}
 	}// end keyEvent if statement
-
+	
 	/*____________________listener for space and enter keys____________________*/
 	/*_________________________________________________________________________*/
+
+
+
+	/*_________________________________________________________*/
+	/*____________________accuracy checking____________________*/
+
+	// if we have a backspace, decrement letter index and role back the input value
+	if(e.keyCode == 8) {
+		//console.log('backspace');
+		input.value = input.value.substr(0,input.value.length-1);
+		letterIndex--;
+		// letter index cannot be < 0
+		if(letterIndex < 0) {
+			letterIndex = 0;
+		}
+	}
+
+	// if key produces a character, (ie not shift, backspace, or another 
+	// utility key) increment letter index
+	if(!specialKeyCodes.includes(e.keyCode) || e.keyCode > 48){
+		letterIndex++;
+	}
+
+	// check if answer is correct and apply the correct styling. 
+	// Also increment 'errors' or 'correct'
+	if(checkAnswerToIndex()) {
+		input.style.color = 'black';
+		// no points awarded for backspace
+		if(e.keyCode != 8) {
+			correct++;
+			// if letter (in the promp) exists, color it green
+			if(prompt.children[0].children[wordIndex].children[letterIndex-1]) {
+				prompt.children[0].children[wordIndex].children[letterIndex-1].style.color = 'green';
+			}
+		}else {
+			// if backspace, color it grey again
+			if(prompt.children[0].children[wordIndex].children[letterIndex]) {
+				prompt.children[0].children[wordIndex].children[letterIndex].style.color = 'gray';
+			}
+		}
+	}else {
+		console.log('error');
+		input.style.color = 'red';
+		// no points awarded for backspace
+		if(e.keyCode != 8) {
+			errors++;
+			if(prompt.children[0].children[wordIndex].children[letterIndex-1]) {
+				prompt.children[0].children[wordIndex].children[letterIndex-1].style.color = 'red';
+			}
+		}else {
+			// if backspace, color it grey again
+			if(prompt.children[0].children[wordIndex].children[letterIndex]) {
+				prompt.children[0].children[wordIndex].children[letterIndex].style.color = 'gray';
+			}
+		}
+	}
+	
+	//console.log('errors: ' + errors + ' \n correct: ' + correct);
+	//console.log("accuracy: " + correct/(errors+correct));
+
+	/*____________________accuracy checking____________________*/
+	/*_________________________________________________________*/
+
 
 
 }); // end input key listner
@@ -798,8 +808,8 @@ function checkAnswerToIndex() {
 	// user input
 	let inputVal = input.value;
 
-	// console.log('checking input ' +inputVal.slice(0,letterIndex) + "!");
-	// console.log(correctAnswer.slice(0,letterIndex)+ "!");
+	console.log('checking input ' +inputVal.slice(0,letterIndex) + "!");
+	console.log(correctAnswer.slice(0,letterIndex)+ "!");
 	return inputVal.slice(0,letterIndex) == correctAnswer.slice(0,letterIndex);
 }
 
@@ -866,6 +876,7 @@ function updateCheatsheetStyling(level) {
 		//reset all keys to default
 		n.classList.add('inactive');
 		n.classList.remove('active');
+		n.classList.remove('homeRow');
 		n.classList.remove('currentLevelKeys');
 		n.classList.remove('punctuation');
 		n.innerHTML=`
@@ -892,8 +903,8 @@ function updateCheatsheetStyling(level) {
 				if(punctuation.includes(letter)){
 					n.classList.remove('active');
 					n.classList.add('punctuation');
-				//}else if(i==0){
-					//n.classList.add('homeRow');
+				}else if(i==0){
+					n.classList.add('homeRow');
 				}else if(i==6){
 					// all words selected
 				}else if(i == level-1){
@@ -904,6 +915,7 @@ function updateCheatsheetStyling(level) {
 				}
 			}
 		}
+
 	}
 }
 
@@ -1133,6 +1145,7 @@ function generateLine(maxWords) {
 
 	if(wordLists['lvl'+currentLevel].length > 0){
 		let startingLetters = levelDictionaries[currentLayout]['lvl'+currentLevel]+punctuation;
+
 		//requiredLetters = startingLetters.split(''); 
 	
 		// if this counter hits a high enough number, there are likely no words matching the search
@@ -1193,6 +1206,7 @@ function generateLine(maxWords) {
 			}
 		}
 	}else {
+		let startingLetters = levelDictionaries[currentLayout]['lvl'+currentLevel]+punctuation;
 		// if there are no words with the required letters, all words should be set to the
 		// current list of required letters
 		let wordsCreated = 0;
