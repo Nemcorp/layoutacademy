@@ -19,7 +19,8 @@ body {
 
 * {
 	transition: border-color .1s linear,
-		opacity .15s linear;
+		opacity .15s linear,
+		transform .07s linear;
 }
 
 select{
@@ -151,7 +152,6 @@ nav {
 	margin-bottom: 3vh;
 
 
-
 	flex: 2 1 1000px;
 
 	/*margin: 2vmax 18vmax 0 20vmax;*/
@@ -205,7 +205,7 @@ button:focus {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	width: 50vmax;
+	width: 67vmin;
 
 	flex: .1 1 1vh;
 }
@@ -219,7 +219,7 @@ button:focus {
 	position: relative;
 	left: 0;
 	white-space: nowrap;
-	font-size: 2.3vmax;
+	font-size: 2.2vmax;
 	padding: 0 20vh 0 0;
 	width: 100%;
 	color: white;
@@ -271,9 +271,10 @@ h2 {
 }
 
 input {
-	height: 4vmax;
-
-	font-size: 3vmax;
+	height: 6vmin;
+	font-size: 4vmin;
+	width: 80%;
+	margin: auto;
 }
 
 
@@ -284,7 +285,7 @@ input {
 
 	margin: 3vh 0 0 0;
 
-	font-size: 4vmax;
+	font-size: 5vmin;
 }
 
 #testResults {
@@ -381,23 +382,20 @@ input:checked + .slider:before {
 
 /*___________cheatsheet___________*/
 
-#cheatsheet {
+.cheatsheet {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 
-	margin: 0;
 	padding: none;
 	white-space: nowrap;
-	
-	/*background: pink;*/
 }
 
 .row {
 	display: flex;
 	justify-content: space-between;
-	height: 3.6vmax;
-	width: 50vmax;
+	height: 3vmax;
+	width: 43vmax;
 }
 
 .key, .cKey {
@@ -406,8 +404,8 @@ input:checked + .slider:before {
 	align-items: center;
 	background-color: transparent;
 	border: .2vmax solid purple;
-	height: 3vmax;
-	width: 5.7%;
+	height: 2.4vmax;
+	width: 5.4%;
 
 	opacity: .5;
 
@@ -444,11 +442,6 @@ input:checked + .slider:before {
 	width: 39%;
 }
 
-.homeRow {
-	border-color: orange;
-	color: orange;
-	opacity: 1;
-}
 
 .currentLevelKeys {
 	border-color: green;
@@ -464,22 +457,23 @@ input:checked + .slider:before {
 	filter: brightness(1.5);
 }
 
+.homeRow {
+	border-color: orange;
+	color: orange;
+	opacity: 1;
+}
 .punctuation {
 	border-color: white;
 	color: white;
 	opacity: 1;
 	filter: brightness(1.5);
 }
-}
 
 .cheatsheetContainer {
 	display: flex;
-	justify-content: center;
-	align-items: start;
-	width: 100%;
-	flex: .6 .1 10vh;
-	margin-bottom: 5vh;
+	margin: 0 0 10vh 0;
 }
+
 
 .openUIButton {
 	background-image: url('https://upload.wikimedia.org/wikipedia/commons/c/cc/Edit_Notepad_Icon.svg');
@@ -489,7 +483,7 @@ input:checked + .slider:before {
 	position: relative;
 	right: 0;
 	top: -.3vmax;
-	margin: 0;
+	margin: 0 0 0 1vmin;
 
 	border: none;
 

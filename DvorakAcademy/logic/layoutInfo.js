@@ -38,12 +38,12 @@ levelDictionaries = {
 		'lvl7' : alphabet,
 	},
 	qwerty : {
-		'lvl1' : 'asdfjkl',
-		'lvl2' : 'gh',
-		'lvl3' : 'rtyu',
-		'lvl4' : 'iope',
-		'lvl5' : 'cvbnm',
-		'lvl6' : 'zxqw',
+		'lvl1' : 'asdfer',
+		'lvl2' : 'jkliuo',
+		'lvl3' : 'ghty',
+		'lvl4' : 'qwzx',
+		'lvl5' : 'nmp',
+		'lvl6' : 'cvb',
 		'lvl7' : alphabet,
 	},
 	workman : {

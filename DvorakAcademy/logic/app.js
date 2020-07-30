@@ -104,7 +104,7 @@ init();
 // Call to initialize
 function start() {
 	document.querySelector('#layoutName').innerHTML = currentLayout;
-	document.querySelector('#cheatsheet').innerHTML = keyboardDivs;
+	document.querySelector('.cheatsheet').innerHTML = keyboardDivs;
 	inputKeyboard.innerHTML = customLayout;
 	// scoreMax = wordLimitModeInput.value;
 }
@@ -892,8 +892,8 @@ function updateCheatsheetStyling(level) {
 				if(punctuation.includes(letter)){
 					n.classList.remove('active');
 					n.classList.add('punctuation');
-				}else if(i==0){
-					n.classList.add('homeRow');
+				//}else if(i==0){
+					//n.classList.add('homeRow');
 				}else if(i==6){
 					// all words selected
 				}else if(i == level-1){
@@ -1312,10 +1312,18 @@ function createTestSets(){
 
 	// for each level, add new letters to the test set and create a new list
 	for(let i = 0; i < objKeys.length; i++) {
-		let requiredLetters = levelDictionaries[currentLayout]['lvl'+(i+1)]+punctuation;
-		// add punctuation
-	
-		includedLetters += letterDictionary[objKeys[i]];
+		let requiredLetters;
+		
+		
+		// if 'all words' on a custom layout, don't add letters from the dictionary, because 
+		// level 7 contains the whole alphabet, and the user might not have asigned every letter to
+		// a key. Instead, this level should be the same as the previous, just with every letter required
+		if(currentLayout != "custom" || i != 6){
+			requiredLetters = levelDictionaries[currentLayout]['lvl'+(i+1)]+punctuation;
+			includedLetters += letterDictionary[objKeys[i]];
+		}else {
+			requiredLetters = includedLetters;
+		}
 
 		wordLists[objKeys[i]] = [];
 		//console.log('level ' +(i+1) + ": " + wordLists[objKeys[i]]);
