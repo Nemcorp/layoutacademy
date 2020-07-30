@@ -33,16 +33,16 @@ var keyboardDivs = `
 	</div>
 	<div class=row>
 		<div class="key bigger"><span class="letter"></span></div>
-		<div class="key lvl1 restingPosition" id='KeyA'><span class="letter"></span></div>
-		<div class="key lvl1 restingPosition" id='KeyS'><span class="letter"></span></div>
-		<div class="key lvl1 restingPosition" id='KeyD'><span class="letter"></span></div>
+		<div class="key lvl1" id='KeyA'><span class="letter"></span></div>
+		<div class="key lvl1" id='KeyS'><span class="letter"></span></div>
+		<div class="key lvl1" id='KeyD'><span class="letter"></span></div>
 		<div class="key lvl1 restingPosition" id='KeyF'><span class="letter"></span></div>
 		<div class="key lvl2" id='KeyG'><span class="letter"></span></div>
 		<div class="key lvl2" id='KeyH'><span class="letter"></span></div>
 		<div class="key lvl1 restingPosition" id='KeyJ'><span class="letter"></span></div>
-		<div class="key lvl1 restingPosition" id='KeyK'><span class="letter"></span></div>
-		<div class="key lvl1 restingPosition" id='KeyL'><span class="letter"></span></div>
-		<div class="key lvl1 restingPosition" id='Semicolon'><span class="letter"></span></div>
+		<div class="key lvl1" id='KeyK'><span class="letter"></span></div>
+		<div class="key lvl1" id='KeyL'><span class="letter"></span></div>
+		<div class="key lvl1" id='Semicolon'><span class="letter"></span></div>
 		<div class="key" id='Quote'><span class="letter"></span></div>
 		<div class="key bigger"><span class="letter"></span></div>
 	</div>
@@ -113,10 +113,10 @@ var customLayout = `
 		</div>
 		<div class="cKey lvl1 normalCKey" id='customKeyS'><span class="letter"></span></div>
 		<div class="cKey lvl1 normalCKey" id='customKeyD'><span class="letter"></span></div>
-		<div class="cKey lvl1 normalCKey" id='customKeyF'><span class="letter"></span></div>
+		<div class="cKey lvl1 normalCKey restingPosition" id='customKeyF'><span class="letter"></span></div>
 		<div class="cKey lvl2 normalCKey" id='customKeyG'><span class="letter"></span></div>
 		<div class="cKey lvl2 normalCKey" id='customKeyH'><span class="letter"></span></div>
-		<div class="cKey lvl1 normalCKey" id='customKeyJ'><span class="letter"></span></div>
+		<div class="cKey lvl1 normalCKey restingPosition" id='customKeyJ'><span class="letter"></span></div>
 		<div class="cKey lvl1 normalCKey" id='customKeyK'><span class="letter"></span></div>
 		<div class="cKey lvl1 normalCKey" id='customKeyL'><span class="letter"></span></div>
 		<div class="cKey lvl1 normalCKey" id='customSemicolon'><span class="letter"></span></div>

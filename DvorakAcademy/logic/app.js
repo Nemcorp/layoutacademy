@@ -340,15 +340,6 @@ select.addEventListener('change', (e)=> {
 		customUIKeyInput.focus();
 	}
 
-	if(select.value == 'qwerty' || select.value == 'custom'){
-		document.querySelectorAll(".restingPosition").forEach((currentVal)=> {
-			currentVal.children[0].style.textDecoration = "underline";
-		});
-	}else {
-		document.querySelectorAll(".restingPosition").forEach((currentVal)=> {
-			currentVal.style.backgroundColor = 'black';
-		});
-	}
 });
 
 // listener for custom layout ui open button
@@ -732,7 +723,7 @@ input.addEventListener('keydown', (e)=> {
 			letterIndex++;
 		}
 	}// end keyEvent if statement
-	
+
 	/*____________________listener for space and enter keys____________________*/
 	/*_________________________________________________________________________*/
 
