@@ -75,7 +75,7 @@ var deleteFirstLine		= false; // make this true every time we finish typing a li
 var deleteLatestWord    = false; // if true, delete last word typed. Set to true whenever a word is finished
 var sentenceStartIndex = -1; // keeps track of where we are in full sentence mode
 var sentenceEndIndex;
-var lineLength = 35;
+var lineLength = 33;
 var lineIndex = 0;  // tracks which line of the prompt we are currently on
 var wordIndex = 0;  // tracks which word you are on (ONLY IN PARAGRAPH MODE)
 var idCount = 0;
@@ -166,7 +166,7 @@ document.addEventListener('keydown', (e)=> {
 		
 		// close custom ui menu
 		if(customInput.style.display != 'none'){
-			customInput.style.display = 'none';
+			customInput.style.transform = 'scaleX(0)';
 			// remove active class from current key
 			clearSelectedInput();
 			init();
@@ -325,7 +325,7 @@ select.addEventListener('change', (e)=> {
 		openUIButton.style.display = 'block';
 		startCustomKeyboardEditing();
 	}else {
-		customInput.style.display = 'none';
+		customInput.style.transform = 'scaleX(0)';
 		openUIButton.style.display = 'none';
 	}
 	// change keyboard map and key dictionary
@@ -353,7 +353,8 @@ openUIButton.addEventListener('click', ()=> {
 function startCustomKeyboardEditing() {
 	initialCustomKeyboardState = Object.assign({}, layoutMaps['custom']);
 	initialCustomLevelsState = Object.assign({}, levelDictionaries['custom']);
-	customInput.style.display = 'flex';
+	// customInput.style.display = 'flex';
+	customInput.style.transform = 'scaleX(1)';
 	let k = document.querySelector('.defaultSelectedKey');
 	selectInputKey(k);
 }
@@ -373,7 +374,7 @@ function selectInputKey(k){
 
 // listener for the custom layout ui 'done' button
 saveButton.addEventListener('click', ()=> {
-	customInput.style.display = 'none';
+	customInput.style.transform = 'scaleX(0)';
 	// remove active class from current key
 	clearSelectedInput();
 	init();
@@ -381,7 +382,7 @@ saveButton.addEventListener('click', ()=> {
 
 // listener for the custom layout ui 'done' button
 discardButton.addEventListener('click', ()=> {
-	customInput.style.display = 'none';
+	customInput.style.transform = 'scaleX(0)';
 	// remove active class from current key
 	clearSelectedInput();
 
@@ -1230,8 +1231,9 @@ function generateLine(maxWords) {
 			circuitBreaker++;
 			// if we're having trouble finding a word with a require letter, reset 'required letters'
 			if(circuitBreaker > 7000) {
-				console.log('couldnt find word with ' + requiredLetters);
-				str += randomLetterJumble() + ' ';
+				// console.log('couldnt find word with ' + requiredLetters);
+				wordToAdd = randomLetterJumble();
+				str += wordToAdd + ' ';
 				i+= wordToAdd.length;
 				wordsCreated++;
 				requiredLetters = startingLetters.split('');
@@ -1243,15 +1245,17 @@ function generateLine(maxWords) {
 		// current list of required letters
 		let wordsCreated = 0;
 		if(levelDictionaries[currentLayout]['lvl'+currentLevel].length == 0){
-			str = "!!!NO KEYS FOR THIS LEVEL!!!";
+			str = "";
 		}else {
 			for(let i = 0; i < lineLength; i = i) {
-				str+= randomLetterJumble() + ' ';
+				wordToAdd = randomLetterJumble();
+				str+= wordToAdd+ ' ';
+				i+= wordToAdd.length;
+				console.log("i: " + i);
 				wordsCreated++;
 				if(wordsCreated >= maxWords){
 					break;
 				}
-				i+= startingLetters.length;
 			}
 		}
 	}
@@ -1263,12 +1267,11 @@ function generateLine(maxWords) {
 
 // creates a random jumble of letters to be used when no words are found for a target letter
 function randomLetterJumble(){
-	let randWordLength = Math.floor(Math.random()*5);
+	let randWordLength = Math.floor(Math.random()*5)+1;
 	let jumble = "";
 	for(let i = 0; i < randWordLength; i++){
 		let rand = Math.floor(Math.random()*levelDictionaries[currentLayout]['lvl'+currentLevel].length);
 		jumble+= levelDictionaries[currentLayout]['lvl'+currentLevel][rand];
-
 	}
 
 	return jumble;
