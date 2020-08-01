@@ -110,6 +110,7 @@ function start() {
 	document.querySelector('.cheatsheet').innerHTML = keyboardDivs;
 	inputKeyboard.innerHTML = customLayout;
 	// scoreMax = wordLimitModeInput.value;
+	customInput.style.display = 'flex';
 }
 
 
@@ -165,7 +166,7 @@ document.addEventListener('keydown', (e)=> {
 		preferenceMenu.style.right = '-37vh';
 		
 		// close custom ui menu
-		if(customInput.style.display != 'none'){
+		if(customInput.style.transform != 'scaleX(0)'){
 			customInput.style.transform = 'scaleX(0)';
 			// remove active class from current key
 			clearSelectedInput();
@@ -463,7 +464,7 @@ document.addEventListener('click', function (e) {
 
 
 // listener for custom input field. Updates on any input, clearing the current selected
-// input key, and setting the new value on the correct layer
+// input key, and setting the new value
 customUIKeyInput.addEventListener('keydown', (e)=> {
 	let k = document.querySelector('.selectedInputKey');
 
@@ -703,8 +704,14 @@ input.addEventListener('keydown', (e)=> {
 	}else {
 		//console.log(e.keyCode);
 		//console.log(specialKeyCodes.includes(e.keyCode));
-		if(!specialKeyCodes.includes(e.keyCode) || e.keyCode > 48){
-			input.value += e.key;
+		// there is a bug on firefox that occassionally reads e.key as process, hence the boolean expression below
+		if(!specialKeyCodes.includes(e.keyCode) || e.keyCode > 48 && e.key != "Process"){
+			console.log('Key: ' +e.key);
+			if(e.key != "Process"){
+				input.value += e.key;
+			}else {
+				letterIndex--;
+			}
 		}else {
 			//console.log('special Key');
 		}
