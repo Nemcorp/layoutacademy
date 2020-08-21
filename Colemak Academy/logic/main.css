@@ -33,7 +33,7 @@ body {
 }
 
 body *, #userInput {
-	font-family: "Courier New";
+	font-family: "Lucida Console", Monaco, monospace;
 }
 
 * {
@@ -365,6 +365,10 @@ input {
 	bottom: 0;
 }
 
+a:link {
+	color: var(--accent-color);
+}
+
 
 /*____________________Slider________________________*/
 
@@ -377,7 +381,7 @@ input {
 
 #mappingToggle h6 {
 	position: relative;
-	left: -1.5vmin;
+	left: -2.6vmin;
 	font-size: 1vmin;
 	margin: 0 0 2vmin 0;
 }

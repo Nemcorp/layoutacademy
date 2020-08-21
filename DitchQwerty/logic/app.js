@@ -2,23 +2,14 @@
 
 // the string of text that shows the words for the user to type
 var prompt 		= document.querySelector('.prompt'),
-//
 wordChain 		= document.querySelector('#wordChain'),
-//
 answer 			= document.querySelector('#answer'),
-//
 scoreText 		= document.querySelector('#scoreText'),
-//
 timeText 		= document.querySelector('#timeText'),
-//
 resetButton 	= document.querySelector('#resetButton'),
-//
 accuracyText 	= document.querySelector('#accuracyText'),
-//
 wpmText 		= document.querySelector('#wpmText'),
-//
 testResults 	= document.querySelector('#testResults'),
-//
 input 			= document.querySelector('#userInput'), 
 // the main typing area
 inputKeyboard 	= document.querySelector('#inputKeyboard'), 
@@ -30,7 +21,7 @@ customInput 	= document.querySelector('.customInput'),
 buttons 		= document.querySelector('nav').children,
 //
 currentWord 	= document.querySelector('#currentWord'),
-// layou select menu
+// layout select menu
 select 			= document.querySelector('select'),
 //
 mappingStatusButton = document.querySelector('#mappingToggle label input'),
@@ -64,9 +55,9 @@ var mapping 		= true;  // if true, user keybard input will be mapped to the chos
 var answerString = "";		  // A string representation of the words for the current test. After a correct word is typed,
 						  // it is removed from the beginning of answerString. By the end of the test, there should be 
 						  // no words in answerString
-var keyboardMap = layoutMaps['colemak'];
-var letterDictionary = levelDictionaries['colemak'];
-var currentLayout = 'colemak';
+var keyboardMap = layoutMaps['dvorak'];
+var letterDictionary = levelDictionaries['dvorak'];
+var currentLayout = 'dvorak';
 var shiftDown 			= false; // tracks whether the shift key is currently being pushed
 var fullSentenceMode 	= false; // if true, all prompts will be replace with sentences
 var timeLimitMode 		= false;
@@ -106,6 +97,7 @@ init();
 // this is the true init, which is only called once. Init will have to be renamed
 // Call to initialize
 function start() {
+	document.querySelector('#layoutName').innerHTML = currentLayout;
 	document.querySelector('.cheatsheet').innerHTML = keyboardDivs;
 	inputKeyboard.innerHTML = customLayout;
 	// scoreMax = wordLimitModeInput.value;
@@ -333,6 +325,7 @@ select.addEventListener('change', (e)=> {
 	console.log(select.value);
 	letterDictionary = levelDictionaries[select.value];
 	currentLayout = select.value;
+	document.querySelector(".subtitle").innerHTML= "Learn "+ currentLayout;
 
 	// reset everything
 	init();
@@ -463,7 +456,7 @@ document.addEventListener('click', function (e) {
 
 
 // listener for custom input field. Updates on any input, clearing the current selected
-// input key, and setting the new value on the correct layer
+// input key, and setting the new value
 customUIKeyInput.addEventListener('keydown', (e)=> {
 	let k = document.querySelector('.selectedInputKey');
 
@@ -703,8 +696,14 @@ input.addEventListener('keydown', (e)=> {
 	}else {
 		//console.log(e.keyCode);
 		//console.log(specialKeyCodes.includes(e.keyCode));
-		if(!specialKeyCodes.includes(e.keyCode) || e.keyCode > 48){
-			input.value += e.key;
+		// there is a bug on firefox that occassionally reads e.key as process, hence the boolean expression below
+		if(!specialKeyCodes.includes(e.keyCode) || e.keyCode > 48 && e.key != "Process"){
+			console.log('Key: ' +e.key);
+			if(e.key != "Process"){
+				input.value += e.key;
+			}else {
+				letterIndex--;
+			}
 		}else {
 			//console.log('special Key');
 		}
@@ -1150,8 +1149,7 @@ function generateLine(maxWords) {
 	let str = '';
 
 	if(fullSentenceMode) {
-		// let rand = Math.floor(Math.random()*35);
-		let rand = 0;
+		let rand = Math.floor(Math.random()*35);
 		if(sentenceStartIndex == -1) {
 			sentenceStartIndex = getPosition(sentence, '.', rand)+1;
 			sentenceEndIndex = sentence.substring(sentenceStartIndex + lineLength+2).indexOf(" ") + 
@@ -1398,7 +1396,7 @@ function createTestSets(){
 	}
 }
 
-// fixes a small bug in mozilla
+// fixes a small bug in firefox where the test ends after completion because of an uninteded keyUp event
 document.addEventListener('keyup', (e)=> {
 	e.preventDefault();
 	//console.log('prevented');

@@ -2,23 +2,14 @@
 
 // the string of text that shows the words for the user to type
 var prompt 		= document.querySelector('.prompt'),
-//
 wordChain 		= document.querySelector('#wordChain'),
-//
 answer 			= document.querySelector('#answer'),
-//
 scoreText 		= document.querySelector('#scoreText'),
-//
 timeText 		= document.querySelector('#timeText'),
-//
 resetButton 	= document.querySelector('#resetButton'),
-//
 accuracyText 	= document.querySelector('#accuracyText'),
-//
 wpmText 		= document.querySelector('#wpmText'),
-//
 testResults 	= document.querySelector('#testResults'),
-//
 input 			= document.querySelector('#userInput'), 
 // the main typing area
 inputKeyboard 	= document.querySelector('#inputKeyboard'), 
@@ -30,7 +21,7 @@ customInput 	= document.querySelector('.customInput'),
 buttons 		= document.querySelector('nav').children,
 //
 currentWord 	= document.querySelector('#currentWord'),
-// layou select menu
+// layout select menu
 select 			= document.querySelector('select'),
 //
 mappingStatusButton = document.querySelector('#mappingToggle label input'),
@@ -334,6 +325,7 @@ select.addEventListener('change', (e)=> {
 	console.log(select.value);
 	letterDictionary = levelDictionaries[select.value];
 	currentLayout = select.value;
+	document.querySelector(".subtitle").innerHTML= "Learn "+ currentLayout;
 
 	// reset everything
 	init();
@@ -1157,8 +1149,7 @@ function generateLine(maxWords) {
 	let str = '';
 
 	if(fullSentenceMode) {
-		// let rand = Math.floor(Math.random()*35);
-		let rand = 0;
+		let rand = Math.floor(Math.random()*35);
 		if(sentenceStartIndex == -1) {
 			sentenceStartIndex = getPosition(sentence, '.', rand)+1;
 			sentenceEndIndex = sentence.substring(sentenceStartIndex + lineLength+2).indexOf(" ") + 
@@ -1405,7 +1396,7 @@ function createTestSets(){
 	}
 }
 
-// fixes a small bug in mozilla
+// fixes a small bug in firefox where the test ends after completion because of an uninteded keyUp event
 document.addEventListener('keyup', (e)=> {
 	e.preventDefault();
 	//console.log('prevented');

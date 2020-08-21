@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Colemak Academy - Learn Colemak fast. A free, easy way to learn to touch type the Colemak layout, Colemak-DH, Dvorak, and other custom keyboard layouts. The best, most customizable typing tutor and keyboard trainer available. Also works for workman, qwerty, and azerty</title>
+	<title>Dvorak Academy - Learn Dvorak fast. A free, easy way to learn to touch type the Dvorak layout, Colemak, and other custom keyboard layouts. The best, most customizable typing tutor and keyboard trainer available. Also works for workman, qwerty, and azerty</title>
 	<meta charset="UTF-8">
-	<meta name="description" content="Colemak Academy - Learn Colemak fast. A free, easy way to learn to touch type the Colemak layout, Colemak-DH, Dvorak, and other custom keyboard layouts. The best, most customizable typing tutor and keyboard trainer available. Also works for workman, qwerty, and azerty">
+	<meta name="description" content="Dvorak Academy - Learn Dvorak fast. A free, easy way to learn to touch type the Dvorak layout, Colemak, and other custom keyboard layouts. The best, most customizable typing tutor and keyboard trainer available. Also works for workman, qwerty, and azerty">
 	<meta name="author" content="Layout Academy">
 
-	<link rel="icon" href='https://media.discordapp.net/attachments/727610227301548181/727926200366006392/colemakAcademy.png'>
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+	<link rel="icon" href='img/favicon.webp'>
 	<link rel="stylesheet" type="text/css" href="logic/main.css">
 </head>
 <body>
 
 	<select  autocomplete="off">
-		<option value='colemak'>Colemak</option>
+		<option value='dvorak'>Dvorak</option>
 		<option value='azerty'>AZERTY</option>
+		<option value='colemak'>Colemak</option>
 		<option value='colemakdh'>Colemak-DH</option>
 		<option value='colemakdhm'>Colemak-DHm</option>
-		<option value='dvorak'>Dvorak</option>
 		<option value='lefthandeddvorak'>Left-handed Dvorak</option>
 		<option value='qwerty'>QWERTY</option>
 		<option value='tarmak'>Tarmak</option>
@@ -29,22 +28,25 @@
 	<div class='preferenceMenu'>
 		<button class='closePreferenceButton'></button>
 		<ul class='preferences'>
-			<li>Capital Letters Allowed<input class='capitalLettersAllowed' type="checkbox"></li>
-			<li>Punctuation Allowed<input class='punctuationModeButton' type="checkbox"></li>
-			<li>Full Sentence Mode<input class='fullSentenceMode' type="checkbox"></li>
+			<li>Capital Letters Allowed<input class='capitalLettersAllowed' type="checkbox"autocomplete="off"></li>
+			<li>Punctuation Allowed<input class='punctuationModeButton' type="checkbox"autocomplete="off"></li>
+			<li>Full Sentence Mode<input class='fullSentenceMode' type="checkbox"autocomplete="off"></li>
 			<li>Word Scrolling Mode
-				<input class='wordScrollingModeButton' type="checkbox" checked>
+				<input class='wordScrollingModeButton' type="checkbox" autocomplete="off"checked>
 			</li>
 			<li>
-				<input class='timeLimitModeInput noDisplay' type="number" value="60">
-				Time Limit Mode<input class='timeLimitModeButton' type="checkbox">
+				<input class='timeLimitModeInput noDisplay' type="number" value="60"autocomplete="off">
+				Time Limit Mode<input class='timeLimitModeButton' type="checkbox"autocomplete="off">
 			</li>
 			<li>  
-				<input class='wordLimitModeInput' type="number" value="50" step="10">
-				Word Limit Mode <input class='wordLimitModeButton' type="checkbox" checked> 
+				<input class='wordLimitModeInput' type="number" value="50" step="10"autocomplete="off">
+				Word Limit Mode <input class='wordLimitModeButton' type="checkbox" autocomplete="off"checked> 
 			</li>
 		</ul>
 	</div>
+
+
+	<!-- <h1><span id="layoutName">Dvorak</span> Academy</h1> -->
 
 	<nav>
 		<button class='currentLevel lvl1'>Level 1</button>
@@ -78,7 +80,10 @@
 
 	<section id="main">
 
-		<h1>Colemak Academy</h1>
+		<header>
+			<h1>Ditch Qwerty</h1>
+			<h2 class="subtitle">Learn <span id="layoutName">Dvorak</span></h2>
+		</header>
 
 		<div class='typingArea'>
 			<div class='fade' id='fadeElement'>
@@ -102,6 +107,9 @@
 				<button class='openUIButton'></button>
 			</div>
 		</div>
+
+		<h3 class='bottomText noDisplay'> Sign the <a href="https://www.change.org/p/microsoft-add-colemak-as-a-pre-installed-keyboard-layout-to-windows" target="_blank">Petition</a> for Windows to add Colemak as a default option</h3>
+
 	</section>
 
 	<div  id='mappingToggle'>

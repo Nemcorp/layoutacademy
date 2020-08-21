@@ -1,3 +1,10 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
 :root {
 	--text-color: #ddd;
 	--background-color: black;
@@ -10,8 +17,12 @@
 
 
 body {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	align-items: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 
 	background-color: var(--background-color);
 	color: var(--text-color);
@@ -19,14 +30,29 @@ body {
 	overflow: hidden;
 	margin: 0; 
 	padding: 0;
+}
 
-	font-family: Verdana, Roboto;
+body *, #userInput {
+	font-family: "Lucida Console", Monaco, monospace;
 }
 
 * {
+	-webkit-transition: border-color .1s linear,
+		opacity .15s linear,
+		-webkit-transform .07s linear;
+	transition: border-color .1s linear,
+		opacity .15s linear,
+		-webkit-transform .07s linear;
+	-o-transition: border-color .1s linear,
+		opacity .15s linear,
+		transform .07s linear;
 	transition: border-color .1s linear,
 		opacity .15s linear,
 		transform .07s linear;
+	transition: border-color .1s linear,
+		opacity .15s linear,
+		transform .07s linear,
+		-webkit-transform .07s linear;
 }
 
 select{
@@ -39,9 +65,10 @@ select{
 }
 
 .preferenceButton {
-	background-image: url(../img/settingsIcon.webp);
+	background-image: url('../img/settingsIcon.webp');
 	background-size: cover;
-	filter: invert(1);
+	-webkit-filter: invert(1);
+	        filter: invert(1);
 	background-repeat: no-repeat;
 	border: none;
 
@@ -57,7 +84,9 @@ select{
 
 .preferenceButton:hover, .closePreferenceButton:hover {
 	opacity: 1;
-	transform: scale(1.1);
+	-webkit-transform: scale(1.1);
+	    -ms-transform: scale(1.1);
+	        transform: scale(1.1);
 }
 
 .closePreferenceButton {
@@ -66,14 +95,16 @@ select{
 	top: 1vh;
 	left: 1vh;
 
-	background-image: url(../img/x.webp);
+	background-image: url('../img/x.webp');
 	background-size: cover;
 	background-repeat: no-repeat;
 
 	height: 2vh;
 	width: 2vh;
 
-	filter: invert(1);
+	-webkit-filter: invert(1);
+
+	        filter: invert(1);
 
 	border: none;
 }
@@ -89,15 +120,28 @@ select{
 
 	border-left: .1vh solid var(--text-color);
 
+	-webkit-transition: right .08s linear;
+
+	-o-transition: right .08s linear;
+
 	transition: right .08s linear;
 }
 
 .preferenceMenu ul {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	flex-wrap: nowrap;
-	align-items: flex-end;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-ms-flex-pack: distribute;
+	    justify-content: space-around;
+	-ms-flex-wrap: nowrap;
+	    flex-wrap: nowrap;
+	-webkit-box-align: end;
+	    -ms-flex-align: end;
+	        align-items: flex-end;
 	padding: 0 1vh 0 0;
 
 	height: 55vh;
@@ -105,7 +149,7 @@ select{
 
 .preferenceMenu ul li {
 	color: var(--accent-color);
-	font-size: 2vh;
+	font-size: 1.5vh;
 	list-style: none;
 
 }
@@ -125,16 +169,29 @@ li input {
 }
 
 h1	{
-	font-size: 3.2vmax;
+	font-size: 3.5vmax;
 	text-transform: uppercase;
 	letter-spacing: 1vw;
 }
 
+.subtitle {
+	font-size: 2vmax;
+	text-transform: uppercase;
+	letter-spacing: .5vw;
+	text-align: center;
+}
 
 nav {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
 
 	width: 10vw;
 	height: 84vh;
@@ -143,18 +200,31 @@ nav {
 
 
 #main {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	flex-direction: column;
-	align-items: center;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	height: 90%;
 	margin-right: 10vmax;
 	margin-bottom: 3vh;
 
-	flex: 2 1 1000px;
+	-webkit-box-flex: 2;
+
+	    -ms-flex: 2 1 1000px;
+
+	        flex: 2 1 1000px;
 }
 
 nav button {
-	flex: 1 1 11vh;
+	-webkit-box-flex: 1;
+	    -ms-flex: 1 1 11vh;
+	        flex: 1 1 11vh;
 	margin: .5vh auto;
 	width: 11vh;
 	font-size: 1.5vh;
@@ -166,7 +236,7 @@ nav button:hover {
 	border-color: var(--accent-color);
 }
 
-h2, button {
+button {
 	letter-spacing: 3px;
 }
 
@@ -192,27 +262,38 @@ button:focus {
 
 
 .typingArea {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	flex-direction: column;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
 	/*justify-content: center;*/
 	width: 67vmin;
+	/*height: 30vmin;*/
 }
 
 .fade {
     -webkit-mask-image: -webkit-gradient(linear, left top, right bottom, 
     from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+    /*height: 20%;*/
 }
 
 .prompt {
 	position: relative;
-	font-size: 2.2vmax;
+	font-size: 2vmax;
 	/*padding: 0 20vh 0 0;*/
 	/*width: 100%;*/
 	/*color: white;*/
-	margin: 12vh 0 0 0;
+	margin: 10vh 0 0 0;
+
+	letter-spacing: .1vmax;
 }
 
 .smoothScroll {
+	-webkit-transition: left .1s linear;
+	-o-transition: left .1s linear;
 	transition: left .1s linear;
 }
 
@@ -229,7 +310,8 @@ button:focus {
 }
 
 .paragraph .line {
-	margin-left: 2.5vmin;
+	margin-left: 1.6vmin;
+	display: block;
 }
 
 #resetButton {
@@ -242,25 +324,55 @@ input {
 	height: 6vmin;
 	font-size: 4vmin;
 	width: 80%;
-	margin: 4vh auto 3vh auto;
+	margin: 2.5vh auto 3vh auto;
 }
 
 
 
 #scoreAndClock {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	justify-content: space-around;
+	-ms-flex-pack: distribute;
+	    justify-content: space-around;
 
 	font-size: 5vmin;
 }
 
-#testResults {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+#scoreText, #timeText {
+	font-family: 'Verdana', sans-serif;
+}
 
-	flex: 1 1 8vh;
+#testResults {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+
+	-webkit-box-flex: 1;
+
+	    -ms-flex: 1 1 8vh;
+
+	        flex: .8 1 7vh;
+}
+
+.bottomText {
+	position: absolute;
+	font-size: 2vmin;
+	bottom: 0;
+}
+
+a:link {
+	color: var(--accent-color);
 }
 
 
@@ -275,7 +387,7 @@ input {
 
 #mappingToggle h6 {
 	position: relative;
-	left: -1.5vmin;
+	left: -2.6vmin;
 	font-size: 1vmin;
 	margin: 0 0 2vmin 0;
 }
@@ -315,6 +427,8 @@ input {
   bottom: .75vmin;
   background-color: white;
   -webkit-transition: .4s;
+  -webkit-transition: .2s;
+  -o-transition: .2s;
   transition: .2s;
 }
 
@@ -323,7 +437,8 @@ input:checked + .slider {
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px purple;
+  -webkit-box-shadow: 0 0 1px purple;
+          box-shadow: 0 0 1px purple;
 }
 
 input:checked + .slider:before {
@@ -336,22 +451,34 @@ input:checked + .slider:before {
 /*___________cheatsheet___________*/
 
 .cheatsheetContainer {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
 }
 
 .row {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	justify-content: space-between;
-	height: 3vmax;
-	width: 43vmax;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
+	height: 5vh;
+	width: 69vh;
 }
 
 .key, .cKey {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	background-color: transparent;
-	border: .2vmax solid var(--accent-color);
+	border: .2vh solid var(--accent-color);
 	height: 75%;
 	width: 5.4%;
 
@@ -396,7 +523,8 @@ input:checked + .slider:before {
 	border-color: var(--tertiary-accent-color);
 	color: var(--tertiary-accent-color);
 	opacity: 1;
-	filter: brightness(1.2);
+	-webkit-filter: brightness(1.2);
+	        filter: brightness(1.2);
 }
 
 .homeRow {
@@ -413,7 +541,8 @@ input:checked + .slider:before {
 	border-color: var(--accent-color);
 	color: var(--accent-color);
 	opacity: 1;
-	filter: brightness(1.5);
+	-webkit-filter: brightness(1.5);
+	        filter: brightness(1.5);
 }
 
 
@@ -422,14 +551,16 @@ input:checked + .slider:before {
 	border-color: var(--text-color);
 	color: white;
 	opacity: 1;
-	filter: brightness(1.5);
+	-webkit-filter: brightness(1.5);
+	        filter: brightness(1.5);
 }
 
 
 .openUIButton {
 	background-image: url('https://upload.wikimedia.org/wikipedia/commons/c/cc/Edit_Notepad_Icon.svg');
 	background-size: cover;
-	filter: invert(1);
+	-webkit-filter: invert(1);
+	        filter: invert(1);
 
 	position: relative;
 	top: -.3vmax;
@@ -444,14 +575,19 @@ input:checked + .slider:before {
 }
 
 .openUIButton:hover {
-	transform: scale(1.2);
+	-webkit-transform: scale(1.2);
+	    -ms-transform: scale(1.2);
+	        transform: scale(1.2);
 }
 
 /*__________________custom ui keyboard________________*/
 
 .customInput {
 	position: absolute;
-	flex-direction: column;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
 	left: 23vw;
 	top: 23vh;
 	z-index: 100;
@@ -460,10 +596,20 @@ input:checked + .slider:before {
 	background-color: var(--menu-background-color);
 	height: 37vmax;
 	width: 60vmax;
-	transform: scaleX(0);
+	-webkit-transform: scaleX(0);
+	    -ms-transform: scaleX(0);
+	        transform: scaleX(0);
 	display: none;
 
+	-webkit-transition: -webkit-transform .15s linear;
+
+	transition: -webkit-transform .15s linear;
+
+	-o-transition: transform .15s linear;
+
 	transition: transform .15s linear;
+
+	transition: transform .15s linear, -webkit-transform .15s linear;
 }
 
 #inputKeyboard {
@@ -502,7 +648,8 @@ input:checked + .slider:before {
 }
 
 .pulse {
-	animation: pulse .8s infinite;
+	-webkit-animation: pulse .8s infinite;
+	        animation: pulse .8s infinite;
 }
 
 
@@ -518,8 +665,12 @@ input:checked + .slider:before {
 }
 
 .buttonHolder {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	justify-content: space-between;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
 
 	width: 90%;
 }
@@ -535,11 +686,15 @@ input:checked + .slider:before {
 
 
 .saveButton:hover, .discardButton:hover {
-	transform: scale(1.05);
+	-webkit-transform: scale(1.05);
+	    -ms-transform: scale(1.05);
+	        transform: scale(1.05);
 }
 
 /*__________________custom level select________________*/
 #customUILevelSelect {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
 	margin: 2vmax auto 2vmax auto;
 	background: red .2;
@@ -559,7 +714,8 @@ input:checked + .slider:before {
 
 .customUILevelButton:hover {
 	opacity: 1;
-	filter: brightness(1.5);
+	-webkit-filter: brightness(1.5);
+	        filter: brightness(1.5);
 }
 
 .currentCustomUILevel {
@@ -609,15 +765,31 @@ input:checked + .slider:before {
 .slideLeft {
 	position: relative;
 	color: blue;
-	animation: slideLeft .2s 1 linear;
-	animation-fill-mode: forwards;
+	-webkit-animation: slideLeft .2s 1 linear;
+	        animation: slideLeft .2s 1 linear;
+	-webkit-animation-fill-mode: forwards;
+	        animation-fill-mode: forwards;
 }
 
 .slideOff {
 	position: relative;
 	color: blue;
-	animation: slideOff .2s 1 linear;
-	animation-fill-mode: forwards;
+	-webkit-animation: slideOff .2s 1 linear;
+	        animation: slideOff .2s 1 linear;
+	-webkit-animation-fill-mode: forwards;
+	        animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes pulse {
+	0%   { 
+		opacity: 1;
+	}
+	60% { 
+		opacity: 1;
+	}
+	100% { 
+		opacity: 0;
+	}
 }
 
 @keyframes pulse {
@@ -631,7 +803,6 @@ input:checked + .slider:before {
 		opacity: 0;
 	}
 }
-
 
 
 
