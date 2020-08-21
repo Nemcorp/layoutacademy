@@ -104,11 +104,9 @@ function start() {
 	// scoreMax = wordLimitModeInput.value;
 	customInput.style.display = 'flex';
 
-	let path = window.location.href;
-	let initialLayout = path.substring(path.indexOf(".com/")+5);
-	console.log(initialLayout);
-	if(layoutMaps[initialLayout]){
+	if(initialLayout && layoutMaps[initialLayout]){
 		changeLayout(initialLayout);
+		document.querySelector(".bottomText").classList.remove("noDisplay");
 	}
 }
 
