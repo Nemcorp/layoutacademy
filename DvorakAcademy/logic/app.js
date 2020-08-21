@@ -93,6 +93,7 @@ punctuationModeButton       = document.querySelector('.punctuationModeButton');
 
 start();
 init();
+console.log(window.location.href );
 
 // this is the true init, which is only called once. Init will have to be renamed
 // Call to initialize
@@ -102,6 +103,13 @@ function start() {
 	inputKeyboard.innerHTML = customLayout;
 	// scoreMax = wordLimitModeInput.value;
 	customInput.style.display = 'flex';
+
+	let path = window.location.href;
+	let initialLayout = path.substring(path.indexOf(".com/")+5);
+	console.log(initialLayout);
+	if(layoutMaps[initialLayout]){
+		changeLayout(initialLayout);
+	}
 }
 
 
@@ -312,8 +320,12 @@ punctuationModeButton.addEventListener('click', ()=> {
 
 // listens for layout change
 select.addEventListener('change', (e)=> {
+	changeLayout(select.value);
+});
+
+function changeLayout(targetLayout) {
 	// if custom input is selected, show the ui for custom keyboards
-	if(select.value == 'custom') {
+	if(targetLayout == 'custom') {
 		openUIButton.style.display = 'block';
 		startCustomKeyboardEditing();
 	}else {
@@ -321,20 +333,19 @@ select.addEventListener('change', (e)=> {
 		openUIButton.style.display = 'none';
 	}
 	// change keyboard map and key dictionary
-	keyboardMap = layoutMaps[select.value];
-	console.log(select.value);
-	letterDictionary = levelDictionaries[select.value];
-	currentLayout = select.value;
+	keyboardMap = layoutMaps[targetLayout];
+	console.log(targetLayout);
+	letterDictionary = levelDictionaries[targetLayout];
+	currentLayout = targetLayout;
 	document.querySelector(".subtitle").innerHTML= "Learn "+ currentLayout;
 
 	// reset everything
 	init();
 
-	if(select.value == 'custom'){
+	if(targetLayout == 'custom'){
 		customUIKeyInput.focus();
 	}
-
-});
+}
 
 // listener for custom layout ui open button
 openUIButton.addEventListener('click', ()=> {
