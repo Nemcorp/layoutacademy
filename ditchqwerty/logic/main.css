@@ -55,15 +55,6 @@ body *, #userInput {
 		-webkit-transform .07s linear;
 }
 
-select{
-	position: absolute;
-	top: 2vmax;
-	right: 8vmax;
-
-	color: var(--text-color);
-	background-color: var(--menu-background-color);
-}
-
 .preferenceButton {
 	background-image: url('../img/settingsIcon.webp');
 	background-size: cover;
@@ -180,10 +171,22 @@ header	{
 }
 
 .subtitle {
+	text-align: center;
+}
+
+select {
+	color: var(--text-color);
+
+	background-color: transparent;
+	border: none;
+	width: 30%;
+}
+
+.subtitle, select {
 	font-size: 2vmax;
 	text-transform: uppercase;
+	font-weight: bold;
 	letter-spacing: .5vw;
-	text-align: center;
 }
 
 
@@ -471,8 +474,8 @@ input:checked + .slider:before {
 	-webkit-box-pack: justify;
 	    -ms-flex-pack: justify;
 	        justify-content: space-between;
-	height: 5vh;
-	width: 69vh;
+	height: 8vh;
+	width: 100vh;
 }
 
 .key, .cKey {
