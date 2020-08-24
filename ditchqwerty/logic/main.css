@@ -160,33 +160,71 @@ li input {
 }
 
 header	{
-	writing-mode: vertical-rl;
-	text-orientation: upright;
+	text-align: center;
 
 	position: absolute;
+	top: 0vmax;
 	left: 2vmax;
-	font-size: 2.5vh;
-	text-transform: uppercase;
-	letter-spacing: 1.6vh;
+	font-size: 1vh;
+	letter-spacing: 1.5vh;
 }
 
 .subtitle {
 	text-align: center;
 }
 
+.layout-select {
+	width: 15vw;
+	display: inline-block;
+}
+
+.scroll-arrow {
+	margin: auto;
+	height: 3vw;
+	width: 3vw;
+	background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Antu_mail-forward.svg/1024px-Antu_mail-forward.svg.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.scroll-arrow:hover {
+	filter: brightness(3);
+}
+
+.face-up {
+	transform: rotate(-90deg);
+}
+
+.face-down {
+	transform: rotate(90deg);
+}
+
 select {
+	-webkit-appearance: none;
 	color: var(--text-color);
 
 	background-color: transparent;
-	border: none;
+	border: 2px solid var(--background-color);
+	border-radius: .2vw;
 	width: 30%;
+
+	text-decoration: underline;
 }
 
 .subtitle, select {
-	font-size: 2vmax;
+	margin: 0;
+	font-size: 3vmax;
 	text-transform: uppercase;
 	font-weight: bold;
 	letter-spacing: .5vw;
+}
+
+select:hover{
+	border-color: white;
+}
+
+select:focus, select:active {
+	border: 2px solid var(--background-color);
 }
 
 
@@ -214,7 +252,7 @@ select {
 
 
 header, nav	{
-	height: 90vh;
+	margin-left: 4vmin;
 }
 nav {
 	display: -webkit-box;
@@ -228,8 +266,9 @@ nav {
 	    -ms-flex-pack: justify;
 	        justify-content: space-between;
 
+	margin-top: 4vmin;
 	width: 10vw;
-	margin-left: 14vmin;
+	height: 90vh;
 }
 
 nav button {
@@ -394,6 +433,7 @@ a:link {
 	bottom: 3vh;
 	right: -6vh;
 	width: 15vw;
+	display: none;
 }
 
 #mappingToggle h6 {
@@ -474,8 +514,8 @@ input:checked + .slider:before {
 	-webkit-box-pack: justify;
 	    -ms-flex-pack: justify;
 	        justify-content: space-between;
-	height: 8vh;
-	width: 100vh;
+	height: 7vh;
+	width: 90vh;
 }
 
 .key, .cKey {
