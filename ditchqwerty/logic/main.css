@@ -174,12 +174,16 @@ header	{
 }
 
 .layout-select {
-	width: 15vw;
-	display: inline-block;
+	display: flex;
+	width: 65vw;
+	font-size: 3vmax;
+	margin-top: 4vh;
 }
+
 
 .scroll-arrow {
 	margin: auto;
+	display: inline-block;
 	height: 3vw;
 	width: 3vw;
 	background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Antu_mail-forward.svg/1024px-Antu_mail-forward.svg.png");
@@ -192,28 +196,29 @@ header	{
 }
 
 .face-up {
-	transform: rotate(-90deg);
+	transform: rotate(-180deg);
 }
 
 .face-down {
-	transform: rotate(90deg);
+	transform: rotate(0deg);
 }
 
 select {
 	-webkit-appearance: none;
 	color: var(--text-color);
+	text-align: center;
+
 
 	background-color: transparent;
 	border: 2px solid var(--background-color);
 	border-radius: .2vw;
-	width: 30%;
 
 	text-decoration: underline;
 }
 
 .subtitle, select {
 	margin: 0;
-	font-size: 3vmax;
+	font-size: 2vmax;
 	text-transform: uppercase;
 	font-weight: bold;
 	letter-spacing: .5vw;
@@ -227,6 +232,14 @@ select:focus, select:active {
 	border: 2px solid var(--background-color);
 }
 
+.selected-layout {
+	filter: brightness(20);
+	opacity: 1;
+}
+
+.translucent {
+	opacity: .3;
+}
 
 #main {
 	display: -webkit-box;
@@ -254,6 +267,7 @@ select:focus, select:active {
 header, nav	{
 	margin-left: 4vmin;
 }
+
 nav {
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -327,7 +341,11 @@ button:focus {
 .fade {
     -webkit-mask-image: -webkit-gradient(linear, left top, right bottom, 
     from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
-    /*height: 20%;*/
+}
+
+.fade-left{
+    -webkit-mask-image: -webkit-gradient(linear, right top, left bottom,
+    from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
 }
 
 .prompt {

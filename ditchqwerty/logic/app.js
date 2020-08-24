@@ -98,7 +98,7 @@ console.log(window.location.href );
 // this is the true init, which is only called once. Init will have to be renamed
 // Call to initialize
 function start() {
-	// document.querySelector('#layoutName').innerHTML = currentLayout;
+	//document.querySelector('#layoutName').innerHTML = currentLayout;
 	document.querySelector('.cheatsheet').innerHTML = keyboardDivs;
 	inputKeyboard.innerHTML = customLayout;
 	// scoreMax = wordLimitModeInput.value;
