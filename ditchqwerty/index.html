@@ -11,19 +11,6 @@
 </head>
 <body>
 
-	<select  autocomplete="off">
-		<option value='dvorak'>Dvorak</option>
-		<option value='azerty'>AZERTY</option>
-		<option value='colemak'>Colemak</option>
-		<option value='colemakdh'>Colemak-DH</option>
-		<option value='colemakdhm'>Colemak-DHm</option>
-		<option value='lefthandeddvorak'>Left-handed Dvorak</option>
-		<option value='qwerty'>QWERTY</option>
-		<option value='tarmak'>Tarmak</option>
-		<option value='workman'>Workman</option>
-		<option value='custom'>Custom</option>
-	</select>
-
 	<button class='preferenceButton'></button>
 	<div class='preferenceMenu'>
 		<button class='closePreferenceButton'></button>
@@ -44,9 +31,6 @@
 			</li>
 		</ul>
 	</div>
-
-
-	<!-- <h1><span id="layoutName">Dvorak</span> Academy</h1> -->
 
 	<nav>
 		<button class='currentLevel lvl1'>Level 1</button>
@@ -78,12 +62,27 @@
 		</div>
 	</div>
 
+	<header>
+		<h1>Ditch Qwerty</h1>
+	</header>
+
+
 	<section id="main">
 
-		<header>
-			<h1>Ditch Qwerty</h1>
-			<h2 class="subtitle">Learn <span id="layoutName">Dvorak</span></h2>
-		</header>
+		<select  autocomplete="off">
+			<option value='dvorak'>Dvorak</option>
+			<option value='azerty'>AZERTY</option>
+			<option value='colemak'>Colemak</option>
+			<option value='colemakdh'>Colemak-DH</option>
+			<option value='colemakdhm'>Colemak-DHm</option>
+			<option value='lefthandeddvorak'>Left-handed Dvorak</option>
+			<option value='qwerty'>QWERTY</option>
+			<option value='tarmak'>Tarmak</option>
+			<option value='workman'>Workman</option>
+			<option value='custom'>Custom</option>
+		</select>
+		
+		<h2 class="subtitle">Learn <span id="layoutName">Dvorak</span></h2>
 
 		<div class='typingArea'>
 			<div class='fade' id='fadeElement'>

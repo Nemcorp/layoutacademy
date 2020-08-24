@@ -168,10 +168,15 @@ li input {
 	margin: 0 1.5vh 0 auto;
 }
 
-h1	{
-	font-size: 3.5vmax;
+header	{
+	writing-mode: vertical-rl;
+	text-orientation: upright;
+
+	position: absolute;
+	left: 2vmax;
+	font-size: 2.5vh;
 	text-transform: uppercase;
-	letter-spacing: 1vw;
+	letter-spacing: 1.6vh;
 }
 
 .subtitle {
@@ -179,23 +184,6 @@ h1	{
 	text-transform: uppercase;
 	letter-spacing: .5vw;
 	text-align: center;
-}
-
-nav {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-orient: vertical;
-	-webkit-box-direction: normal;
-	    -ms-flex-direction: column;
-	        flex-direction: column;
-	-webkit-box-pack: justify;
-	    -ms-flex-pack: justify;
-	        justify-content: space-between;
-
-	width: 10vw;
-	height: 84vh;
-	margin-left: 4vmin;
 }
 
 
@@ -219,6 +207,26 @@ nav {
 	    -ms-flex: 2 1 1000px;
 
 	        flex: 2 1 1000px;
+}
+
+
+header, nav	{
+	height: 90vh;
+}
+nav {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
+
+	width: 10vw;
+	margin-left: 14vmin;
 }
 
 nav button {
