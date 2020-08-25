@@ -209,7 +209,7 @@ carotRight.addEventListener('click', ()=> {
 // ui menu
 document.addEventListener('keydown', (e)=> {
 	if(e.keyCode == 27) {
-		preferenceMenu.style.right = '-37vh';
+		preferenceMenu.style.right = '-45vh';
 		
 		// close custom ui menu
 		if(customInput.style.transform != 'scaleX(0)'){
@@ -228,7 +228,7 @@ preferenceButton.addEventListener('click', ()=> {
 
 // listener for preference menu close button
 closePreferenceButton.addEventListener('click', ()=> {
-	preferenceMenu.style.right = '-37vh';
+	preferenceMenu.style.right = '-45vh';
 });
 
 // capital letters allowed
