@@ -26,9 +26,7 @@ currentWord 	= document.querySelector('#currentWord'),
 // layout select menu
 select 			= document.querySelector('select'),
 //
-mappingStatusButton = document.querySelector('#mappingToggle label input'),
-//
-mappingStatusText = document.querySelector('#mappingToggle h6 span'),
+mappingStatusButton = document.querySelector('.js-mapping-toggle'),
 // save button on the custom layout ui
 saveButton 		 = document.querySelector('.saveButton'),
 // discard button on the custom layout ui
@@ -250,46 +248,46 @@ fullSentenceModeToggle.addEventListener('click', ()=> {
 
 // time limit mode button; if this is checked, uncheck button for word limit and vice versa
 // Toggle display of time limit mode input field
-timeLimitModeButton.addEventListener('click', ()=> {
-	// change mode logic here
-	timeLimitMode = true;
-	seconds = timeLimitModeInput.value%60;
-	minutes = Math.floor(timeLimitModeInput.value/60);
-	scoreText.style.display = 'none';
+// timeLimitModeButton.addEventListener('click', ()=> {
+// 	// change mode logic here
+// 	timeLimitMode = true;
+// 	seconds = timeLimitModeInput.value%60;
+// 	minutes = Math.floor(timeLimitModeInput.value/60);
+// 	scoreText.style.display = 'none';
 
-	// make the word list long enough so that no human typer can reach the end
-	scoreMax = timeLimitModeInput.value*4;
+// 	// make the word list long enough so that no human typer can reach the end
+// 	scoreMax = timeLimitModeInput.value*4;
 
-	// toggle value of word limit mode button
-	wordLimitModeButton.checked = !wordLimitModeButton.checked;
+// 	// toggle value of word limit mode button
+// 	wordLimitModeButton.checked = !wordLimitModeButton.checked;
 
-	// toggle display of input fields
-	timeLimitModeInput.classList.toggle('noDisplay');
-	wordLimitModeInput.classList.toggle('noDisplay');
+// 	// toggle display of input fields
+// 	timeLimitModeInput.classList.toggle('noDisplay');
+// 	wordLimitModeInput.classList.toggle('noDisplay');
 
-	reset();
-});
+// 	reset();
+// });
 
 // time limit mode field
-timeLimitModeInput.addEventListener('change', ()=> {
-	let wholeSecond = Math.floor(timeLimitModeInput.value);
+// timeLimitModeInput.addEventListener('change', ()=> {
+// 	let wholeSecond = Math.floor(timeLimitModeInput.value);
 
-	scoreMax = wholeSecond*10;
+// 	scoreMax = wholeSecond*10;
 	
-	if(wholeSecond < 1  || wholeSecond > 10000) {
-		wholeSecond = 60
-	}
+// 	if(wholeSecond < 1  || wholeSecond > 10000) {
+// 		wholeSecond = 60
+// 	}
 
-	// set the dom element to a whole number (in case the user puts in a decimal)
-	timeLimitModeInput.value = wholeSecond;
+// 	// set the dom element to a whole number (in case the user puts in a decimal)
+// 	timeLimitModeInput.value = wholeSecond;
 
-	seconds = wholeSecond%60;
-	minutes = Math.floor(wholeSecond/60);
+// 	seconds = wholeSecond%60;
+// 	minutes = Math.floor(wholeSecond/60);
 
 
-	gameOn = false;
-	resetTimeText();
-});
+// 	gameOn = false;
+// 	resetTimeText();
+// });
 
 // word Limit mode butto; if this is checked, uncheck button for time limit and vice versa
 // Toggle display of word limit mode input field
@@ -1013,14 +1011,10 @@ function updateCheatsheetStyling(level) {
 
 // listener for keyboard mapping toggle switch
 mappingStatusButton.addEventListener('click', ()=> {
-	if(mappingStatusText.innerHTML == 'on') {
-		// change the status text
-		mappingStatusText.innerHTML = 'off';
+	if(mapping) {
 		mapping = false;
 
 	} else {
-		// change the status text
-		mappingStatusText.innerHTML = 'on';
 		mapping = true;
 	}
 
