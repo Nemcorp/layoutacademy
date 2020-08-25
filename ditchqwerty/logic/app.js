@@ -37,6 +37,9 @@ discardButton 		 = document.querySelector('.discardButton'),
 openUIButton 		 = document.querySelector('.openUIButton'),
 // custom ui input field for custom keys
 customUIKeyInput = document.querySelector('#customUIKeyInput');
+const carotLeft = document.querySelector('.js-carot-left'),
+carotRight			= document.querySelector('.js-carot-right');
+
 
 var promptOffset 	= 0;  // is this needed? May delete
 var score;				  // tracks the current number of currect words the user has typed
@@ -79,6 +82,13 @@ var requiredLetters = "";//levelDictionaries[currentLayout]['lvl'+currentLevel]+
 var initialCustomKeyboardState = ''; // saves a temporary copy of a keyboard layout that a user can return to by discarding changes
 var initialCustomLevelsState = ''; // saves a temporary copy of custom levels that a user can return to by discarding changes
 
+const scrollBar = document.querySelector(".horizontal-scroll-wrapper");
+var layoutItemLength = 110+ window.innerWidth/6;
+let current = document.querySelector(".js-"+currentLayout);
+const layoutList = document.querySelectorAll('.js-menu-item');
+let currentLayoutIndex = 3; // keeps track of the layout index in the dom menu
+
+
 // preference menu dom elements
 var preferenceButton 		= document.querySelector('.preferenceButton'),
 preferenceMenu 				= document.querySelector('.preferenceMenu'),
@@ -95,11 +105,14 @@ punctuationModeButton       = document.querySelector('.punctuationModeButton');
 
 start();
 init();
-console.log(window.location.href );
 
 // this is the true init, which is only called once. Init will have to be renamed
 // Call to initialize
 function start() {
+	scrollBar.scrollTop = window.innerWidth*.675;
+	// add a delay so the initial scroll doesn't create a slow load
+	setTimeout(addScrollBarListeners, 500);
+
 	// document.querySelector('#layoutName').innerHTML = currentLayout;
 	document.querySelector('.cheatsheet').innerHTML = keyboardDivs;
 	inputKeyboard.innerHTML = customLayout;
@@ -154,24 +167,8 @@ input.addEventListener('keydown', (e)=> {
 	gameOn = true;
 });
 
-const scrollBar = document.querySelector(".horizontal-scroll-wrapper");
-var layoutItemLength = 110+ window.innerWidth/6;
-let current = document.querySelector(".js-"+currentLayout);
-const layoutList = document.querySelectorAll('.js-menu-item');
-let currentLayoutIndex = 3;
-console.log(currentLayoutIndex);
-
-// scrollBar.scrollTo({
-//   top: 600,
-//   behavior: 'auto'
-// });
-
-
+	
 // listen for left scroll
-
-// add a delay so the initial scroll doesn't create a slow load
-setTimeout(addScrollBarListeners, 500);
-
 function addScrollBarListeners() {
 	scrollBar.addEventListener('scroll', (e)=> {
 		if(current.getBoundingClientRect().x < window.innerWidth*.25){
@@ -194,8 +191,14 @@ function addScrollBarListeners() {
 	});	
 }
 
+// listeners for carot menu buttons
+carotLeft.addEventListener('click', ()=> {
+	scrollBar.scrollTop -= window.innerWidth*.23;
+});
 
-scrollBar.scrollTop = window.innerWidth*.675;
+carotRight.addEventListener('click', ()=> {
+	scrollBar.scrollTop += window.innerWidth*.23;
+});
 
 
 
