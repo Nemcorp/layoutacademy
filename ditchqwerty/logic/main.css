@@ -307,6 +307,7 @@ header, nav	{
 }
 
 nav {
+	z-index: 1;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -348,6 +349,10 @@ button {
 	color: var(--text-color);
 	/*text-transform: capitalize;*/
 	cursor: pointer;
+}
+
+nav button {
+	background-color: var(--background-color);
 }
 
 button:focus {
@@ -487,19 +492,6 @@ a:link {
 
 /*____________________Slider________________________*/
 
-#mappingToggle {
-	position: absolute;
-	bottom: 3vh;
-	right: -8vw;
-	width: 15vw;
-}
-
-#mappingToggle h6 {
-	position: relative;
-	left: -2.6vmin;
-	font-size: 1vmin;
-	margin: 0 0 2vmin 0;
-}
 
 /* The switch - the box around the slider */
 .switch {
@@ -542,7 +534,7 @@ a:link {
 }
 
 input:checked + .slider {
-  background-color: #444;
+  background-color: green;
 }
 
 input:focus + .slider {

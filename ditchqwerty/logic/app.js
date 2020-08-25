@@ -63,6 +63,7 @@ var letterDictionary = levelDictionaries['dvorak'];
 var currentLayout = 'dvorak';
 var shiftDown 			= false; // tracks whether the shift key is currently being pushed
 var fullSentenceMode 	= false; // if true, all prompts will be replace with sentences
+var fullSentenceModeOption = false;
 var timeLimitMode 		= false;
 var wordScrollingMode 	= true;  // true by default. 
 var deleteFirstLine		= false; // make this true every time we finish typing a line
@@ -238,7 +239,8 @@ capitalLettersAllowed.addEventListener('click', ()=> {
 // full sentence mode
 fullSentenceModeToggle.addEventListener('click', ()=> {
 	fullSentenceModeLevelButton.classList.toggle('visible');
-	if(!fullSentenceModeToggle.checked){
+	fullSentenceModeOption = !fullSentenceModeOption;
+	if(!fullSentenceModeOption){
 		switchLevel(1);
 	}else {
 		switchLevel(8);
