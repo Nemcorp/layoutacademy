@@ -37,7 +37,7 @@ levelDictionaries = {
 		'lvl6' : 'qzxh',
 		'lvl7' : alphabet,
 	},
-	colemakdhm : {
+	"colemak-dhm" : {
 		'lvl1' : 'arstneio',
 		'lvl2' : 'gm',
 		'lvl3' : 'pbjl',
@@ -46,7 +46,7 @@ levelDictionaries = {
 		'lvl6' : 'qzxh',
 		'lvl7' : alphabet,
 	},
-	lefthandeddvorak : {
+	"left-handed-dvorak" : {
 		'lvl1' : 'dtheac',
 		'lvl2' : 'yurso',
 		'lvl3' : 'gvwni',
@@ -290,7 +290,7 @@ var layoutMaps = {
 		'Slash' : '/',
 		'shiftLayer' : 'default',
 	}, 
-	colemakdhm : {
+	"colemak-dhm" : {
 		'Minus' : "-",
 		'Equal' : "=",
 		'KeyQ' : "q",
@@ -329,7 +329,7 @@ var layoutMaps = {
 		'Slash' : '/',
 		'shiftLayer' : 'default',
 	}, 
-	lefthandeddvorak : {
+	"left-handed-dvorak" : {
 		'Digit1' : "[",
 		'Digit2' : "]",
 		'Digit3' : "/",

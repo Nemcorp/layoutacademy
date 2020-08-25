@@ -11,6 +11,8 @@ accuracyText 	= document.querySelector('#accuracyText'),
 wpmText 		= document.querySelector('#wpmText'),
 testResults 	= document.querySelector('#testResults'),
 input 			= document.querySelector('#userInput'), 
+leftMenuScroll  = document.querySelector('.js-left'), 
+rightMenuScroll = document.querySelector('.js-right'), 
 // the main typing area
 inputKeyboard 	= document.querySelector('#inputKeyboard'), 
 // keyboard layout customization ui
@@ -98,7 +100,7 @@ console.log(window.location.href );
 // this is the true init, which is only called once. Init will have to be renamed
 // Call to initialize
 function start() {
-	//document.querySelector('#layoutName').innerHTML = currentLayout;
+	// document.querySelector('#layoutName').innerHTML = currentLayout;
 	document.querySelector('.cheatsheet').innerHTML = keyboardDivs;
 	inputKeyboard.innerHTML = customLayout;
 	// scoreMax = wordLimitModeInput.value;
@@ -151,6 +153,37 @@ setInterval(()=> {
 input.addEventListener('keydown', (e)=> {
 	gameOn = true;
 });
+
+const scrollBar = document.querySelector(".horizontal-scroll-wrapper");
+var layoutItemLength = 110+ window.innerWidth/6;
+let current = document.querySelector(".js-"+currentLayout);
+const layoutList = document.querySelectorAll('.js-menu-item');
+let currentLayoutIndex = 0;
+console.log(currentLayoutIndex);
+
+
+// listen for left scroll
+scrollBar.addEventListener('scroll', (e)=> {
+	if(current.getBoundingClientRect().x < window.innerWidth*.25){
+		console.log(current.getBoundingClientRect());
+		changeLayout(layoutList[currentLayoutIndex+1].innerHTML);
+		currentLayoutIndex++;
+		current = document.querySelector(".js-"+currentLayout);
+	}
+});	
+
+// listen for right scroll
+scrollBar.addEventListener('scroll', (e)=> {
+	if(current.getBoundingClientRect().x > window.innerWidth*.65){
+		console.log('scrolling to the right');
+		console.log(current.getBoundingClientRect());
+		changeLayout(layoutList[currentLayoutIndex-1].innerHTML);
+		currentLayoutIndex--;
+		current = document.querySelector(".js-"+currentLayout);
+	}
+});	
+
+
 
 
 /*___________________________________________________________*/
@@ -317,9 +350,9 @@ punctuationModeButton.addEventListener('click', ()=> {
 /*______________listeners for custom ui input________________*/
 
 // listens for layout change
-select.addEventListener('change', (e)=> {
-	changeLayout(select.value);
-});
+// select.addEventListener('change', (e)=> {
+// 	changeLayout(select.value);
+// });
 
 function changeLayout(targetLayout) {
 	// if custom input is selected, show the ui for custom keyboards
@@ -343,6 +376,12 @@ function changeLayout(targetLayout) {
 	if(targetLayout == 'custom'){
 		customUIKeyInput.focus();
 	}
+
+	// apply styling to the current layout menu item. Remove styling from others
+	for (n of layoutList){
+		n.style.opacity = .2;
+	}
+	document.querySelector(".js-"+currentLayout).style.opacity = 1;
 }
 
 // listener for custom layout ui open button
@@ -1382,8 +1421,8 @@ function clearCurrentLevelStyle() {
 function createTestSets(){
 	let objKeys = Object.keys(wordLists); // the level keys of each of the wordLists
 	let includedLetters = punctuation; // the list of letters to be included in each level
-
-	// for each level, add new letters to the test set and create a new list
+	console.log("CURENT " + currentLayout)
+;	// for each level, add new letters to the test set and create a new list
 	for(let i = 0; i < objKeys.length; i++) {
 		let requiredLetters;
 		

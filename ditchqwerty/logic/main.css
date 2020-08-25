@@ -169,76 +169,71 @@ header	{
 	letter-spacing: 1.5vh;
 }
 
-.subtitle {
+.h2-container {
 	text-align: center;
+	height: 15vh;
+	width: 50vw;
 }
 
-.layout-select {
+.horizontal-scroll-wrapper {
 	display: flex;
-	width: 65vw;
-	font-size: 3vmax;
-	margin-top: 4vh;
+	flex-direction: column;
+	justify-content: space-between;
+
+	position: absolute;
+	left: 0;
+
+	margin-top: 3vh;
+	scroll-behavior: smooth;
+
+	width: 15vh;
+	height: 90vw;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
+.horizontal-scroll-wrapper > div {
+  width: 15vh;
+  font-size: 3.5vw;
 
-.scroll-arrow {
-	margin: auto;
-	display: inline-block;
-	height: 3vw;
-	width: 3vw;
-	background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Antu_mail-forward.svg/1024px-Antu_mail-forward.svg.png");
-	background-size: cover;
-	background-repeat: no-repeat;
+  margin: 10vw 0;
 }
 
-.scroll-arrow:hover {
-	filter: brightness(3);
+.horizontal-scroll-wrapper {
+  transform:rotate(-90deg) translateY(-3vw);
+  transform-origin: right top;
 }
 
-.face-up {
-	transform: rotate(-180deg);
+.horizontal-scroll-wrapper > div {
+  transform: rotate(90deg);
+  transform-origin: right top;
 }
 
-.face-down {
-	transform: rotate(0deg);
+/* width */
+::-webkit-scrollbar {
+  width: 1px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px transparent; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: transparent; 
+  border-radius: 10px;
 }
 
-select {
-	-webkit-appearance: none;
-	color: var(--text-color);
-	text-align: center;
-
-
-	background-color: transparent;
-	border: 2px solid var(--background-color);
-	border-radius: .2vw;
-
-	text-decoration: underline;
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: transparent; 
 }
 
-.subtitle, select {
-	margin: 0;
-	font-size: 2vmax;
-	text-transform: uppercase;
-	font-weight: bold;
-	letter-spacing: .5vw;
+.menu-item {
+	opacity: .2;
 }
 
-select:hover{
-	border-color: white;
-}
-
-select:focus, select:active {
-	border: 2px solid var(--background-color);
-}
-
-.selected-layout {
-	filter: brightness(20);
+.menu-item-selected {
 	opacity: 1;
-}
-
-.translucent {
-	opacity: .3;
 }
 
 #main {
