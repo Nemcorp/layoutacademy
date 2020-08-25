@@ -23,7 +23,7 @@ var wordLists = {
 	lvl7 : [],
 };
 
-var alphabet = "abcdefghijklmnopqrstuvwxyz',.-";
+var alphabet = "abcdefghijklmnopqrstuvwxyz',.-/";
 
 
 
