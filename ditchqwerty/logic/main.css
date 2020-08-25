@@ -83,15 +83,15 @@ body *, #userInput {
 .closePreferenceButton {
 	margin: 0;
 	position: relative;
-	top: 1vh;
-	left: 28vh;
+	top: 4vh;
+	left: 25vh;
 
 	background-image: url('../img/x.webp');
 	background-size: cover;
 	background-repeat: no-repeat;
 
-	height: 2vh;
-	width: 2vh;
+	height: 3vh;
+	width: 3vh;
 
 	-webkit-filter: invert(1);
 
@@ -134,6 +134,7 @@ body *, #userInput {
 	    -ms-flex-align: end;
 	        align-items: flex-end;
 	padding: 0 1vh 0 0;
+	margin: 6vh 3vh 0 0;
 
 	height: 55vh;
 }
