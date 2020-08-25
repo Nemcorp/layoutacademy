@@ -84,7 +84,7 @@ body *, #userInput {
 	margin: 0;
 	position: relative;
 	top: 1vh;
-	left: 1vh;
+	left: 28vh;
 
 	background-image: url('../img/x.webp');
 	background-size: cover;
@@ -169,6 +169,11 @@ header	{
 	letter-spacing: 1.5vh;
 }
 
+.subtitle {
+	position: absolute;
+	top: 13vh;
+}
+
 .h2-container {
 	text-align: center;
 	height: 15vh;
@@ -194,8 +199,6 @@ header	{
 
 .horizontal-scroll-wrapper > div {
   width: 15vh;
-  font-size: 3.5vw;
-
   margin: 10vw 0;
 }
 
@@ -228,12 +231,40 @@ header	{
   background: transparent; 
 }
 
+.carot-div {
+	text-align: center;
+}
+
+.carot-icon {
+	display: inline-block;
+	margin: 0 4vh;
+	margin-top: 
+	filter: brightness(2);
+
+	background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Antu_mail-forward.svg/1024px-Antu_mail-forward.svg.png');
+	background-repeat: none;
+	background-size: cover;
+	height: 4vh;
+	width: 4vh;
+}
+
+.carot-left {
+	transform: rotate(180deg);
+}
+
 .menu-item {
-	opacity: .2;
+	opacity: .13;
+	font-size: 1.5vw;
 }
 
 .menu-item-selected {
 	opacity: 1;
+	font-size: 2.5vw;
+	transition: font-size .3s;
+}
+
+.left-handed {
+	font-size: 2vw;
 }
 
 #main {

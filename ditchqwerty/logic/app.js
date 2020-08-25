@@ -158,9 +158,15 @@ const scrollBar = document.querySelector(".horizontal-scroll-wrapper");
 var layoutItemLength = 110+ window.innerWidth/6;
 let current = document.querySelector(".js-"+currentLayout);
 const layoutList = document.querySelectorAll('.js-menu-item');
-let currentLayoutIndex = 0;
+let currentLayoutIndex = 3;
 console.log(currentLayoutIndex);
 
+// scrollBar.scrollTo({
+//   top: 600,
+//   behavior: 'auto'
+// });
+
+scrollBar.scrollTop = window.innerWidth*.675;
 
 // listen for left scroll
 scrollBar.addEventListener('scroll', (e)=> {
@@ -379,9 +385,9 @@ function changeLayout(targetLayout) {
 
 	// apply styling to the current layout menu item. Remove styling from others
 	for (n of layoutList){
-		n.style.opacity = .2;
+		n.classList.remove('menu-item-selected');
 	}
-	document.querySelector(".js-"+currentLayout).style.opacity = 1;
+	document.querySelector(".js-"+currentLayout).classList.add('menu-item-selected');
 }
 
 // listener for custom layout ui open button
