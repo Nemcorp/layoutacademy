@@ -166,29 +166,36 @@ console.log(currentLayoutIndex);
 //   behavior: 'auto'
 // });
 
-scrollBar.scrollTop = window.innerWidth*.675;
 
 // listen for left scroll
-scrollBar.addEventListener('scroll', (e)=> {
-	if(current.getBoundingClientRect().x < window.innerWidth*.25){
-		console.log(current.getBoundingClientRect());
-		changeLayout(layoutList[currentLayoutIndex+1].innerHTML);
-		currentLayoutIndex++;
-		current = document.querySelector(".js-"+currentLayout);
-	}
-});	
 
-// listen for right scroll
-scrollBar.addEventListener('scroll', (e)=> {
-	if(current.getBoundingClientRect().x > window.innerWidth*.65){
-		console.log('scrolling to the right');
-		console.log(current.getBoundingClientRect());
-		changeLayout(layoutList[currentLayoutIndex-1].innerHTML);
-		currentLayoutIndex--;
-		current = document.querySelector(".js-"+currentLayout);
-	}
-});	
+// add a delay so the initial scroll doesn't create a slow load
+setTimeout(addScrollBarListeners, 500);
 
+function addScrollBarListeners() {
+	scrollBar.addEventListener('scroll', (e)=> {
+		if(current.getBoundingClientRect().x < window.innerWidth*.25){
+			console.log(current.getBoundingClientRect());
+			changeLayout(layoutList[currentLayoutIndex+1].innerHTML);
+			currentLayoutIndex++;
+			current = document.querySelector(".js-"+currentLayout);
+		}
+	});	
+
+	// listen for right scroll
+	scrollBar.addEventListener('scroll', (e)=> {
+		if(current.getBoundingClientRect().x > window.innerWidth*.65){
+			console.log('scrolling to the right');
+			console.log(current.getBoundingClientRect());
+			changeLayout(layoutList[currentLayoutIndex-1].innerHTML);
+			currentLayoutIndex--;
+			current = document.querySelector(".js-"+currentLayout);
+		}
+	});	
+}
+
+
+scrollBar.scrollTop = window.innerWidth*.675;
 
 
 

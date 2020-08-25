@@ -12,6 +12,7 @@
 	--accent-color: #8727b8;
 	--secondary-accent-color: orange;
 	--tertiary-accent-color: green;
+	--font: "Lucida Console", Monaco, monospace;
 }
 
 
@@ -83,7 +84,7 @@ body *, #userInput {
 .closePreferenceButton {
 	margin: 0;
 	position: relative;
-	top: 4vh;
+	top: 5vh;
 	left: 25vh;
 
 	background-image: url('../img/x.webp');
@@ -249,12 +250,16 @@ header	{
 	width: 4vh;
 }
 
+.carot-icon:hover {
+	filter: brightness(4);
+}
+
 .carot-left {
 	transform: rotate(180deg);
 }
 
 .menu-item {
-	opacity: .13;
+	opacity: .2;
 	font-size: 1.5vw;
 }
 
@@ -434,9 +439,9 @@ input {
 	font-size: 5vmin;
 }
 
-#scoreText, #timeText {
+/*#scoreText, #timeText {
 	font-family: 'Verdana', sans-serif;
-}
+}*/
 
 #testResults {
 	display: -webkit-box;
@@ -458,6 +463,8 @@ input {
 	    -ms-flex: 1 1 8vh;
 
 	        flex: .8 1 7vh;
+
+	font-family: ;
 }
 
 .bottomText {
@@ -476,9 +483,8 @@ a:link {
 #mappingToggle {
 	position: absolute;
 	bottom: 3vh;
-	right: -6vh;
+	right: -8vw;
 	width: 15vw;
-	display: none;
 }
 
 #mappingToggle h6 {
