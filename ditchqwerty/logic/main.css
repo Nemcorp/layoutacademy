@@ -121,7 +121,7 @@ body *, #userInput {
 	padding: 0 .5vw;
 }
 
-.toggler {
+.toggler, .text-input {
 	display: flex;
 	align-items: center;
 	color: green;
@@ -135,6 +135,12 @@ body *, #userInput {
 
 .switch {
 	margin: 0 2vmin;
+}
+
+.text-input input {
+	width: 60%;
+	margin: 0 3vw;
+	text-align: center;
 }
 
 .preferenceMenu ul {

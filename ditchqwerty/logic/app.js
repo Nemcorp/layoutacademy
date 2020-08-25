@@ -269,44 +269,53 @@ fullSentenceModeToggle.addEventListener('click', ()=> {
 // });
 
 // time limit mode field
-// timeLimitModeInput.addEventListener('change', ()=> {
-// 	let wholeSecond = Math.floor(timeLimitModeInput.value);
+timeLimitModeInput.addEventListener('change', ()=> {
+	let wholeSecond = Math.floor(timeLimitModeInput.value);
 
-// 	scoreMax = wholeSecond*10;
+	scoreMax = wholeSecond*10;
 	
-// 	if(wholeSecond < 1  || wholeSecond > 10000) {
-// 		wholeSecond = 60
-// 	}
+	if(wholeSecond < 1  || wholeSecond > 10000) {
+		wholeSecond = 60
+	}
 
-// 	// set the dom element to a whole number (in case the user puts in a decimal)
-// 	timeLimitModeInput.value = wholeSecond;
+	// set the dom element to a whole number (in case the user puts in a decimal)
+	timeLimitModeInput.value = wholeSecond;
 
-// 	seconds = wholeSecond%60;
-// 	minutes = Math.floor(wholeSecond/60);
+	seconds = wholeSecond%60;
+	minutes = Math.floor(wholeSecond/60);
 
 
-// 	gameOn = false;
-// 	resetTimeText();
-// });
+	gameOn = false;
+	resetTimeText();
+});
 
 // word Limit mode butto; if this is checked, uncheck button for time limit and vice versa
 // Toggle display of word limit mode input field
 wordLimitModeButton.addEventListener('click', ()=> {
-	// change mode logic here
-	timeLimitMode = false;
-	seconds = 0;
-	minutes = 0;
-	scoreText.style.display = 'flex';
+	
+	if(timeLimitMode == true){
+		timeLimitMode = false;
+		seconds = 0;
+		minutes = 0;
+		scoreText.style.display = 'flex';
 
-	// set score max back to the chosen value
-	scoreMax = wordLimitModeInput.value;
+		// set score max back to the chosen value
+		scoreMax = wordLimitModeInput.value;
+	}else {
+		console.log('time limit');
+		timeLimitMode = true;
+		seconds = timeLimitModeInput.value%60;
+		minutes = Math.floor(timeLimitModeInput.value/60);
+		scoreText.style.display = 'none';
 
-	// toggle value of time limit mode button
-	timeLimitModeButton.checked = !timeLimitModeButton.checked;
+		// make the word list long enough so that no human typer can reach the end
+		scoreMax = timeLimitModeInput.value*4;
+	}
 
 	// toggle display of input fields
-	timeLimitModeInput.classList.toggle('noDisplay');
-	wordLimitModeInput.classList.toggle('noDisplay');
+	document.querySelector(".js-word-limit-mode-menu-item").classList.toggle('noDisplay');
+	document.querySelector(".js-time-limit-mode-menu-item").classList.toggle('noDisplay');
+
 
 	reset();
 });
