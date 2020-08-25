@@ -695,7 +695,7 @@ input:checked + .slider:before {
 
 	border: .2vmax solid var(--text-color);
 	background-color: var(--menu-background-color);
-	height: 37vmax;
+	height: 39vmax;
 	width: 60vmax;
 	-webkit-transform: scaleX(0);
 	    -ms-transform: scaleX(0);

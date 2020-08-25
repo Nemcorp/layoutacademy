@@ -108,9 +108,9 @@ init();
 // this is the true init, which is only called once. Init will have to be renamed
 // Call to initialize
 function start() {
-	scrollBar.scrollTop = window.innerWidth*.675;
+	scrollBar.scrollTop =  window.innerWidth*.91;
 	// add a delay so the initial scroll doesn't create a slow load
-	setTimeout(addScrollBarListeners, 500);
+	setTimeout(addScrollBarListeners, 700);
 
 	// document.querySelector('#layoutName').innerHTML = currentLayout;
 	document.querySelector('.cheatsheet').innerHTML = keyboardDivs;

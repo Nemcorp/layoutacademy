@@ -28,7 +28,7 @@ levelDictionaries = {
 		'lvl6' : 'qzxm',
 		'lvl7' : alphabet,
 	},
-	colemakdh : {
+	"colemak-dh" : {
 		'lvl1' : 'arstneio',
 		'lvl2' : 'gk',
 		'lvl3' : 'pbjl',
@@ -251,7 +251,7 @@ var layoutMaps = {
 		'Slash' : '/',
 		'shiftLayer' : 'default',
 	}, 
-	colemakdh : {
+	"colemak-dh" : {
 		'Minus' : "-",
 		'Equal' : "=",
 		'KeyQ' : "q",
