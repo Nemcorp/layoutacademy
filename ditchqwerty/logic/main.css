@@ -37,6 +37,7 @@ body *, #userInput {
 	font-family: "Lucida Console", Monaco, monospace;
 }
 
+
 * {
 	-webkit-transition: border-color .1s linear,
 		opacity .15s linear,
@@ -138,6 +139,7 @@ body *, #userInput {
 }
 
 .text-input input {
+	height: 5vh;
 	width: 60%;
 	margin: 0 3vw;
 	text-align: center;
@@ -161,7 +163,7 @@ body *, #userInput {
 	margin: 6vh 0 0 0;
 	padding: 0;
 
-	height: 60vh;
+	height: 65vh;
 }
 
 
@@ -428,7 +430,7 @@ input {
 	height: 6vmin;
 	font-size: 4vmin;
 	width: 80%;
-	margin: 2.5vh auto 3vh auto;
+	margin: 2.5vh auto 1vh auto;
 }
 
 
@@ -440,7 +442,7 @@ input {
 	-ms-flex-pack: distribute;
 	    justify-content: space-around;
 
-	font-size: 5vmin;
+	font-size: 2.5vmin;
 }
 
 /*#scoreText, #timeText {
@@ -468,7 +470,8 @@ input {
 
 	        flex: .8 1 7vh;
 
-	font-family: ;
+	font-size: 3vmin;
+	margin: .5vh 0 1vh 0;
 }
 
 .bottomText {

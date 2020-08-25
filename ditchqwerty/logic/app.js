@@ -469,7 +469,7 @@ document.addEventListener('click', function (e) {
 		k = e.target.closest('.preferenceButton');
 	}
 	if(!k) {
-		preferenceMenu.style.right = '-37vh';
+		preferenceMenu.style.right = '-45vh';
 	}
 
 
