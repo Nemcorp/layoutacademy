@@ -1,3 +1,5 @@
+// This is just a test comment
+
 /*_____________dom elements_________*/
 
 // the string of text that shows the words for the user to type
