@@ -754,6 +754,24 @@ input:checked + .slider:before {
   }
 }*/
 
+
+/*___________________________Statistics________________________*/
+#chartContainer {
+	width: 70%; 
+	height: 100%; 
+	margin: 0; 
+	padding: 0; 
+}
+
+
+#chartDiv {
+	height: 100%; 
+	margin: auto; 
+}
+
+
+
+
 /*___________________________ANIMATIONS________________________*/
 
 .slideLeft {

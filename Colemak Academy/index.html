@@ -6,6 +6,7 @@
 	<meta name="description" content="Colemak Academy - Learn Colemak fast. A free, easy way to learn to touch type the Colemak layout, Colemak-DH, Dvorak, and other custom keyboard layouts. The best, most customizable typing tutor and keyboard trainer available. Also works for workman, qwerty, and azerty">
 	<meta name="author" content="Layout Academy">
 
+    <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-base.min.js"></script>
 	<link rel="icon" href='img/favicon.webp'>
 	<link rel="stylesheet" type="text/css" href="logic/main.css">
 </head>
@@ -79,12 +80,13 @@
 
 		<h1><span id="layoutName">Colemak</span> Academy</h1>
 
+		<div id="chartContainer"></div>
+
 		<div class='typingArea'>
 			<div class='fade' id='fadeElement'>
 				<h2 class='noDisplay prompt'>
 				</h2>
 			</div>
-			<button id="resetButton" class='noDisplay'>Reset</button>
 			<input id = 'userInput' type="paragraph" spellcheck="false">
 			<div id='scoreAndClock'>
 				<span id="scoreText">0/50</span>
@@ -94,6 +96,7 @@
 				<div id='accuracyText'></div>
 				<div id='wpmText'></div>
 			</div>
+			<button id="resetButton" class='noDisplay'>Reset</button>
 		</div>
 		<div class='cheatsheetContainer'>
 			<div class='cheatsheet'></div>
@@ -117,6 +120,8 @@
 <script type="text/javascript" src="logic/layoutInfo.js"></script>
 <script type="text/javascript" src="logic/wordList.js"></script>
 <script type="text/javascript" src="logic/keyboardDivs.js"></script>
+<script type="text/javascript" src="logic/statSecond.js"></script>
+<script type="text/javascript" src="logic/stats.js"></script>
 <script type="text/javascript" src="logic/app.js"></script>
 </body>
 </html>

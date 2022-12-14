@@ -17,6 +17,8 @@ accuracyText 	= document.querySelector('#accuracyText'),
 //
 wpmText 		= document.querySelector('#wpmText'),
 //
+chartContainer 		= document.querySelector('#chartContainer'),
+//
 testResults 	= document.querySelector('#testResults'),
 //
 input 			= document.querySelector('#userInput'), 
@@ -48,8 +50,9 @@ customUIKeyInput = document.querySelector('#customUIKeyInput');
 var promptOffset 	= 0;  // is this needed? May delete
 var score;				  // tracks the current number of currect words the user has typed
 var scoreMax 		= 50; // total number of words the user must type
-var seconds 		= 0;  // tracks the number of seconds%minutes*60 the current test has been running for 
-var minutes 		= 0;  // tracks the number of minutes the current test has been running for
+var seconds 		= 0;  // tracks the number of seconds%minutes*60 the current test has been running for. May count down.
+var minutes 		= 0;  // tracks the number of minutes the current test has been running for. May count down.
+var objectiveTime   = 0;  // tracks the number of seconds since the test has started. Always counts up.
 var gameOn 			= false; // set to true when user starts typing in input field
 var correct 		= 0;  // number of correct keystrokes during a game
 var errors 			= 0;  // number of typing errors during a game
@@ -100,6 +103,10 @@ timeLimitModeInput			= document.querySelector('.timeLimitModeInput')
 wordScrollingModeButton		= document.querySelector('.wordScrollingModeButton'),
 punctuationModeButton       = document.querySelector('.punctuationModeButton');
 
+// statistics
+var stats = new Stats();
+var chartDiv;
+
 start();
 init();
 
@@ -147,8 +154,61 @@ setInterval(()=> {
 			}
 		}
 		resetTimeText();
+
+		// calculate wpm for the last second before we move on
+		stats.currentSecond.calculateWpm();
+
+		let statSecond = new StatSecond(objectiveTime++);
+		stats.seconds.push(statSecond);
+		stats.currentSecond = statSecond;
 	}
 }, 1000);
+
+
+function getData() {
+  return stats.generateDataForChart();
+}
+
+function createChart() {
+
+	// add a chart element to the chartContainer
+	chartDiv = document.createElement("div");
+	chartDiv.setAttribute("id", "chartDiv");
+	chartContainer.appendChild(chartDiv);
+
+	// create a data set on our data
+	let dataSet = anychart.data.set(getData());
+
+	// map data for the line chart,
+	// take x from the zero column and value from the first column
+	let seriesData = dataSet.mapAs({ x: 0, value: 1 });
+
+	// create a line chart
+	let chart = anychart.line();
+
+	// configure the chart title text settings
+	chart.title('Stats');
+
+	// set the y axis title
+	chart.yAxis().title('WPM');
+
+	var lineChart = chart.spline(seriesData);
+	lineChart.name('Words Per Minute');
+	lineChart.stroke('3 #8727b8');
+	chart.animation(true);
+
+	chart.background().fill("black");
+
+	// set the container id for the line chart
+	chart.container('chartDiv');
+
+	anychart.data.set(getData());
+
+	chart.yScale().minimum(0);
+	
+	chart.draw();
+}
+
 
 // starts the timer when there is any change to the input field
 input.addEventListener('keydown', (e)=> {
@@ -797,6 +857,7 @@ input.addEventListener('keydown', (e)=> {
 	// check if answer is correct and apply the correct styling. 
 	// Also increment 'errors' or 'correct'
 	if(checkAnswerToIndex()) {
+		stats.currentSecond.correctKeystrokes++;
 		input.style.color = 'black';
 		// no points awarded for backspace
 		if(e.keyCode != 8) {
@@ -813,6 +874,7 @@ input.addEventListener('keydown', (e)=> {
 		}
 	}else {
 		console.log('error');
+		stats.currentSecond.errors++;
 		input.style.color = 'red';
 		// no points awarded for backspace
 		if(e.keyCode != 8) {
@@ -1006,6 +1068,7 @@ function reset(){
 
 	console.log('reset called');
 	// set current letter index back to 0
+
 	letterIndex = 0;
 	wordIndex = 0;
 	lineIndex = 0;
@@ -1033,13 +1096,27 @@ function reset(){
 		minutes = Math.floor(timeLimitModeInput.value/60);
 	}
 
+	objectiveTime = 0;
+
 	// reset timeText
 	resetTimeText();
+
+	stats = new Stats();
+
+	let statSecond = new StatSecond(objectiveTime++);
+	stats.seconds.push(statSecond);
+	stats.currentSecond = statSecond;
 
 	// set mapping to off
 
 	// set accuracyText to be transparent
 	testResults.classList.add('transparent');
+
+	input.classList.remove('noDisplay');
+
+	chartDiv = document.getElementById("chartDiv");
+	if(chartDiv) chartDiv.remove();
+	chartContainer.classList.add('noDisplay');
 
 	// no display for reset button during game
 	resetButton.classList.add('noDisplay');
@@ -1112,6 +1189,7 @@ function checkAnswer() {
 
 
 function endGame() {
+	createChart();
 	// erase prompt
 	prompt.classList.toggle('noDisplay');
 
@@ -1133,6 +1211,8 @@ function endGame() {
 	wpmText.innerHTML = 'WPM: ' + wpm;
 	// make accuracy visible
 	testResults.classList.toggle('transparent');
+	input.classList.add('noDisplay');
+	chartContainer.classList.remove('noDisplay');
 
 	// set correct and errors counts to 0
 	correct = 0;
