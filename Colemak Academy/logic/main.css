@@ -363,11 +363,17 @@ input {
 	position: absolute;
 	font-size: 2vmin;
 	bottom: 0;
+	color: black;
 }
 
-a:link {
-	color: var(--accent-color);
+.bottomText a {
+	background-color: red;
 }
+
+
+/*a:link {
+	color: var(--accent-color);
+}*/
 
 
 /*____________________Slider________________________*/
