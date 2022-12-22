@@ -158,7 +158,7 @@ setInterval(()=> {
 		// calculate wpm for the last second before we move on
 		stats.currentSecond.calculateWpm();
 
-		let statSecond = new StatSecond(objectiveTime++);
+		let statSecond = new StatSecond(objectiveTime++, stats.currentSecond);
 		stats.seconds.push(statSecond);
 		stats.currentSecond = statSecond;
 	}
@@ -187,7 +187,7 @@ function createChart() {
 	let chart = anychart.line();
 
 	// configure the chart title text settings
-	chart.title('Stats');
+	chart.title('Typing Speed Over Time');
 
 	// set the y axis title
 	chart.yAxis().title('WPM');
@@ -205,7 +205,12 @@ function createChart() {
 	anychart.data.set(getData());
 
 	chart.yScale().minimum(0);
-	
+	anychart.licenseKey("colemak.academy-e9ef65c6-df846a54");
+
+	var credits = chart.credits();
+  credits.text("AnyChart");
+
+
 	chart.draw();
 }
 

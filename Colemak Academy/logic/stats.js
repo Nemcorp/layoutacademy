@@ -8,7 +8,7 @@ class Stats {
 		let dataToReturn = [];
 
 		this.seconds.forEach((second) => {
-			let dataPoint = [[second.second + " seconds"], [second.wpm]];
+			let dataPoint = [[second.second + " seconds"], [second.smoothedWpm]];
 			dataToReturn.push(dataPoint);
 		});
 
